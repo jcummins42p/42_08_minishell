@@ -15,5 +15,7 @@
 
 int	main(void)
 {
+	if (argc == 2)
+		return (1);
 	return (0);
 }
