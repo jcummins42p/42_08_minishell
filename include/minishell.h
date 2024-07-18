@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:45:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/18 16:11:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "structs.h"
 # include <unistd.h>	// non-standard library for POSIX API
 # include <fcntl.h>		// file control: open, read, write
+# include <fenv.h>		// 
 # include <stdio.h>		// printf, EOF, FILE, stdin, stdout, stderr
 # include <stdlib.h>	// malloc
 # include <stdarg.h>	// variadic fucntions
@@ -24,4 +25,6 @@
 # include <signal.h>	// signal-handling
 # include <threads.h>	// threads, mutexes
 
+# include <readline/readline.h>
+# include <readline/history.h>
 #endif

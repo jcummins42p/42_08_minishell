@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/07/18 14:48:33 by jcummins         ###   ########.fr        #
+#    Updated: 2024/07/18 16:11:57 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIB_PATH) $(MLX_PATH) $(HEADERS)
-	$(CC) $(CFLAGS) $^ -o $@ -L$(LIB_DIR)
+	$(CC) $(CFLAGS) $^ -o $@ -L$(LIB_DIR) -lreadline
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 	@mkdir -p $(@D)
