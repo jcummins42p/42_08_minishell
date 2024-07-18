@@ -1,26 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:48:03 by jcummins         ###   ########.fr       */
+/*   Created: 2023/10/26 16:58:31 by jcummins          #+#    #+#             */
+/*   Updated: 2023/11/21 15:19:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdio.h>
+#include "libft.h"
 
-int	main(int argc, char *argv[])
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {
-	if (argc == 3)
-	{
-		printf("argc is 3, macro in structs file is %d\n", STRUCTMACRO);
-		printf("supplied argument is %s\n", argv[1]);
-	}
-	else
-		return (1);
-	return (0);
+	if (!lst || !del)
+		return ;
+	del(lst->content);
+	free(lst);
 }

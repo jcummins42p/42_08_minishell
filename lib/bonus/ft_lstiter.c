@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:48:03 by jcummins         ###   ########.fr       */
+/*   Created: 2023/10/26 17:01:38 by jcummins          #+#    #+#             */
+/*   Updated: 2023/11/22 10:52:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdio.h>
+#include "libft.h"
 
-int	main(int argc, char *argv[])
+void	ft_lstiter(t_list *lst, void (*f)(void *))
 {
-	if (argc == 3)
+	if (!lst || !f)
+		return ;
+	while (lst != NULL)
 	{
-		printf("argc is 3, macro in structs file is %d\n", STRUCTMACRO);
-		printf("supplied argument is %s\n", argv[1]);
+		f(lst->content);
+		lst = lst->next;
 	}
-	else
-		return (1);
-	return (0);
 }

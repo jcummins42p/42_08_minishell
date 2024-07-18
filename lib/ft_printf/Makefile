@@ -6,47 +6,34 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/07/18 14:48:33 by jcummins         ###   ########.fr        #
+#    Updated: 2023/12/13 18:39:51 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
-
-HEADER_DIR = include
-SRC_DIR = src
-OBJ_DIR = obj
+NAME = libftprintf.a
+HEADER = ft_printf.h
 CC = cc
-CFLAGS = -g -Werror -Wextra -Wall -pedantic -I$(HEADER_DIR)
-LIB = libft.a
-LIB_DIR = lib
-LIB_PATH = $(LIB_DIR)/$(LIB)
+CFLAGS = -g -Werror -Wextra -Wall
+SRCS = ft_printf.c ft_printf_nformats.c ft_printf_cformats.c
 
-SRCS = $(shell find $(SRC_DIR) -name '*.c')
-
-OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIB_PATH) $(MLX_PATH) $(HEADERS)
-	$(CC) $(CFLAGS) $^ -o $@ -L$(LIB_DIR)
+$(NAME): $(OBJS)
+	ar -r $@ $?
 
-$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -I/usr/include -I$(HEADER_DIR) -O3 -c $< -o $@
-
-$(LIB_PATH):
-	@echo "Running libft make"
-	@(cd $(LIB_DIR) && make)
+%.o:	%.c
+	$(CC) -c -fPIC $(CFLAGS) $?
 
 clean:
 	@echo "Removing all object files"
-	@rm -rf $(OBJ_DIR)
-	@(cd $(LIB_DIR) && make clean)
+	@rm -rf $(OBJS)
+	@rm -rf *.so
 
 fclean: clean
-	@echo "Removing all object files and executable"
+	@echo "Removing all object files and library"
 	@rm -rf $(NAME)
+	@rm -rf *.out
 
 re:	fclean all
-
-.PHONY: all clean fclean re

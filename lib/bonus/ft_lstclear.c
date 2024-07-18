@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:48:03 by jcummins         ###   ########.fr       */
+/*   Created: 2023/10/26 16:58:31 by jcummins          #+#    #+#             */
+/*   Updated: 2023/11/21 15:29:16 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdio.h>
+#include "libft.h"
 
-int	main(int argc, char *argv[])
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	if (argc == 3)
+	t_list	*swap;
+
+	if (!lst || !del)
+		return ;
+	while (*lst != NULL)
 	{
-		printf("argc is 3, macro in structs file is %d\n", STRUCTMACRO);
-		printf("supplied argument is %s\n", argv[1]);
+		swap = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		(*lst) = swap;
 	}
-	else
-		return (1);
-	return (0);
 }

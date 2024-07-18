@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:48:03 by jcummins         ###   ########.fr       */
+/*   Created: 2023/10/19 12:29:36 by jcummins          #+#    #+#             */
+/*   Updated: 2023/10/30 16:59:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdio.h>
+#include "libft.h"
 
-int	main(int argc, char *argv[])
+int	ft_isascii(int c)
 {
-	if (argc == 3)
-	{
-		printf("argc is 3, macro in structs file is %d\n", STRUCTMACRO);
-		printf("supplied argument is %s\n", argv[1]);
-	}
-	else
+	if (c >= 0 && c <= 127)
 		return (1);
 	return (0);
 }
+
+/*int	main(void)*/
+/*{*/
+	/*int	c;*/
+
+	/*c = 'C';*/
+	/*if (ft_isascii(c))*/
+		/*printf("Character is ASCII");*/
+	/*else if (ft_isascii(c))*/
+		/*printf("Character is not ASCII");*/
+	/*return (0);*/
+/*}*/

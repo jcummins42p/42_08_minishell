@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:48:03 by jcummins         ###   ########.fr       */
+/*   Created: 2023/12/07 10:27:43 by jcummins          #+#    #+#             */
+/*   Updated: 2024/05/22 17:58:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdio.h>
+#include "get_next_line_bonus.h"
 
-int	main(int argc, char *argv[])
+int	is_complete(char *str)
 {
-	if (argc == 3)
+	size_t	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
 	{
-		printf("argc is 3, macro in structs file is %d\n", STRUCTMACRO);
-		printf("supplied argument is %s\n", argv[1]);
+		if (str[i++] == '\n')
+			return (i);
 	}
-	else
-		return (1);
 	return (0);
 }

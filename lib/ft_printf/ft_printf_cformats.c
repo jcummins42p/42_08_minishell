@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_printf_cformats.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:48:03 by jcummins         ###   ########.fr       */
+/*   Created: 2023/12/11 16:59:21 by jcummins          #+#    #+#             */
+/*   Updated: 2023/12/15 19:29:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdio.h>
+#include "ft_printf.h"
 
-int	main(int argc, char *argv[])
+int	print_str(char *str)
 {
-	if (argc == 3)
-	{
-		printf("argc is 3, macro in structs file is %d\n", STRUCTMACRO);
-		printf("supplied argument is %s\n", argv[1]);
-	}
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+		i = print_str("(null)");
 	else
-		return (1);
-	return (0);
+		while (str[i])
+			write (1, &str[i++], 1);
+	return (i);
+}
+
+int	print_char(char chr)
+{
+	write (1, &chr, 1);
+	return (1);
 }

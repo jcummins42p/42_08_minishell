@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 14:48:03 by jcummins         ###   ########.fr       */
+/*   Created: 2023/10/25 15:48:45 by jcummins          #+#    #+#             */
+/*   Updated: 2023/11/16 17:39:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdio.h>
+#include "libft.h"
 
-int	main(int argc, char *argv[])
+void	ft_putchar_fd(char c, int fd)
 {
-	if (argc == 3)
-	{
-		printf("argc is 3, macro in structs file is %d\n", STRUCTMACRO);
-		printf("supplied argument is %s\n", argv[1]);
-	}
-	else
-		return (1);
-	return (0);
+	write(fd, &c, 1);
 }
+
+/*int	main(void)*/
+/*{*/
+	/*ft_putchar_fd('f', 1);*/
+	/*return (0);*/
+/*}*/
