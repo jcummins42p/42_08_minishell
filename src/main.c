@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 16:31:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/18 21:00:59 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,16 @@ int	main(int argc, char *argv[], char *env[])
 {
 	(void)argv;
 	(void)argc;
-	char *ptr;
+	char 		*ptr;
+	t_tokenlist *tokens;
+
+	tokens = NULL;
 	while (1)
 	{
 		ptr = readline("Enter text: ");
 		add_history(ptr);
+		tokenize(&tokens, ptr);
+		list_clear(&tokens);
 		printf("%s\n", ptr);
 		if (!strncmp(ptr, "EXIT", 4))
 		{
@@ -42,8 +47,10 @@ int	main(int argc, char *argv[], char *env[])
 			free(ptr);
 			break ;
 		}
+		if (!strncmp(ptr, "env", 3))
+			echo_env(env);
 		free(ptr);
+		ptr = NULL;
 	}
-	echo_env(env);
 	return (0);
 }
