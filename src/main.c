@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 21:00:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 14:39:59 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,18 @@ int	main(int argc, char *argv[], char *env[])
 	(void)argc;
 	char 		*ptr;
 	t_tokenlist *tokens;
+	t_envlist	*envlist;
 
 	tokens = NULL;
+	envlist = NULL;
+	env_init(&envlist, env);
+	/*env_print(&envlist);*/
 	while (1)
 	{
 		ptr = readline("Enter text: ");
 		add_history(ptr);
 		tokenize(&tokens, ptr);
-		list_clear(&tokens);
+		token_clear(&tokens);
 		printf("%s\n", ptr);
 		if (!strncmp(ptr, "EXIT", 4))
 		{

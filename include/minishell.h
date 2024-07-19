@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 19:57:24 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 14:37:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,18 @@
 
 //	tokenize.c
 void		tokenize(t_tokenlist **tokens, char *str);
-void		print_tokens(t_tokenlist **head);
 
 //	tokenlist.c
-t_tokenlist	*last_node(t_tokenlist **head);
-int			new_token(t_tokenlist **head, char *token, int pos);
-void		list_clear(t_tokenlist **head);
+void		tokens_print(t_tokenlist **tokens);
+t_tokenlist	*token_last(t_tokenlist **tokens);
+int			token_new(t_tokenlist **tokens, char *token, int pos);
+void		token_clear(t_tokenlist **tokens);
+
+//	envlist.c
+void		env_print(t_envlist **envlist);
+t_envlist	*env_last(t_envlist **envlist);
+void		env_init(t_envlist **envlist, char *env[]);
+int			env_new(t_envlist **envlist, char *param, char *value);
+void		env_clear(t_envlist **envlist);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/18 18:34:26 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 13:09:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ typedef struct s_tokenlist
 
 typedef struct s_envlist
 {
+	char				*param;	// environment variable
+	char				*value; // variable value
 	struct s_envlist	*next;
 	struct s_envlist	*prev;
 }	t_envlist;
