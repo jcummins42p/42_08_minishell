@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 17:15:26 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:18:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	env_clear(t_envlist **envlist)
 {
 	t_envlist *curr;
 	t_envlist *swap;
+	int i = 0;
 
 	if (envlist == NULL || *envlist == NULL)
 		return ;
@@ -88,6 +89,7 @@ void	env_clear(t_envlist **envlist)
 		free(swap->param);
 		free(swap->value);
 		free(swap);
+		printf("Free %d in env", i++);
 	}
 	*envlist = NULL;
 }
@@ -115,8 +117,8 @@ int	env_new(t_envlist **envlist, char *newparam, char *newvalue)
 	if (new == NULL)
 	   return (0);
 	new->next = NULL;
-	new->param = ft_strdup(newparam);
-	new->value = ft_strdup(newvalue);
+	new->param = newparam;
+	new->value = newvalue;
 	curr = *envlist;
 	if (curr == NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 17:41:19 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:19:43 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,9 @@ int	input_read(t_envlist *envlist, t_tokenlist *tokens, char *ptr)
 
 void	input_cycle(t_mshell *msh)
 {
-	msh->ptr = NULL;
-	msh->tokens = NULL;
+	msh->prompt = env_get(&msh->envlist, "SHELL");
 	while (1)
 	{
-		msh->prompt = env_get(&msh->envlist, "SHELL");
 		msh->ptr = readline(msh->prompt);
 		add_history(msh->ptr);
 		tokenize(&msh->tokens, msh->ptr);
@@ -40,9 +38,27 @@ void	input_cycle(t_mshell *msh)
 			break ;
 		token_clear(&msh->tokens);
 		free(msh->ptr);
-		free(msh->prompt);
 		msh->ptr = NULL;
 	}
+}
+
+void	shell_init(t_mshell *msh)
+{
+	msh->envlist = NULL;
+	msh->tokens = NULL;
+	msh->ptr = NULL;
+	msh->prompt = NULL;
+}
+
+void	shell_free(t_mshell *msh)
+{
+	if (msh->tokens)
+		token_clear(&msh->tokens);
+	env_clear(&msh->envlist);
+	if (msh->ptr)
+		free(msh->ptr);
+	if (msh->prompt)
+		free(msh->prompt);
 }
 
 int	main(int argc, char *argv[], char *env[])
@@ -51,10 +67,9 @@ int	main(int argc, char *argv[], char *env[])
 
 	(void)argv;
 	(void)argc;
-	msh.envlist = NULL;
-	msh.tokens = NULL;
+	shell_init(&msh);
 	env_init(&msh.envlist, env);
 	input_cycle(&msh);
-	env_clear(&msh.envlist);
+	shell_free(&msh);
 	return (0);
 }
