@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 13:18:48 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 16:57:25 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 void	tokenize(t_tokenlist **tokens, char *str)
 {
-	int			i = 0;
+	int	i;
 
+	i = 0;
 	while (str[i])
 	{
 		if (!strncmp(&str[i], "$", 1))
@@ -37,6 +38,4 @@ void	tokenize(t_tokenlist **tokens, char *str)
 		else
 			i++;
 	}
-	if (*tokens)
-		tokens_print(tokens);
 }

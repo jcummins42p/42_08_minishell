@@ -6,9 +6,12 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 13:09:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:38:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 # define STRUCTMACRO 10
 
@@ -28,3 +31,13 @@ typedef struct s_envlist
 	struct s_envlist	*next;
 	struct s_envlist	*prev;
 }	t_envlist;
+
+typedef struct s_mshell
+{
+	t_tokenlist	*tokens;
+	t_envlist	*envlist;
+	char		*ptr;
+	char		*prompt;
+}	t_mshell;
+
+#endif

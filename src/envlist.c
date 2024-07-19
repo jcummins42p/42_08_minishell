@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 16:29:58 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 17:15:26 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,31 @@ void	env_alter(t_envlist **envlist, const char *search, const char *newval)
 	ft_printf("Error, no parameter of that name found in env\n");
 }
 
+char *env_get(t_envlist **envlist, const char *search)
+{
+	t_envlist	*curr;
+	int			i;
+	char		*out;
+
+	out = NULL;
+	curr = *envlist;
+	while (curr)
+	{
+		i = 0;
+		while (curr->param[i] == search[i])
+		{
+			if (curr->param[i] == '\0' && search[i] == '\0')
+			{
+				out = ft_strdup(curr->value);
+				return (out);
+			}
+			i++;
+		}
+		curr = curr->next;
+	}
+	return (out);
+}
+
 void	env_print(t_envlist **envlist)
 {
 	t_envlist	*curr;
@@ -43,7 +68,7 @@ void	env_print(t_envlist **envlist)
 	curr = *envlist;
 	while (curr)
 	{
-		printf("%s\n\t%s\n", curr->param, curr->value);
+		printf("%s=%s\n", curr->param, curr->value);
 		curr = curr->next;
 	}
 }
@@ -166,7 +191,5 @@ void	env_init(t_envlist **envlist, char *env[])
 		i++;
 	}
 	env_alter(envlist, "SHELL", "/bin/minishell");
-	env_print(envlist);
-	env_clear(envlist);
 }
 
