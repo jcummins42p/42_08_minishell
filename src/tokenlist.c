@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:40:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 13:03:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/19 18:37:20 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	tokens_print(t_tokenlist **tokens)
 	i = 0;
 	while (curr)
 	{
-		printf("Token %d: %s at position %d with width %d\n", i++, curr->token, curr->pos, curr->width);
+		printf("Token %d: %s at position %d with width %d\n", \
+				i++, curr->token, curr->pos, curr->width);
 		curr = curr->next;
 	}
 }
@@ -48,7 +49,7 @@ void	token_clear(t_tokenlist **tokens)
 	*tokens = NULL;
 }
 
-t_tokenlist *token_last(t_tokenlist **tokens)
+t_tokenlist	*token_last(t_tokenlist **tokens)
 {
 	t_tokenlist	*curr;
 
