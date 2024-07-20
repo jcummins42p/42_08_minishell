@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 18:33:36 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/20 15:51:36 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,5 @@ void	env_init(t_envlist **envlist, char *env[])
 		env_new(envlist, param, value);
 		i++;
 	}
-	env_alter(envlist, "SHELL", "/bin/minishell");
+	env_set(envlist, "SHELL", "/bin/minishell");
 }
