@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/20 15:50:42 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/20 18:47:30 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,22 @@ void		token_clear(t_tokenlist **tokens);
 //	envfuncs.c
 t_envlist	*env_last(t_envlist **envlist);
 void		env_print(t_envlist **envlist);
-char		*env_get(t_envlist **envlist, const char *search);
+char		**env_get(t_envlist **envlist, const char *search);
 void		env_set(t_envlist **envlist, \
 				const char *search, const char *newval);
 
 //	envlist.c
-void		env_init(t_envlist **envlist, char *env[]);
-int			env_new(t_envlist **envlist, char *param, char *value);
 void		env_clear(t_envlist **envlist);
+void		env_del(t_envlist **envlist);
+int			env_new(t_envlist **envlist, char *param, char *value);
+
+//	envinit.c
+void		env_init(t_envlist **envlist, char *env[]);
+
+//	utils.c
+bool		is_whitespace(char c);
+
+//	expand.c
+void		expand_variable(t_envlist **envlist, char *param);
 
 #endif

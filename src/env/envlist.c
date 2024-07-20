@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/20 15:51:36 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:19:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,27 @@ void	env_clear(t_envlist **envlist)
 		curr = curr->next;
 		free(swap->param);
 		free(swap->value);
+		swap->value = NULL;
+		swap->param = NULL;
 		free(swap);
 	}
+	*envlist = NULL;
+}
+
+void	env_del(t_envlist **envlist)
+{
+	t_envlist	*next;
+	t_envlist	*prev;
+
+	if (envlist == NULL || *envlist == NULL)
+		return ;
+	next = (*envlist)->next;
+	prev = (*envlist)->prev;
+	if (next)
+		next->prev = prev;
+	if (prev)
+		prev->next = next;
+	free (*envlist);
 	*envlist = NULL;
 }
 
@@ -55,65 +74,4 @@ int	env_new(t_envlist **envlist, char *newparam, char *newvalue)
 		new->prev = curr;
 	}
 	return (1);
-}
-
-int	env_init_param(char **param, char *envline)
-{
-	char	*out;
-	int		i;
-	int		len;
-
-	i = 0;
-	while (envline[i] && envline[i] != '=')
-		i++;
-	len = i;
-	out = malloc(sizeof(char) * (len + 1));
-	out[i--] = '\0';
-	while (i >= 0)
-	{
-		out[i] = envline[i];
-		i--;
-	}
-	*param = out;
-	return (len);
-}
-
-int	env_init_value(char **value, char *envline, int start)
-{
-	char	*out;
-	int		len;
-	int		i;
-
-	len = 0;
-	start++;
-	i = start;
-	while (envline[i++])
-		len++;
-	out = malloc(sizeof(char) * (len + 1));
-	i = 0;
-	while (i < len)
-		out[i++] = envline[start++];
-	out[i] = '\0';
-	*value = out;
-	return (len);
-}
-
-void	env_init(t_envlist **envlist, char *env[])
-{
-	int		i;
-	int		len;
-	char	*param;
-	char	*value;
-
-	i = 0;
-	param = NULL;
-	value = NULL;
-	while (env[i])
-	{
-		len = env_init_param(&param, env[i]);
-		env_init_value(&value, env[i], len);
-		env_new(envlist, param, value);
-		i++;
-	}
-	env_set(envlist, "SHELL", "/bin/minishell");
 }

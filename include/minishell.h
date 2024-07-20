@@ -6,16 +6,12 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 18:30:49 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:19:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-# include "ms_structs.h"
-# include "ms_funcs.h"
-# include "libft.h"
 
 # include <unistd.h>	// non-standard library for POSIX API
 # include <fcntl.h>		// file control: open, read, write
@@ -30,5 +26,9 @@
 
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# include "ms_structs.h"
+# include "ms_funcs.h"
+# include "libft.h"
 
 #endif
