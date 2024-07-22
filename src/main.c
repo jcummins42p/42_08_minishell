@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/20 19:21:17 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:18:19 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	input_read(t_envlist *envlist, t_tokenlist *tokens, char *ptr)
 	return (0);
 }
 
-void	input_cycle(t_mshell *msh)
+void	input_cycle(t_mshell *msh, char *env[])         // delete env
 {
 	msh->prompt = *env_get(&msh->envlist, "SHELL");
 	while (1)
@@ -36,6 +36,11 @@ void	input_cycle(t_mshell *msh)
 		tokenize(&msh->tokens, msh->ptr);
 		if (input_read(msh->envlist, msh->tokens, msh->ptr) == 1)
 			break ;
+		
+		//Pipe in progress
+		if (ft_strrchr(msh->ptr, '|'))
+			ft_pipe_init(msh->tokens, msh->ptr, env);
+
 		token_clear(&msh->tokens);
 		free(msh->ptr);
 		msh->ptr = NULL;
@@ -69,7 +74,7 @@ int	main(int argc, char *argv[], char *env[])
 	shell_init(&msh);
 	env_init(&msh.envlist, env);
 	expand_variable(&msh.envlist, param + 1);
-	input_cycle(&msh);
+	input_cycle(&msh, env); // delete env
 	shell_free(&msh);
 	return (0);
 }
