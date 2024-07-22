@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 13:18:19 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/22 14:27:43 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	input_cycle(t_mshell *msh, char *env[])         // delete env
 		tokenize(&msh->tokens, msh->ptr);
 		if (input_read(msh->envlist, msh->tokens, msh->ptr) == 1)
 			break ;
-		
 		//Pipe in progress
 		if (ft_strrchr(msh->ptr, '|'))
 			ft_pipe_init(msh->tokens, msh->ptr, env);

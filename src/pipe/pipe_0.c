@@ -6,25 +6,11 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/22 13:17:29 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/22 14:54:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static int ft_number_pipes(t_tokenlist *tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens)
-	{
-		if (tokens->token[0] == '|')
-			i++;
-		tokens = tokens->next;
-	}
-	return (i);
-}
 
 static int ft_end_line(char *line)
 {
@@ -41,25 +27,17 @@ void ft_pipe_init(t_tokenlist *tokens, char *ptr, char *env[])
 	char **pipe_arg;
 	int *pipe_pos;
 	int num_pipes;
-	int i = 0;
+	/*int i = 0;*/
 
-	num_pipes = ft_number_pipes(tokens);
+	num_pipes = token_count_type(&tokens, "|");
 	pipe_pos = (int *)malloc(sizeof(int) * (num_pipes + 1));		  // +1 because for input test | arg   we have 2 arguments test and arg.
 	pipe_arg = (char **)malloc(sizeof(char *) * (num_pipes + 1 + 1)); // +1 for NULL termination
 
 	// Get pipe positions
 	// printf("Number of pipes: %i\n", num_pipes);
-	while (tokens)
-	{
-		if (tokens->token[0] == '|')
-		{
-			pipe_pos[i] = tokens->pos;
-			i++;
-		}
-		tokens = tokens->next;
-	}
+	token_pos_type(&tokens, &pipe_pos, "|");
 	// Get end of the line positions           || the re-direction
-	pipe_pos[i] = ft_end_line(ptr);
+	pipe_pos[num_pipes] = ft_end_line(ptr);
 
 	int start = 0;
 	for (int i = 0; i <= num_pipes; i++)
