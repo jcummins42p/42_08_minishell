@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/04/16 20:48:02 by jcummins         ###   ########.fr        #
+#    Updated: 2024/07/22 13:22:41 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,50 +35,55 @@ PF_OBJS = $(PF_SRCS:$(PF_DIR)/%.c=$(PFO_DIR)/%.o)
 GNL_SRCS = $(shell find $(GNL_DIR) -name '*.c')
 GNL_OBJS = $(GNL_SRCS:$(GNL_DIR)/%.c=$(GNLO_DIR)/%.o)
 
-all: $(NAME) bonus printf gnl
+all: $(NAME)
 
-$(NAME): $(OBJS)
-	ar -r $@ $?
-	ranlib $(NAME)
+$(NAME): $(OBJS) $(B_OBJS) $(PF_OBJS) $(GNL_OBJS)
+	@echo "✅ Making libft mandatory and adding to libft.a"
+	@ar -r $@ $?
+	@ranlib $(NAME)
 
-bonus: $(OBJS) $(B_OBJS)
-	@echo "Making Bonus and adding to libft.a"
-	ar r $(NAME) $^
-	ranlib $(NAME)
+bonus: $(B_OBJS)
+	@echo "✅ Making libft bonus and adding to libft.a"
+	@ar -r $(NAME) $^
+	@ranlib $(NAME)
 
-printf:	$(OBJS) $(PF_OBJS)
-	@echo "Adding printf to library"
-	ar r $(NAME) $^
-	ranlib $(NAME)
+printf:	$(PF_OBJS)
+	@echo "✅ Adding printf to library"
+	@ar -r $(NAME) $^
+	@ranlib $(NAME)
 
-gnl:	$(OBJS) $(GNL_OBJS)
-	@echo "Adding get_next_line to library"
-	ar r $(NAME) $^
-	ranlib $(NAME)
+gnl:	$(GNL_OBJS)
+	@echo "✅ Adding get_next_line to library"
+	@ar -r $(NAME) $^
+	@ranlib $(NAME)
 
 $(O_DIR)/%.o:	$(SRC_DIR)/%.c
+	@echo "✅ Compiled object file $@ from source file $<"
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BO_DIR)/%.o: $(BSRC_DIR)/%.c
+	@echo "✅ Compiled object file $@ from source file $<"
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(PFO_DIR)/%.o: $(PF_DIR)/%.c
+	@echo "✅ Compiled object file $@ from source file $<"
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(GNLO_DIR)/%.o: $(GNL_DIR)/%.c
+	@echo "✅ Compiled object file $@ from source file $<"
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@echo "Removing all object files"
+	@echo "💥 Removing all object files"
 	@rm -rf $(O_DIR) $(BO_DIR) $(PFO_DIR) $(GNLO_DIR)
 	@rm -rf *.so
 
 fclean: clean
-	@echo "Removing all object files and library"
+	@echo "💥 Removing all object files and library"
 	@rm -rf $(NAME)
 	@rm -rf *.out
 
@@ -87,3 +92,5 @@ re:	fclean all
 so:
 	$(CC) -nostartfiles -fPIC $(CFLAGS) $(SRCS) $(BSRC)
 	gcc -nostartfiles -shared -fPIC -o libft.so $(OBJS) $(BOBS)
+
+.PHONY: all clean fclean re bonus printf gnl
