@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/20 19:19:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:07:31 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@
 # include "ms_structs.h"
 # include "ms_funcs.h"
 # include "libft.h"
+# include "pipe.h"
 
 #endif
