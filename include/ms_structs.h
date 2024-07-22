@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 15:15:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:57:31 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_pipex
 typedef struct s_tokenlist
 {
 	char				*token;	// which token $ | >> etc
+	char				*var;	// the variable following a $
 	int					pos;	// index of first char within string
 	int					width;	// width of token in char
 	struct s_tokenlist	*next;

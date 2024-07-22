@@ -6,15 +6,32 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:15:41 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 14:55:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:39:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	token_count_type(t_tokenlist **tokens, char *metachar)
+t_tokenlist *token_at_pos(t_tokenlist **tokens, int searchpos)
 {
 	t_tokenlist *curr;
+
+	curr = NULL;
+	if (!tokens)
+		return (NULL);
+	while (curr)
+	{
+		if (curr->pos == searchpos)
+			return (curr);
+		else
+			curr = curr->next;
+	}
+	return (NULL);
+}
+
+int	token_count_type(t_tokenlist **tokens, char *metachar)
+{
+	t_tokenlist	*curr;
 	int			count;
 	int			len;
 
@@ -27,7 +44,7 @@ int	token_count_type(t_tokenlist **tokens, char *metachar)
 	{
 		if (!strncmp(curr->token, metachar, len))
 			count++;
-		curr=curr->next;
+		curr = curr->next;
 	}
 	return (count);
 }
@@ -36,7 +53,7 @@ int	token_count_type(t_tokenlist **tokens, char *metachar)
 //	specified metacharacter in pos[] array
 void	token_pos_type(t_tokenlist **tokens, int **pos, char *metachar)
 {
-	t_tokenlist *curr;
+	t_tokenlist	*curr;
 	int			len;
 	int			i;
 
@@ -49,6 +66,6 @@ void	token_pos_type(t_tokenlist **tokens, int **pos, char *metachar)
 	{
 		if (!strncmp(curr->token, metachar, len))
 			(*pos)[i++] = curr->pos;
-		curr=curr->next;
+		curr = curr->next;
 	}
 }

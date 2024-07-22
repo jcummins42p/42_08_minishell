@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 15:16:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 17:57:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ void		tokenize(t_tokenlist **tokens, char *str);
 //	tokenlist.c
 void		tokens_print(t_tokenlist **tokens);
 t_tokenlist	*token_last(t_tokenlist **tokens);
-int			token_new(t_tokenlist **tokens, char *token, int pos);
+int			token_addvar(t_tokenlist *token, char *str);
+int			token_new(t_tokenlist **tokens, char *token, char *str, int pos);
 void		token_clear(t_tokenlist **tokens);
 
 //	tokenfuncs.c
+t_tokenlist	*token_at_pos(t_tokenlist **tokens, int serachpos);
 int			token_count_type(t_tokenlist **tokens, char *metachar);
 void		token_pos_type(t_tokenlist **tokens, int **pos, char *metachar);
 
@@ -66,6 +68,6 @@ void		env_init(t_envlist **envlist, char *env[]);
 bool		is_whitespace(char c);
 
 //	expand.c
-void		expand_variable(t_envlist **envlist, char *param);
+char		**expand_variable(t_envlist **envlist, char *param);
 
 #endif

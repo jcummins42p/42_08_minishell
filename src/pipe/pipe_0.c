@@ -6,15 +6,15 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/22 15:19:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:56:31 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr)
+void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr)
 {
-	int start = 0;
+	int start;
 	int	i;
 
 	start = 0;
@@ -25,10 +25,18 @@ static void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char
 		(*pipe_arg)[i] = (char *)malloc(sizeof(char) * (length + 1));
 		strncpy((*pipe_arg)[i], ptr + start, length);
 		(*pipe_arg)[i][length] = '\0';
-		 printf("Argument for pipe %i is %s\n", i, (*pipe_arg)[i]);
+		/*printf("Argument for pipe %i is %s\n", i, (*pipe_arg)[i]);*/
 		start = pipe_pos[i] + 1; // Move start to character after '|'
 		i++;
 	}
+}
+
+void	pipe_args_free(char *pipe_arg[], int *pipe_pos, int num_pipes)
+{
+	free(pipe_pos);
+	for (int i = 0; i <= num_pipes; i++)
+		free(pipe_arg[i]);
+	free(pipe_arg);
 }
 
 void	ft_pipe_init(t_tokenlist *tokens, char *ptr, char *env[])
@@ -38,7 +46,7 @@ void	ft_pipe_init(t_tokenlist *tokens, char *ptr, char *env[])
 	int		num_pipes;
 
 	num_pipes = token_count_type(&tokens, "|");
-	pipe_pos = (int *)malloc(sizeof(int) * (num_pipes + 1));		  // +1 because for input test | arg   we have 2 arguments test and arg.
+	pipe_pos = (int *)malloc(sizeof(int) * (num_pipes + 1));	// +1 because for input test | arg   we have 2 arguments test and arg.
 	pipe_arg = (char **)malloc(sizeof(char *) * (num_pipes + 1 + 1)); // +1 for NULL termination
 
 	// Get pipe positions
@@ -53,8 +61,5 @@ void	ft_pipe_init(t_tokenlist *tokens, char *ptr, char *env[])
 	ft_pipe(num_pipes, pipe_arg, env);
 
 	//free
-	free(pipe_pos);	
-	for (int i = 0; i <= num_pipes; i++)
-		free(pipe_arg[i]);
-	free(pipe_arg);
+	pipe_args_free(pipe_arg, pipe_pos, num_pipes);
 }
