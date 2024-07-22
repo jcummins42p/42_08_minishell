@@ -6,12 +6,25 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 18:34:51 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:15:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_STRUCTS_H
 # define MS_STRUCTS_H
+
+typedef struct s_pipex
+{
+	pid_t	pid1;
+	pid_t	pid2;
+	int		fd_pipe[2];
+	// int		fd_in;			// this is for re-direction - From 
+	// int		fd_out;			// this is for re-direction - To
+	char	*paths;
+	char	**cmd_paths;
+	char	**cmd_args;
+	char	*cmd;
+}	t_pipex;
 
 typedef struct s_tokenlist
 {

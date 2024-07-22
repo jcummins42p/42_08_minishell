@@ -6,12 +6,33 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 14:39:36 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 15:16:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_FUNCS_H
 # define MS_FUNCS_H
+
+//pipe_0.c
+void		ft_pipe_init(t_tokenlist *tokens, char *ptr, char *env[]);
+
+//pipe_1.c
+char		*find_path(char **envp);
+void		struct_init(t_pipex *pipex, char *envp[]);
+void		ft_pipe(int num_pipes ,char *pipe_arg[], char *env[]);
+
+//pipe_utils.c
+void		close_pipes(t_pipex *pipex);
+int			msg(char *err);
+void		msg_error(char *err, t_pipex *pipex);
+void		parent_free(t_pipex *pipex);
+void		child_free(t_pipex *pipex);
+
+//pipe_child.c
+char		*get_cmd(char **paths, char *cmd);
+void		first_child(t_pipex *pipex, char *av[], char *envp[]);
+void		middle_child(t_pipex *pipex, char *av[], char *envp[]);
+void		last_child(t_pipex *pipex, char *av[], char *envp[]);
 
 //	tokenize.c
 void		tokenize(t_tokenlist **tokens, char *str);

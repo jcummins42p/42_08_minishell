@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 13:07:31 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/22 15:17:30 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,6 @@
 # include "ms_structs.h"
 # include "ms_funcs.h"
 # include "libft.h"
-# include "pipe.h"
+# include "ms_pipe.h"
 
 #endif
