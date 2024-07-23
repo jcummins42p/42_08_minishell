@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 17:48:43 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:55:48 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	input_cycle(t_mshell *msh, char *env[])
 		msh->lineread = readline(msh->prompt);
 		add_history(msh->lineread);
 		tokenize(msh);
-		if (input_read(msh->envlist, msh->tokens, msh->lineread))
-			break ;
+		// if (input_read(msh->envlist, msh->tokens, msh->lineread))
+		// 	break ;
 		//Execute command
 		// if (ft_strrchr(msh->ptr, '|') || msh->tokens->next == NULL)
-		/*ft_exec_init(msh->tokens, msh->lineread, env);*/
-		tokens_print(&msh->tokens);
+		ft_exec_init(msh->tokens, msh->lineread, env);
+		// tokens_print(&msh->tokens);
 		token_clear(&msh->tokens);
 		free(msh->lineread);
 		msh->lineread = NULL;

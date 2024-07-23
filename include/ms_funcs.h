@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 16:56:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:53:02 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		free_pipex(t_pipex *pipex);
 
 // not needed || will be replaced by universal msg_error
 void		msg_error(char *err, t_pipex *pipex);
-int			msg(char *err);
+int			msg(const char *err);
 
 //pipe_child.c
 
