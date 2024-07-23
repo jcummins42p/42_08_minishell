@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenfuncs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:15:41 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 16:24:25 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:30:47 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	tokens_print(t_tokenlist **tokens)
 	i = 0;
 	while (curr)
 	{
-		printf("Token %d: %s at position %d with width %d", \
-				i++, curr->token, curr->pos, curr->width);
-		if (curr->envvar->param)
-			printf(" and variable %s expanding to %s", \
-					curr->envvar->param, curr->envvar->value);
-		printf("\n");
+		// printf("Token %d: %s at position %d with width %d", \
+		// 		i++, curr->token, curr->pos, curr->width);
+		// if (curr->envvar->param)
+		// 	printf(" and variable %s expanding to %s", \
+		// 			curr->envvar->param, curr->envvar->value);
+		// printf("\n");
 		curr = curr->next;
 	}
 }
