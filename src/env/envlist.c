@@ -6,11 +6,37 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/20 19:19:03 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:39:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_envlist	*env_last(t_envlist **envlist)
+{
+	t_envlist	*curr;
+
+	curr = *envlist;
+	if (curr == NULL)
+		return (NULL);
+	while (curr->next)
+	{
+		curr = curr->next;
+	}
+	return (curr);
+}
+
+void	env_print(t_envlist **envlist)
+{
+	t_envlist	*curr;
+
+	curr = *envlist;
+	while (curr)
+	{
+		printf("%s=%s\n", curr->param, curr->value);
+		curr = curr->next;
+	}
+}
 
 void	env_clear(t_envlist **envlist)
 {
