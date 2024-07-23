@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 17:55:37 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/23 18:16:55 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	tokenize(t_mshell *msh)
 	tokens = &msh->tokens;
 	lineread = &msh->lineread;
 	i = 0;
-	while ((*lineread)[i])
+	while (*lineread && (*lineread)[i])
 	{
 		if (!token_is_metachar(&msh->envlist, tokens, *lineread, &i) && \
 			!token_is_builtin(msh, &i))

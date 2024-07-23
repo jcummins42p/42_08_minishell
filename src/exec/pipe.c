@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/23 17:51:23 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/23 18:09:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	handle_exec_error(t_pipex *pipex, const char *error_message)
 {
-	free_pipex(pipex);
+	(void)pipex;
+	/*free_pipex(pipex);*/
 	msg(error_message);
 	exit(1);
 }
@@ -65,9 +66,8 @@ void	ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 	{
 		pipex->cmd_args = ft_split(av[j], ' ');
 		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
-
-		
-		if (i - 1 == 0)  // Last command
+		printf("%s\n", pipex->cmd);
+		if (i == 1)  // Last command
 		{
 			pipex->pid[i - 1] = fork();
 			if (pipex->pid[i - 1] < 0)
@@ -99,6 +99,6 @@ void	ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 	for (int k = 0; k < number_pipes + 1; k++)
 		waitpid(pipex->pid[k], NULL, 0);
 
-	free_pipex(pipex);
-	free(pipex->pid);
+	/*free_pipex(pipex);*/
+	/*free(pipex->pid);*/
 }
