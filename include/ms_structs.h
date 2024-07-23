@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 17:08:09 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 19:53:43 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ typedef struct s_pipex t_pipex;
 typedef struct s_envlist t_envlist;
 typedef struct s_tokenlist t_tokenlist;
 typedef struct s_mshell t_mshell;
+
+typedef enum e_tokentype
+{
+	NONE,
+	METACHAR,
+	COMMAND
+}	t_tokentype;
 
 typedef struct s_pipex
 {
@@ -41,6 +48,7 @@ typedef struct s_envlist
 typedef struct s_tokenlist
 {
 	char				*token;	// which token $ | >> etc
+	t_tokentype			tokentype;
 	int					pos;	// index of first char within string
 	int					width;	// width of token in char
 	char				*var;	// variable given following $

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/23 18:20:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 19:03:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 	// Wait for all child processes to complete
 	for (int k = 0; k < number_pipes + 1; k++)
 		waitpid(pipex->pid[k], NULL, 0);
-
+	fflush(stdout);
 	/*free_pipex(pipex);*/
 	/*free(pipex->pid);*/
 }

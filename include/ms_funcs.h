@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 18:00:51 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/23 20:37:48 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void		tokenize(t_mshell *msh);
 void		tokens_print(t_tokenlist **tokens);
 t_tokenlist	*token_last(t_tokenlist **tokens);
 int			token_addvar(t_tokenlist *token, char *str);
-int			token_new(t_envlist **envlist, t_tokenlist **tokens, char *token, char *str, int pos);
+int			token_new(t_mshell *msh, char *newtoken, int pos, t_tokentype ttyp);
 void		token_clear(t_tokenlist **tokens);
 
 //	tokenfuncs.c

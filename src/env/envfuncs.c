@@ -6,9 +6,8 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:25:53 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 15:39:07 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 21:04:43 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
