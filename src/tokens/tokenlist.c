@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:40:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 14:54:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:14:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,16 @@ t_tokenlist	*token_last(t_tokenlist **tokens)
 	return (curr);
 }
 
+void	token_getenv(t_tokenlist *token)
+{
+	if (token->var == NULL)
+		return ;
+
+}
+
 int	token_addvar(t_tokenlist *token, char *str)
 {
-	t_envlist	*var;
-	char		*search;
+	char		*out;
 	int			i;
 	int			len;
 
@@ -79,9 +85,7 @@ int	token_addvar(t_tokenlist *token, char *str)
 	out[len] = '\0';
 	while (--i >= 0)
 		out[i] = str[i];
-	token->envvar = env_get_ptr(
-	token->envvar->param = out;
-	token->envvar->value = 
+	token->var = out;
 	return (len);
 }
 

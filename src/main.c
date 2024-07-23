@@ -6,15 +6,11 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/07/23 14:11:54 by jcummins         ###   ########.fr       */
-=======
-/*   Updated: 2024/07/23 14:45:08 by akretov          ###   ########.fr       */
->>>>>>> 8781c71d612002f3243b4a94394b7f2021fe351b
+/*   Updated: 2024/07/23 15:21:22 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "minishell.h"
 
 int	input_read(t_envlist *envlist, t_tokenlist *tokens, char *ptr)
 {
@@ -43,7 +39,7 @@ void	input_cycle(t_mshell *msh, char *env[])
 			break ;
 		//Execute command
 		// if (ft_strrchr(msh->ptr, '|') || msh->tokens->next == NULL)
-		ft_exec_init(msh->tokens, msh->ptr, env);
+		ft_exec_init(msh->tokens, msh->lineread, env);
 
 		token_clear(&msh->tokens);
 		free(msh->lineread);
@@ -71,13 +67,13 @@ void	shell_free(t_mshell *msh)
 int	main(int argc, char *argv[], char *env[])
 {
 	t_mshell	msh;
-	char		*param = "$PATH";
+	/*char		*param = "$PATH";*/
 
 	(void)argv;
 	(void)argc;
 	shell_init(&msh);
 	env_init(&msh.envlist, env);
-	expand_variable(&msh.envlist, param + 1);
+	/*expand_variable(&msh.envlist, param + 1);*/
 	input_cycle(&msh, env);
 	shell_free(&msh);	// env is freed in shell_free:env_clear
 	return (0);

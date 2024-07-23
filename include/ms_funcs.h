@@ -6,10 +6,11 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 14:56:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:10:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MS_FUNCS_H
 # define MS_FUNCS_H
 
 //exec_cmd.c
@@ -19,16 +20,16 @@ void		ft_exec_cmd(t_pipex *pipex, char *av, char **env);
 void		ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[]);
 
 //pipe.c
+void		ft_pipe(int ac ,char *av[], char *envp[], t_pipex *pipex);
 
 //exec_utils.c
-char	*find_path(char **envp);
-char	*get_cmd(char **paths, char *cmd);
-void	free_pipex(t_pipex *pipex);
+char		*find_path(char **envp);
+char		*get_cmd(char **paths, char *cmd);
+void		free_pipex(t_pipex *pipex);
 
 // not needed || will be replaced by universal msg_error
-void	msg_error(char *err, t_pipex *pipex);
-int		msg(char *err);
-
+void		msg_error(char *err, t_pipex *pipex);
+int			msg(char *err);
 
 //pipe_child.c
 
