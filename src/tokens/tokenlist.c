@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:40:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 16:02:30 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:09:19 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,14 @@ t_tokenlist	*token_last(t_tokenlist **tokens)
 	return (curr);
 }
 
-void	token_getenv(t_tokenlist *token)
+void	token_getenv(t_tokenlist *token, t_envlist **envlist)
 {
-	if (token->var == NULL)
+	t_envlist	*find;
+
+	if (token->var == NULL || envlist == NULL)
 		return ;
+	find = env_search(envlist, token->var);
+	token->envvar = find;
 }
 
 int	token_addvar(t_tokenlist *token, char *str)
@@ -68,7 +72,7 @@ int	token_addvar(t_tokenlist *token, char *str)
 	return (len);
 }
 
-int	token_new(t_tokenlist **tokens, char *newtoken, char *str, int pos)
+int	token_new(t_envlist **envlist, t_tokenlist **tokens, char *newtoken, char *str, int pos)
 {
 	t_tokenlist	*curr;
 	t_tokenlist	*new;
@@ -81,7 +85,10 @@ int	token_new(t_tokenlist **tokens, char *newtoken, char *str, int pos)
 	new->token = ft_strdup(newtoken);
 	new->width = ft_strlen(newtoken);
 	if (*newtoken == '$')
+	{
 		new->width += token_addvar(new, &str[pos + 1]);
+		token_getenv(new, envlist);
+	}
 	else
 		new->envvar = NULL;
 	curr = *tokens;
