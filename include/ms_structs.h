@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_structs.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 15:15:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 13:34:19 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 typedef struct s_pipex
 {
-	pid_t	pid1;
-	pid_t	pid2;
-	int		fd_pipe[2];
-	// int		fd_in;			// this is for re-direction - From 
-	// int		fd_out;			// this is for re-direction - To
+	pid_t	*pid;
+	int		fd_pipe[2];		// not sure if needed
+	int		fd_in;			// this is for re-direction - From 
+	int		fd_out;			// this is for re-direction - To
 	char	*paths;
 	char	**cmd_paths;
 	char	**cmd_args;

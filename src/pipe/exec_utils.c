@@ -1,22 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:05:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/22 13:08:35 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/23 14:42:01 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	close_pipes(t_pipex *pipex)
-{
-	close(pipex->fd_pipe[0]);
-	close(pipex->fd_pipe[1]);
-}
 
 int	msg(char *err)
 {
@@ -31,27 +25,38 @@ void	msg_error(char *err, t_pipex *pipex)
 	exit (1);
 }
 
-void	parent_free(t_pipex *pipex)
+char	*find_path(char **envp)
 {
-	int	i;
-
-	i = 0;
-	if (pipex->cmd_args != NULL)
-	{
-		while (pipex->cmd_paths[i])
-		{
-			free(pipex->cmd_paths[i]);
-			i++;
-		}
-	}
-	if (pipex->cmd != NULL)
-		free(pipex->cmd_paths);
+	while (ft_strncmp("PATH", *envp, 4))
+		envp++;
+	return (*envp + 5);
 }
 
-void	child_free(t_pipex *pipex)
+char	*get_cmd(char **paths, char *cmd)
+{
+	char	*tmp;
+	char	*command;
+
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(command, 0) == 0)
+			return (command);
+		free(command);
+		paths++;
+	}
+	return (NULL);
+}
+
+// in the future create a function that frees char **av
+void	free_pipex(t_pipex *pipex)
 {
 	int	i;
 
+	if (pipex == NULL)
+		return ;
 	i = 0;
 	if (pipex->cmd_args != NULL)
 	{
@@ -62,6 +67,19 @@ void	child_free(t_pipex *pipex)
 		}
 		free(pipex->cmd_args);
 	}
+	i = 0;
+	if (pipex->cmd_paths != NULL)
+	{
+		while (pipex->cmd_paths[i])
+		{
+			free(pipex->cmd_paths[i]);
+			i++;
+		}
+		free(pipex->cmd_paths);
+	}
 	if (pipex->cmd != NULL)
 		free(pipex->cmd);
+	if (pipex->pid != NULL)
+		free(pipex->pid);
+	free(pipex);
 }
