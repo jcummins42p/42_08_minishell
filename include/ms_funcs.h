@@ -3,36 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ms_funcs.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 14:11:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:56:46 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_FUNCS_H
 # define MS_FUNCS_H
 
-//pipe_0.c
-void		ft_pipe_init(t_tokenlist *tokens, char *ptr, char *env[]);
+//exec_cmd.c
+void		pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr);
+void		struct_init(t_pipex *pipex, char *envp[], int num_pipes);
+void		ft_exec_cmd(t_pipex *pipex, char *av, char **env);
+void		ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[]);
 
-//pipe_1.c
-char		*find_path(char **envp);
-void		struct_init(t_pipex *pipex, char *envp[]);
-void		ft_pipe(int num_pipes ,char *pipe_arg[], char *env[]);
+//pipe.c
 
-//pipe_utils.c
-void		close_pipes(t_pipex *pipex);
-int			msg(char *err);
-void		msg_error(char *err, t_pipex *pipex);
-void		parent_free(t_pipex *pipex);
-void		child_free(t_pipex *pipex);
+//exec_utils.c
+char	*find_path(char **envp);
+char	*get_cmd(char **paths, char *cmd);
+void	free_pipex(t_pipex *pipex);
+
+// not needed || will be replaced by universal msg_error
+void	msg_error(char *err, t_pipex *pipex);
+int		msg(char *err);
+
 
 //pipe_child.c
-char		*get_cmd(char **paths, char *cmd);
-void		first_child(t_pipex *pipex, char *av[], char *envp[]);
-void		middle_child(t_pipex *pipex, char *av[], char *envp[]);
-void		last_child(t_pipex *pipex, char *av[], char *envp[]);
+
 
 //	tokenize.c
 void		tokenize(t_tokenlist **tokens, char *str);

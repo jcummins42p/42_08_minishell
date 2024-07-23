@@ -6,11 +6,14 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/07/23 14:11:54 by jcummins         ###   ########.fr       */
+=======
+/*   Updated: 2024/07/23 14:45:08 by akretov          ###   ########.fr       */
+>>>>>>> 8781c71d612002f3243b4a94394b7f2021fe351b
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <stdio.h>
 
 int	input_read(t_envlist *envlist, t_tokenlist *tokens, char *ptr)
@@ -38,9 +41,9 @@ void	input_cycle(t_mshell *msh, char *env[])
 		tokenize(&msh->tokens, msh->lineread);
 		if (input_read(msh->envlist, msh->tokens, msh->lineread))
 			break ;
-		//Pipe in progress
-		if (ft_strrchr(msh->lineread, '|'))
-			ft_pipe_init(msh->tokens, msh->lineread, env);
+		//Execute command
+		// if (ft_strrchr(msh->ptr, '|') || msh->tokens->next == NULL)
+		ft_exec_init(msh->tokens, msh->ptr, env);
 
 		token_clear(&msh->tokens);
 		free(msh->lineread);
