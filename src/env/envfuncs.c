@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:25:53 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 15:20:43 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:27:00 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,26 +99,13 @@ t_envlist	*env_get_ptr(t_envlist **envlist, const char *search)
 
 char	**env_get_val(t_envlist **envlist, const char *search)
 {
-	t_envlist	*curr;
+	t_envlist	*find;
 
-	curr = env_get_ptr(envlist, search);
-	return (&curr->value);
-	/*if (search == NULL)*/
-		/*return (NULL);*/
-	/*while (curr)*/
-	/*{*/
-		/*i = 0;*/
-		/*while (curr->param[i] == search[i])*/
-		/*{*/
-			/*if (curr->param[i] == '\0' && search[i] == '\0')*/
-			/*{*/
-				/*return (&curr->value);*/
-			/*}*/
-			/*i++;*/
-		/*}*/
-		/*curr = curr->next;*/
-	/*}*/
-	/*return (NULL);*/
+	find = env_get_ptr(envlist, search);
+	if (find)
+		return (&find->value);
+	else
+		return (NULL);
 }
 
 void	env_print(t_envlist **envlist)

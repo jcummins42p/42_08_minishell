@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 15:21:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:25:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ void	shell_free(t_mshell *msh)
 int	main(int argc, char *argv[], char *env[])
 {
 	t_mshell	msh;
-	/*char		*param = "$PATH";*/
+	char		*param = "$347fg7iuhui";
 
 	(void)argv;
 	(void)argc;
 	shell_init(&msh);
 	env_init(&msh.envlist, env);
-	/*expand_variable(&msh.envlist, param + 1);*/
+	expand_variable(&msh.envlist, param + 1);
 	input_cycle(&msh, env);
 	shell_free(&msh);	// env is freed in shell_free:env_clear
 	return (0);
