@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:40:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/19 18:37:20 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/22 18:09:57 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ void	tokens_print(t_tokenlist **tokens)
 	i = 0;
 	while (curr)
 	{
-		printf("Token %d: %s at position %d with width %d\n", \
+		printf("Token %d: %s at position %d with width %d", \
 				i++, curr->token, curr->pos, curr->width);
+		if (curr->var)
+			printf(" and variable %s", curr->var);
+		printf("\n");
 		curr = curr->next;
 	}
 }
@@ -61,7 +64,25 @@ t_tokenlist	*token_last(t_tokenlist **tokens)
 	return (curr);
 }
 
-int	token_new(t_tokenlist **tokens, char *newtoken, int pos)
+int	token_addvar(t_tokenlist *token, char *str)
+{
+	char		*out;
+	int			i;
+	int			len;
+
+	i = 0;
+	while (str[i] && !is_whitespace(str[i]))
+		i++;
+	len = i;
+	out = malloc(sizeof(char) * len + 1);
+	out[len] = '\0';
+	while (--i >= 0)
+		out[i] = str[i];
+	token->var = out;
+	return (len);
+}
+
+int	token_new(t_tokenlist **tokens, char *newtoken, char *str, int pos)
 {
 	t_tokenlist	*curr;
 	t_tokenlist	*new;
@@ -73,6 +94,10 @@ int	token_new(t_tokenlist **tokens, char *newtoken, int pos)
 	new->pos = pos;
 	new->token = ft_strdup(newtoken);
 	new->width = ft_strlen(newtoken);
+	if (*newtoken == '$')
+		new->width += token_addvar(new, &str[pos + 1]);
+	else
+		new->var = NULL;
 	curr = *tokens;
 	if (curr == NULL)
 	{

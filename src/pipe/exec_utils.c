@@ -6,11 +6,9 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:05:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/23 14:42:01 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/23 14:46:48 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../../include/minishell.h"
 
 int	msg(char *err)
 {

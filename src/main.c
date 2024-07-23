@@ -6,11 +6,10 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 14:20:42 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/23 14:45:08 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include <stdio.h>
 
 int	input_read(t_envlist *envlist, t_tokenlist *tokens, char *ptr)
@@ -21,6 +20,8 @@ int	input_read(t_envlist *envlist, t_tokenlist *tokens, char *ptr)
 		return (1);
 	else if (!strncmp(ptr, "PRINT", 4))
 		printf("%s\n", ptr);
+	else if (!strncmp(ptr, "env", 3))
+		env_print(&envlist);
 	else if (!strncmp(ptr, "env", 3))
 		env_print(&envlist);
 	return (0);
@@ -34,7 +35,7 @@ void	input_cycle(t_mshell *msh, char *env[])         // delete env
 		msh->ptr = readline(msh->prompt);
 		add_history(msh->ptr);
 		tokenize(&msh->tokens, msh->ptr);
-		if (input_read(msh->envlist, msh->tokens, msh->ptr) == 1)
+		if (input_read(msh->envlist, msh->tokens, msh->ptr))
 			break ;
 		//Execute command
 		// if (ft_strrchr(msh->ptr, '|') || msh->tokens->next == NULL)
