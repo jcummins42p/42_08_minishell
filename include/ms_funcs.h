@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 17:53:02 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/23 18:00:51 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,9 @@ void		env_unset(t_envlist **envlist, const char *search);
 
 //pipe.c
 void		ft_pipe(int ac ,char *av[], char *envp[], t_pipex *pipex);
+void		handle_exec_error(t_pipex *pipex, const char *error_message);
+void		first_child(t_pipex *pipex, char *env[]);
+void		last_child(t_pipex *pipex, char *env[]);
 
 //exec_utils.c
 char		*find_path(char **envp);
@@ -62,8 +65,6 @@ void		free_pipex(t_pipex *pipex);
 // not needed || will be replaced by universal msg_error
 void		msg_error(char *err, t_pipex *pipex);
 int			msg(const char *err);
-
-//pipe_child.c
 
 //	*TOKENS*	//
 
