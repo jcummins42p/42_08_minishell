@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:25:53 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/20 18:47:16 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:11:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,31 @@ void	env_set(t_envlist **envlist, const char *search, const char *newval)
 	ft_printf("Error, no parameter of that name found in env\n");
 }
 
-char	**env_get(t_envlist **envlist, const char *search)
+t_envlist	*env_get_ptr(t_envlist **envlist, const char *search)
+{
+	t_envlist	*curr;
+	int			i;
+
+	curr = *envlist;
+	if (search == NULL)
+		return (NULL);
+	while (curr)
+	{
+		i = 0;
+		while (curr->param[i] == search[i])
+		{
+			if (curr->param[i] == '\0' && search[i] == '\0')
+			{
+				return (curr);
+			}
+			i++;
+		}
+		curr = curr->next;
+	}
+	return (NULL);
+}
+
+char	**env_get_val(t_envlist **envlist, const char *search)
 {
 	t_envlist	*curr;
 	int			i;

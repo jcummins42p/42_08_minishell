@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:40:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 18:09:57 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:54:22 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	tokens_print(t_tokenlist **tokens)
 	{
 		printf("Token %d: %s at position %d with width %d", \
 				i++, curr->token, curr->pos, curr->width);
-		if (curr->var)
-			printf(" and variable %s", curr->var);
+		if (curr->envvar->param)
+			printf(" and variable %s expanding to %s", curr->envvar->param, curr->envvar->value);
 		printf("\n");
 		curr = curr->next;
 	}
@@ -66,7 +66,8 @@ t_tokenlist	*token_last(t_tokenlist **tokens)
 
 int	token_addvar(t_tokenlist *token, char *str)
 {
-	char		*out;
+	t_envlist	*var;
+	char		*search;
 	int			i;
 	int			len;
 
@@ -78,7 +79,9 @@ int	token_addvar(t_tokenlist *token, char *str)
 	out[len] = '\0';
 	while (--i >= 0)
 		out[i] = str[i];
-	token->var = out;
+	token->envvar = env_get_ptr(
+	token->envvar->param = out;
+	token->envvar->value = 
 	return (len);
 }
 
@@ -97,7 +100,7 @@ int	token_new(t_tokenlist **tokens, char *newtoken, char *str, int pos)
 	if (*newtoken == '$')
 		new->width += token_addvar(new, &str[pos + 1]);
 	else
-		new->var = NULL;
+		new->envvar = NULL;
 	curr = *tokens;
 	if (curr == NULL)
 	{

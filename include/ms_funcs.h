@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/22 17:57:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:11:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void		token_pos_type(t_tokenlist **tokens, int **pos, char *metachar);
 //	envfuncs.c
 t_envlist	*env_last(t_envlist **envlist);
 void		env_print(t_envlist **envlist);
-char		**env_get(t_envlist **envlist, const char *search);
+t_envlist	*env_get_ptr(t_envlist **envlist, const char *search);
+char		**env_get_val(t_envlist **envlist, const char *search);
 void		env_set(t_envlist **envlist, \
 				const char *search, const char *newval);
 
