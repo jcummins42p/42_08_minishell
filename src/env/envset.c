@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envsets.c                                          :+:      :+:    :+:   */
+/*   envset.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 15:37:43 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:05:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,3 @@ void	env_set(t_envlist **envlist, const char *search, const char *newval)
 	else
 		ft_printf("Error, no parameter of that name found in env\n");
 }
-

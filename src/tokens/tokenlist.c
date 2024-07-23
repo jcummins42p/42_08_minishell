@@ -6,33 +6,13 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:40:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 15:14:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 16:02:30 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //	linked list functions relating to the t_tokenlist struct
-
-void	tokens_print(t_tokenlist **tokens)
-{
-	t_tokenlist	*curr;
-	int			i;
-
-	if (tokens == NULL || *tokens == NULL)
-		return ;
-	curr = *tokens;
-	i = 0;
-	while (curr)
-	{
-		printf("Token %d: %s at position %d with width %d", \
-				i++, curr->token, curr->pos, curr->width);
-		if (curr->envvar->param)
-			printf(" and variable %s expanding to %s", curr->envvar->param, curr->envvar->value);
-		printf("\n");
-		curr = curr->next;
-	}
-}
 
 void	token_clear(t_tokenlist **tokens)
 {
@@ -68,7 +48,6 @@ void	token_getenv(t_tokenlist *token)
 {
 	if (token->var == NULL)
 		return ;
-
 }
 
 int	token_addvar(t_tokenlist *token, char *str)
