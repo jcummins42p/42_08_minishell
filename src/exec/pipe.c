@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/23 18:09:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:20:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,20 @@ void	ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 		printf("%s\n", pipex->cmd);
 		if (i == 1)  // Last command
 		{
-			pipex->pid[i - 1] = fork();
-			if (pipex->pid[i - 1] < 0)
+			pipex->pid[j] = fork();
+			if (pipex->pid[j] < 0)
 				handle_exec_error(pipex, ERR_FORK);
-			if (pipex->pid[i - 1] == 0)
+			if (pipex->pid[j] == 0)
 				last_child(pipex, env);
 		}
 		else
 		{
 			if (pipe(pipex->fd_pipe) < 0)
 				handle_exec_error(pipex, ERR_PIPE);
-			pipex->pid[i - 1] = fork();
-			if (pipex->pid[i - 1] < 0)
+			pipex->pid[j] = fork();
+			if (pipex->pid[j] < 0)
 				handle_exec_error(pipex, ERR_FORK);
-			if (pipex->pid[i - 1] == 0)
+			if (pipex->pid[j] == 0)
 				first_child(pipex, env);
 			else
 			{
