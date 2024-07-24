@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/24 18:16:26 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 18:26:23 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,8 @@ void	ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[])
 	}
 
 	
-	// free(pipe_pos);	
-	// for (int i = 0; i <= num_pipes; i++)
-	// 	free(pipe_arg[i]);
-	// free(pipe_arg);
+	 /*free(pipe_pos);*/
+	 /*for (int i = 0; i <= num_pipes; i++)*/
+		 /*free(pipe_arg[i]);*/
+	 /*free(pipe_arg);*/
 }
