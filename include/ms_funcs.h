@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 20:37:48 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:05:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,6 @@ void		ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[]);
 
 //	*ENV*	//
 
-//	envfuncs.c
-t_envlist	*env_last(t_envlist **envlist);
-void		env_print(t_envlist **envlist);
-
 //	envget.c
 t_envlist	*env_search(t_envlist **envlist, const char *search);
 char		**env_get_val(t_envlist **envlist, const char *search);
@@ -40,6 +36,8 @@ char		**env_get_val(t_envlist **envlist, const char *search);
 void		env_init(t_envlist **envlist, char *env[]);
 
 //	envlist.c
+t_envlist	*env_last(t_envlist **envlist);
+void		env_print(t_envlist **envlist);
 void		env_clear(t_envlist **envlist);
 void		env_del(t_envlist **envlist);
 int			env_new(t_envlist **envlist, char *param, char *value);
@@ -74,7 +72,6 @@ void		tokenize(t_mshell *msh);
 //	tokenlist.c
 void		tokens_print(t_tokenlist **tokens);
 t_tokenlist	*token_last(t_tokenlist **tokens);
-int			token_addvar(t_tokenlist *token, char *str);
 int			token_new(t_mshell *msh, char *newtoken, int pos, t_tokentype ttyp);
 void		token_clear(t_tokenlist **tokens);
 
