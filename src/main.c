@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 19:44:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:10:42 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	input_read(t_envlist *envlist, t_tokenlist *tokens, char *ptr)
 void	input_cycle(t_mshell *msh, char *env[])
 {
 	(void)env;
-	msh->prompt = *env_get_val(&msh->envlist, "SHELL");
+	msh->prompt = *env_get_value(&msh->envlist, "SHELL");
 	while (1)
 	{
 		msh->lineread = readline(msh->prompt);

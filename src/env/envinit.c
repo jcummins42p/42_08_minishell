@@ -6,12 +6,36 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 15:47:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:26:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//	initialises and assigns value to a node in env linked list
+static int	env_init_value(char **value, char *envline, int start)
+{
+	char	*out;
+	int		len;
+	int		i;
+
+	len = 0;
+	start++;
+	i = start;
+	while (envline[i++])
+		len++;
+	out = malloc(sizeof(char) * (len + 1));
+	i = 0;
+	while (i < len)
+		out[i++] = envline[start++];
+	out[i] = '\0';
+	*value = out;
+	return (len);
+}
+
+//	initialises and assigns parameter to a node in env linked list. Returns
+//	length of that string so that the init value function can start at the
+//	correct place in that line to retreive the following value
 static int	env_init_param(char **param, char *envline)
 {
 	char	*out;
@@ -33,26 +57,35 @@ static int	env_init_param(char **param, char *envline)
 	return (len);
 }
 
-static int	env_init_value(char **value, char *envline, int start)
+//	creates new node of env linked list. Parameter and value have already been
+//	created when this is called.
+int	env_new(t_envlist **envlist, char *newparam, char *newvalue)
 {
-	char	*out;
-	int		len;
-	int		i;
+	t_envlist	*curr;
+	t_envlist	*new;
 
-	len = 0;
-	start++;
-	i = start;
-	while (envline[i++])
-		len++;
-	out = malloc(sizeof(char) * (len + 1));
-	i = 0;
-	while (i < len)
-		out[i++] = envline[start++];
-	out[i] = '\0';
-	*value = out;
-	return (len);
+	new = malloc(sizeof(t_envlist));
+	if (new == NULL)
+		return (0);
+	new->next = NULL;
+	new->param = newparam;
+	new->value = newvalue;
+	curr = *envlist;
+	if (curr == NULL)
+	{
+		*envlist = new;
+		new->prev = NULL;
+	}
+	else
+	{
+		curr = env_last(envlist);
+		curr->next = new;
+		new->prev = curr;
+	}
+	return (1);
 }
 
+//	takes *env[] input and creates env linked list
 void	env_init(t_envlist **envlist, char *env[])
 {
 	int		i;
@@ -70,5 +103,5 @@ void	env_init(t_envlist **envlist, char *env[])
 		env_new(envlist, param, value);
 		i++;
 	}
-	env_set(envlist, "SHELL", "/bin/minishell");
+	env_set(envlist, "SHELL", "./minishell");
 }

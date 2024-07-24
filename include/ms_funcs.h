@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/24 13:05:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:26:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,17 @@ void		ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[]);
 //	*ENV*	//
 
 //	envget.c
+t_envlist	*env_last(t_envlist **envlist);
 t_envlist	*env_search(t_envlist **envlist, const char *search);
-char		**env_get_val(t_envlist **envlist, const char *search);
+char		**env_get_value(t_envlist **envlist, const char *search);
 
 //	envinit.c
 void		env_init(t_envlist **envlist, char *env[]);
 
 //	envlist.c
-t_envlist	*env_last(t_envlist **envlist);
 void		env_print(t_envlist **envlist);
 void		env_clear(t_envlist **envlist);
 void		env_del(t_envlist **envlist);
-int			env_new(t_envlist **envlist, char *param, char *value);
 
 //	envset.c
 void		env_set(t_envlist **envlist, \

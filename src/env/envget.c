@@ -6,12 +6,28 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:58 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 16:04:51 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:09:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//	last node in linked list
+t_envlist	*env_last(t_envlist **envlist)
+{
+	t_envlist	*curr;
+
+	curr = *envlist;
+	if (curr == NULL)
+		return (NULL);
+	while (curr->next)
+	{
+		curr = curr->next;
+	}
+	return (curr);
+}
+
+//	search env list for parameter by search string and return node
 t_envlist	*env_search(t_envlist **envlist, const char *search)
 {
 	t_envlist	*curr;
@@ -36,7 +52,8 @@ t_envlist	*env_search(t_envlist **envlist, const char *search)
 	return (NULL);
 }
 
-char	**env_get_val(t_envlist **envlist, const char *search)
+//	search env list for parameter by search string and return 'value' string
+char	**env_get_value(t_envlist **envlist, const char *search)
 {
 	t_envlist	*find;
 

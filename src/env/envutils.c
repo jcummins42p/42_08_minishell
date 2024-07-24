@@ -6,25 +6,11 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 15:39:03 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 13:12:44 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_envlist	*env_last(t_envlist **envlist)
-{
-	t_envlist	*curr;
-
-	curr = *envlist;
-	if (curr == NULL)
-		return (NULL);
-	while (curr->next)
-	{
-		curr = curr->next;
-	}
-	return (curr);
-}
 
 void	env_print(t_envlist **envlist)
 {
@@ -74,30 +60,4 @@ void	env_del(t_envlist **envlist)
 		prev->next = next;
 	free (*envlist);
 	*envlist = NULL;
-}
-
-int	env_new(t_envlist **envlist, char *newparam, char *newvalue)
-{
-	t_envlist	*curr;
-	t_envlist	*new;
-
-	new = malloc(sizeof(t_envlist));
-	if (new == NULL)
-		return (0);
-	new->next = NULL;
-	new->param = newparam;
-	new->value = newvalue;
-	curr = *envlist;
-	if (curr == NULL)
-	{
-		*envlist = new;
-		new->prev = NULL;
-	}
-	else
-	{
-		curr = env_last(envlist);
-		curr->next = new;
-		new->prev = curr;
-	}
-	return (1);
 }
