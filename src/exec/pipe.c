@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/23 18:20:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:58:31 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,85 +20,95 @@ void	handle_exec_error(t_pipex *pipex, const char *error_message)
 	exit(1);
 }
 
-void	first_child(t_pipex *pipex, char *env[])
+void child(t_pipex *pipex, char *env[])
 {
 	close(pipex->fd_pipe[0]); // Close unused read end
+	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdin");
 	if (dup2(pipex->fd_pipe[1], STDOUT_FILENO) == -1)
-		handle_exec_error(pipex, ERR_EXEC);
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdout");
 	close(pipex->fd_pipe[1]); // Close the copy of write end
-
-	if (!pipex->cmd)
-		handle_exec_error(pipex, ERR_CMD);
-
 	if (execve(pipex->cmd, pipex->cmd_args, env) < 0)
-		handle_exec_error(pipex, ERR_EXEC);
+		handle_exec_error(pipex, "Execve failed");
 }
 
-void	last_child(t_pipex *pipex, char *env[])
+void last_child(t_pipex *pipex, char *env[])
 {
-	close(pipex->fd_pipe[1]); // Close unused write end
-	if (dup2(pipex->fd_pipe[0], STDIN_FILENO) == -1)
-		handle_exec_error(pipex, ERR_EXEC);
-	close(pipex->fd_pipe[0]); // Close the copy of read end
+	close(pipex->fd_pipe[1]); // Close the unused write end
 
-	if (!pipex->cmd)
-		handle_exec_error(pipex, ERR_CMD);
+	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdin");
+	close(pipex->fd_pipe[0]); // Close the unused read end
 
+	// Last child outputs to the specified output or terminal
+	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdout");
 	if (execve(pipex->cmd, pipex->cmd_args, env) < 0)
-		handle_exec_error(pipex, ERR_EXEC);
+		handle_exec_error(pipex, "Execve failed");
 }
 
-void	ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
+void ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 {
-	int	i;
+	int i;
 	int j;
 
 	i = number_pipes + 1;
 	j = 0;
+
 	pipex->pid = (pid_t *)malloc(sizeof(pid_t) * i);
 	if (!pipex->pid)
 	{
 		msg("Memory allocation error");
 		return;
 	}
-
-	while (i > 0)
+	pipex->fd_in = dup(STDIN_FILENO); // Start reading from stdin initially
+	pipex->fd_out = dup(STDOUT_FILENO); // Save original stdout
+	while (j < i)
 	{
 		pipex->cmd_args = ft_split(av[j], ' ');
-		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
-		printf("%s\n", pipex->cmd);
-		if (i == 1)  // Last command
-		{
-			pipex->pid[j] = fork();
-			if (pipex->pid[j] < 0)
-				handle_exec_error(pipex, ERR_FORK);
-			if (pipex->pid[j] == 0)
-				last_child(pipex, env);
+		if (!pipex->cmd_args) {
+			msg("Command split error");
+			free_pipex(pipex);
+			return;
 		}
-		else
-		{
+		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+		if (!pipex->cmd) {
+			msg("Command not found");
+			free_pipex(pipex);
+			return;
+		}
+		if (j < i - 1) { // For all commands except the last one
 			if (pipe(pipex->fd_pipe) < 0)
-				handle_exec_error(pipex, ERR_PIPE);
-			pipex->pid[j] = fork();
-			if (pipex->pid[j] < 0)
-				handle_exec_error(pipex, ERR_FORK);
-			if (pipex->pid[j] == 0)
-				first_child(pipex, env);
-			else
-			{
-				close(pipex->fd_pipe[1]);
-				dup2(pipex->fd_pipe[0], STDIN_FILENO);
-				close(pipex->fd_pipe[0]);
+				handle_exec_error(pipex, "Pipe creation error");
+		}
+
+		pipex->pid[j] = fork();
+		if (pipex->pid[j] < 0) {
+			handle_exec_error(pipex, "Fork error");
+		}
+
+		if (pipex->pid[j] == 0)
+		{ // Child process
+			if (j == i - 1) { // Last command
+				last_child(pipex, env);
+			} else {
+				child(pipex, env);
 			}
 		}
-		i--;
+	// Parent process: Close write end and update fd_in for next child
+		close(pipex->fd_pipe[1]);
+		close(pipex->fd_in);
+
+	// For the next command, fd_in becomes the read end of the current pipe
+		if (j < i - 1)
+			pipex->fd_in = pipex->fd_pipe[0];
 		j++;
 	}
-
 	// Wait for all child processes to complete
 	for (int k = 0; k < number_pipes + 1; k++)
 		waitpid(pipex->pid[k], NULL, 0);
 
-	/*free_pipex(pipex);*/
-	/*free(pipex->pid);*/
+	close(pipex->fd_in);
+	close(pipex->fd_out);
+	free_pipex(pipex);
 }
