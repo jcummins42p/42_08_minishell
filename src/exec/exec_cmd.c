@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/24 17:15:09 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 18:16:26 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,14 @@ void	ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[])
 		
 		
 		// printf("Number of pipes %i\n", num_pipes);
-		for (int i = 0; i < num_pipes+1; i++)
-		printf("pipe arg:%s\n", pipe_arg[i]);
+		// for (int i = 0; i < num_pipes+1; i++)
+		// printf("pipe arg:%s\n", pipe_arg[i]);
 		ft_pipe(num_pipes, pipe_arg, env, pipex);
 	}
 
 	
-	free(pipe_pos);	
-	for (int i = 0; i <= num_pipes; i++)
-		free(pipe_arg[i]);
-	free(pipe_arg);
+	// free(pipe_pos);	
+	// for (int i = 0; i <= num_pipes; i++)
+	// 	free(pipe_arg[i]);
+	// free(pipe_arg);
 }
