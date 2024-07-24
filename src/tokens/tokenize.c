@@ -6,62 +6,60 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 20:35:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:58:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	token_is_metachar(t_mshell *msh, int *i)
+int	is_metachar(char *str)
 {
-	bool		ismeta;
+	t_mtctype	ismeta;
 
-	ismeta = true;
-	if (!ft_strncmp(&msh->lineread[*i], "$", 1))
-		*i += token_new(msh, "$", *i, METACHAR);
-	else if (!ft_strncmp(&msh->lineread[*i], "'", 1))
-		*i += token_new(msh, "'", *i, METACHAR);
-	else if (!ft_strncmp(&msh->lineread[*i], "\"", 1))
-		*i += token_new(msh, "\"", *i, METACHAR);
-	else if (!ft_strncmp(&msh->lineread[*i], "|", 1))
-		*i += token_new(msh, "|", *i, METACHAR);
-	else if (!ft_strncmp(&msh->lineread[*i], ">>", 2))
-		*i += token_new(msh, ">>", *i, METACHAR);
-	else if (!ft_strncmp(&msh->lineread[*i], "<<", 2))
-		*i += token_new(msh, "<<", *i, METACHAR);
-	else if (!ft_strncmp(&msh->lineread[*i], ">", 1))
-		*i += token_new(msh, ">", *i, METACHAR);
-	else if (!ft_strncmp(&msh->lineread[*i], "<", 1))
-		*i += token_new(msh, "<", *i, METACHAR);
-	else
-		ismeta = false;
+	ismeta = NO_MTC;
+	if (!ft_strncmp(str, "$", 1))
+		ismeta = DOLLAR;
+	else if (!ft_strncmp(str, "'", 1))
+		ismeta = SQUOTE;
+	else if (!ft_strncmp(str, "\"", 1))
+		ismeta = DQUOTE;
+	else if (!ft_strncmp(str, "|", 1))
+		ismeta = PIPE;
+	else if (!ft_strncmp(str, ">>", 2))
+		ismeta = RDAPP;
+	else if (!ft_strncmp(str, "<<", 2))
+		ismeta = DELIMIT;
+	else if (!ft_strncmp(str, ">", 1))
+		ismeta = RDOUT;
+	else if (!ft_strncmp(str, "<", 1))
+		ismeta = RDIN;
 	return (ismeta);
 }
 
-bool	token_is_builtin(t_mshell *msh, int *i)
+int	is_builtin(char *str)
 {
-	bool		iscommand;
+	t_comtype	isbuiltin;
 
-	iscommand = true;
-	if (!ft_strncmp(&msh->lineread[*i], "echo", 4))
-		*i += token_new(msh, "echo", *i, COMMAND);
-	else if (!ft_strncmp(&msh->lineread[*i], "cd", 2))
-		*i += token_new(msh, "cd", *i, COMMAND);
-	else if (!ft_strncmp(&msh->lineread[*i], "pwd", 3))
-		*i += token_new(msh, "pwd", *i, COMMAND);
-	else if (!ft_strncmp(&msh->lineread[*i], "export", 6))
-		*i += token_new(msh, "export", *i, COMMAND);
-	else if (!ft_strncmp(&msh->lineread[*i], "unset", 5))
-		*i += token_new(msh, "unset", *i, COMMAND);
-	else if (!ft_strncmp(&msh->lineread[*i], "env", 3))
-		*i += token_new(msh, "env", *i, COMMAND);
-	else if (!ft_strncmp(&msh->lineread[*i], "exit", 4))
-		*i += token_new(msh, "exit", *i, COMMAND);
-	else
-		iscommand = false;
-	return (iscommand);
+	isbuiltin = NO_COM;
+	if (!ft_strncmp(str, "echo", 4))
+		isbuiltin = ECHO;
+	else if (!ft_strncmp(str, "cd", 2))
+		isbuiltin = CD;
+	else if (!ft_strncmp(str, "pwd", 3))
+		isbuiltin = PWD;
+	else if (!ft_strncmp(str, "export", 6))
+		isbuiltin = EXPORT;
+	else if (!ft_strncmp(str, "unset", 5))
+		isbuiltin = UNSET;
+	else if (!ft_strncmp(str, "env", 3))
+		isbuiltin = ENV;
+	else if (!ft_strncmp(str, "exit", 4))
+		isbuiltin = EXIT;
+	return (isbuiltin);
 }
 
+//	if any parse function finds something to tokenize, it increments i via
+//	pointer to to index immediately after the token
 void	tokenize(t_mshell *msh)
 {
 	int	i;
@@ -71,11 +69,9 @@ void	tokenize(t_mshell *msh)
 	{
 		while (msh->lineread[i])
 		{
-			while (is_whitespace(msh->lineread[i]))
-				i++;
-			if (!token_is_metachar(msh, &i) && \
-				!token_is_builtin(msh, &i))
-				i++;
+			token_parse_metachar(msh, &i);
+			token_parse_builtin(msh, &i);
+			token_parse_generic(msh, &i);
 		}
 	}
 	else

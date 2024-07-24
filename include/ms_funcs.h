@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/24 13:26:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 18:04:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int			msg(const char *err);
 //	*TOKENS*	//
 
 //	tokenize.c
+int			is_builtin(char *str);
+int			is_metachar(char *str);
 void		tokenize(t_mshell *msh);
 
 //	tokenlist.c
@@ -78,6 +80,11 @@ void		token_clear(t_tokenlist **tokens);
 t_tokenlist	*token_at_pos(t_tokenlist **tokens, int serachpos);
 int			token_count_type(t_tokenlist **tokens, char *metachar);
 void		token_pos_type(t_tokenlist **tokens, int **pos, char *metachar);
+
+//	token_parse.c
+int			token_parse_generic(t_mshell *msh, int *end);
+int			token_parse_metachar(t_mshell *msh, int *i);
+int			token_parse_builtin(t_mshell *msh, int *i);
 
 //	*MISC*	//
 

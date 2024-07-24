@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 21:04:30 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:56:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	token_addvar(t_tokenlist *token, char *str)
 	int			len;
 
 	i = 0;
-	while (str[i] && !is_whitespace(str[i]))
+	while (str[i] && !is_whitespace(str[i]) && !is_metachar(&str[i]))
 		i++;
 	len = i;
 	out = malloc(sizeof(char) * len + 1);
@@ -43,16 +43,16 @@ int	token_addvar(t_tokenlist *token, char *str)
 void	token_init(t_tokenlist *new, char *newtoken, int pos, t_tokentype ttyp)
 {
 	new->next = NULL;
+	new->var = NULL;
 	new->pos = pos;
 	new->token = ft_strdup(newtoken);
 	new->width = ft_strlen(newtoken);
 	new->envvar = NULL;
-	if (ttyp)
-		new->tokentype = ttyp;
-	else
-		new->tokentype = NONE;
+	new->tokentype = ttyp;
 }
 
+//	creates new node in tokenlist based on token (metachar or command) and the
+//	variable following that token, such as $VARIABLE
 int	token_new(t_mshell *msh, char *newtoken, int pos, t_tokentype ttyp)
 {
 	t_tokenlist	*curr;

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:40:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 20:42:10 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:56:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	token_clear(t_tokenlist **tokens)
 		swap = curr;
 		curr = curr->next;
 		free(swap->token);
+		if (swap->var)
+			free (swap->var);
 		free(swap);
 	}
 	*tokens = NULL;

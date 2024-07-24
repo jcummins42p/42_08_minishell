@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 19:53:43 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:07:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,35 @@ typedef struct s_mshell t_mshell;
 
 typedef enum e_tokentype
 {
-	NONE,
+	GENERIC,
 	METACHAR,
 	COMMAND
 }	t_tokentype;
+
+typedef enum e_comtype
+{
+	NO_COM,
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}	t_comtype;
+
+typedef enum e_mtctype
+{
+	NO_MTC,
+	DOLLAR,		// $ - environment variable
+	PIPE,		// |
+	SQUOTE,		// '
+	DQUOTE,		// "
+	RDIN,		// < - redirect input
+	RDOUT,		// > - redirect output (overwrite)
+	RDAPP,		// >> - redirect output (append)
+	DELIMIT		// <<
+}	t_mtctype;
 
 typedef struct s_pipex
 {
@@ -47,8 +72,10 @@ typedef struct s_envlist
 
 typedef struct s_tokenlist
 {
-	char				*token;	// which token $ | >> etc
-	t_tokentype			tokentype;
+	char				*token;	// which token $ | >>, command or generic string
+	t_tokentype			tokentype; // GENERIC, METACHAR, COMMAND
+	t_comtype			comtype;	// enum for quick ref tokentype
+	t_mtctype			mtctype;	// enum for quick ref tokentype
 	int					pos;	// index of first char within string
 	int					width;	// width of token in char
 	char				*var;	// variable given following $
