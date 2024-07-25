@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/07/23 16:32:48 by jcummins         ###   ########.fr        #
+#    Updated: 2024/07/25 19:44:47 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ clean:
 fclean: clean
 	@echo "💥 Removing all object files and executable"
 	@rm -rf $(NAME)
+	@(cd $(LIB_DIR) && make fclean)
 
 re:	fclean all
 

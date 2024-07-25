@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/24 18:15:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:40:45 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,19 @@ t_envlist	*env_search(t_envlist **envlist, const char *search);
 char		**env_get_value(t_envlist **envlist, const char *search);
 
 //	envinit.c
+int			env_new(t_envlist **envlist, const char *newparam, const char *newvalue);
 void		env_init(t_envlist **envlist, char *env[]);
 
-//	envlist.c
+//	envutils.c
 void		env_print(t_envlist **envlist);
-void		env_clear(t_envlist **envlist);
+int			env_list_size(t_envlist **envlist);
+void		env_string_clear(char **env);
+void		env_list_clear(t_envlist **envlist);
 void		env_del(t_envlist **envlist);
 
 //	envset.c
-void		env_set(t_envlist **envlist, \
-				const char *search, const char *newval);
+void		env_reset_string(t_envlist **envlist, char **env[]);
+void		env_set(t_envlist **envlist, const char *search, const char *newval);
 void		env_unset(t_envlist **envlist, const char *search);
 
 //	*PIPE*	//

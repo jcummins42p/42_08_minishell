@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/24 13:26:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/25 18:03:14 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	env_init_param(char **param, char *envline)
 
 //	creates new node of env linked list. Parameter and value have already been
 //	created when this is called.
-int	env_new(t_envlist **envlist, char *newparam, char *newvalue)
+int	env_new(t_envlist **envlist, const char *newparam, const char *newvalue)
 {
 	t_envlist	*curr;
 	t_envlist	*new;
@@ -68,8 +68,8 @@ int	env_new(t_envlist **envlist, char *newparam, char *newvalue)
 	if (new == NULL)
 		return (0);
 	new->next = NULL;
-	new->param = newparam;
-	new->value = newvalue;
+	new->param = ft_strdup(newparam);
+	new->value = ft_strdup(newvalue);
 	curr = *envlist;
 	if (curr == NULL)
 	{
@@ -104,4 +104,5 @@ void	env_init(t_envlist **envlist, char *env[])
 		i++;
 	}
 	env_set(envlist, "SHELL", "./minishell");
+	env_set(envlist, "PS1", "$ ");
 }

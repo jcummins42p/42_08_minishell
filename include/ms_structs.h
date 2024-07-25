@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/24 17:07:51 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:30:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ typedef struct s_mshell
 	t_tokenlist	*tokens;
 	t_envlist	*envlist;
 	char		*lineread;
-	char		*prompt;
+	char		**prompt;
+	char		**env;
 }	t_mshell;
 
 #endif

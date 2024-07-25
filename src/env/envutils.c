@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envlist.c                                          :+:      :+:    :+:   */
+/*   envutils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/24 13:12:44 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:28:12 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,31 @@ void	env_print(t_envlist **envlist)
 	}
 }
 
-void	env_clear(t_envlist **envlist)
+int		env_list_size(t_envlist **envlist)
+{
+	t_envlist	*curr;
+	int			size;
+
+	size = 0;
+	curr = *envlist;
+	while (curr)
+	{
+		curr = curr->next;
+		size++;
+	}
+	return (size);
+}
+
+void	env_string_clear(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+		free (env[i++]);
+}
+
+void	env_list_clear(t_envlist **envlist)
 {
 	t_envlist	*curr;
 	t_envlist	*swap;
