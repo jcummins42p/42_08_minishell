@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:41:03 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:52:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	input_read(t_mshell *msh)
 
 void	input_cycle(t_mshell *msh)
 {
-	/*env_set(&msh->envlist, "PS1", "Hello: ");*/
+	env_set(&msh->envlist, "PS1", "Hello: ");
 	while (1)
 	{
-		env_reset_string(&msh->envlist, &msh->env);
+		env_set_string(&msh->envlist, &msh->env);
 		msh->lineread = readline(*msh->prompt);
 		add_history(msh->lineread);
 		tokenize(msh);
@@ -74,7 +74,7 @@ int	main(int argc, char *argv[], char *env[])
 	(void)argc;
 	shell_init(&msh);
 	env_init(&msh.envlist, env);
-	env_reset_string(&msh.envlist, &msh.env);
+	env_set_string(&msh.envlist, &msh.env);
 	msh.prompt = env_get_value(&msh.envlist, "PS1");
 	input_cycle(&msh);
 	shell_free(&msh);	// env is freed in shell_free:env_clear

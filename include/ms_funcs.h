@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:40:45 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:56:24 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void		env_list_clear(t_envlist **envlist);
 void		env_del(t_envlist **envlist);
 
 //	envset.c
-void		env_reset_string(t_envlist **envlist, char **env[]);
+void		env_unset_string(char **env[]);
+void		env_set_string(t_envlist **envlist, char **env[]);
 void		env_set(t_envlist **envlist, const char *search, const char *newval);
 void		env_unset(t_envlist **envlist, const char *search);
 

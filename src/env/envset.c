@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:40:34 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/25 19:56:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 //	recreates the env in original format so that it can be passed to execve
 
-void	env_unset_string(char **env)
+void	env_unset_string(char **env[])
 {
 	int i;
 
 	i = 0;
-	while (env[i])
-		free (env[i++]);
-	free (env);
+	while ((*env)[i])
+		free ((*env)[i++]);
+	free (*env);
 }
 
-void	env_reset_string(t_envlist **envlist, char **env[])
+void	env_set_string(t_envlist **envlist, char **env[])
 {
 	t_envlist	*curr;
 	int			line;
 	int			size;
 
 	if (*env)
-		env_unset_string(*env);
+		env_unset_string(env);
 	curr = *envlist;
 	line = 0;
 	size = env_list_size(envlist);
