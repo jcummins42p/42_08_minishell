@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/25 14:37:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/26 15:22:50 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	struct_init(t_pipex *pipex, char *envp[], int num_pipes)
 		pipex->pid = (pid_t *)malloc(sizeof(pid_t));
 	else
 		pipex->pid = (pid_t *)malloc(sizeof(pid_t) * num_pipes);
+	/*pipex->fd_in = STDIN_FILENO;*/
+	/*pipex->fd_out = STDOUT_FILENO;*/
 	pipex->fd_in = -1;
 	pipex->fd_out = -1;
 	// Arguments for execve
@@ -118,15 +120,11 @@ void	ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[])
 		pipe_pos[num_pipes] = ft_strlen(ptr);
 		pipe_arg[num_pipes + 1] = NULL;
 		pipe_args_fill(num_pipes, pipe_pos, &pipe_arg, ptr);
-		
-		
 		// printf("Number of pipes %i\n", num_pipes);
 		// for (int i = 0; i < num_pipes+1; i++)
 		// printf("pipe arg:%s\n", pipe_arg[i]);
 		ft_pipe(num_pipes, pipe_arg, env, pipex);
 	}
-
-	
 	 /*free(pipe_pos);*/
 	 /*for (int i = 0; i <= num_pipes; i++)*/
 		 /*free(pipe_arg[i]);*/

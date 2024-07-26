@@ -6,11 +6,30 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:15:41 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/23 17:49:31 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:58:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	token_get_info(t_mshell *msh)
+{
+	t_token_inf	*info;
+
+	info = msh->info;
+	info->n_dollar = token_count_type(&msh->tokens, "$");
+	info->n_pipe = token_count_type(&msh->tokens, "|");
+	info->n_squote = token_count_type(&msh->tokens, "\'");
+	info->n_dquote = token_count_type(&msh->tokens, "\"");
+	info->n_rdin = token_count_type(&msh->tokens, "<");
+	info->n_rdout = token_count_type(&msh->tokens, ">");
+	info->n_rdapp = token_count_type(&msh->tokens, ">>");
+	info->n_delimit = token_count_type(&msh->tokens, "<<");
+	printf("$\t-\t%d\n|\t-\t%d\n'\t-\t%d\n\"\t-\t%d\n", \
+			info->n_dollar, info->n_pipe, info->n_squote, info->n_dquote);
+	printf("<\t-\t%d\n>\t-\t%d\n>>\t-\t%d\n<<\t-\t%d\n", \
+			info->n_rdin, info->n_rdout, info->n_rdapp, info->n_delimit);
+}
 
 void	tokens_print(t_tokenlist **tokens)
 {
@@ -28,6 +47,8 @@ void	tokens_print(t_tokenlist **tokens)
 		if (curr->envvar)
 			printf(" and variable %s expanding to %s", \
 					curr->envvar->param, curr->envvar->value);
+		else if (curr->var)
+			printf(" containing string:%s", curr->var);
 		printf("\n");
 		curr = curr->next;
 	}

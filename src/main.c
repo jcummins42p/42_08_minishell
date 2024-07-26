@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:52:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:41:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,17 @@ int	input_read(t_mshell *msh)
 
 void	input_cycle(t_mshell *msh)
 {
-	env_set(&msh->envlist, "PS1", "Hello: ");
+	/*env_set(&msh->envlist, "PS1", "Hello: ");*/
+	/*printf("path variable is %s\n", *msh->path);*/
+	/*env_set(&msh->envlist, "PATH", ";shdflkshdfklghadkfhgsdh");*/
+	/*printf("path variable is %s\n", *msh->path);*/
 	while (1)
 	{
 		env_set_string(&msh->envlist, &msh->env);
 		msh->lineread = readline(*msh->prompt);
 		add_history(msh->lineread);
 		tokenize(msh);
+		token_get_info(msh);
 		if (input_read(msh))
 			 break ;
 		//Execute command
@@ -48,11 +52,13 @@ void	input_cycle(t_mshell *msh)
 
 void	shell_init(t_mshell *msh)
 {
-	msh->env = NULL;
-	msh->envlist = NULL;
 	msh->tokens = NULL;
-	msh->lineread = NULL;
+	msh->info = malloc(sizeof(t_token_inf *));
+	msh->envlist = NULL;
+	msh->env = NULL;
 	msh->prompt = NULL;
+	msh->path = NULL;
+	msh->lineread = NULL;
 }
 
 void	shell_free(t_mshell *msh)
@@ -64,6 +70,7 @@ void	shell_free(t_mshell *msh)
 	env_string_clear(msh->env);
 	if (msh->lineread)
 		free(msh->lineread);
+	free (msh->info);
 }
 
 int	main(int argc, char *argv[], char *env[])
@@ -76,6 +83,7 @@ int	main(int argc, char *argv[], char *env[])
 	env_init(&msh.envlist, env);
 	env_set_string(&msh.envlist, &msh.env);
 	msh.prompt = env_get_value(&msh.envlist, "PS1");
+	msh.path = env_get_value(&msh.envlist, "PATH");
 	input_cycle(&msh);
 	shell_free(&msh);	// env is freed in shell_free:env_clear
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:30:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:35:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,33 @@ typedef struct s_tokenlist
 	t_mtctype			mtctype;	// enum for quick ref tokentype
 	int					pos;	// index of first char within string
 	int					width;	// width of token in char
-	char				*var;	// variable given following $
+	char				*var;	// variable given following $ or between ""
 	struct s_envlist	*envvar;	// if token is $, a pointer to is env var
 	struct s_tokenlist	*next;
 	struct s_tokenlist	*prev;
 }	t_tokenlist;
 
+typedef struct s_token_inf
+{
+	int			n_dollar;
+	int			n_pipe;
+	int			n_squote;
+	int			n_dquote;
+	int			n_rdin;
+	int			n_rdout;
+	int			n_rdapp;
+	int			n_delimit;
+}	t_token_inf;
+
 typedef struct s_mshell
 {
 	t_tokenlist	*tokens;
+	t_token_inf	*info;
 	t_envlist	*envlist;
-	char		*lineread;
-	char		**prompt;
 	char		**env;
+	char		**prompt;
+	char		**path;
+	char		*lineread;
 }	t_mshell;
 
 #endif

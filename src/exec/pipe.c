@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/24 18:17:07 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/26 18:13:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 		return;
 	}
 	pipex->fd_in = dup(STDIN_FILENO); // Start reading from stdin initially
+	/*pipex->fd_out = open("text.txt", O_RDWR); // Save original stdout*/
+	/*printf("File descriptor %d", pipex->fd_out);*/
 	pipex->fd_out = dup(STDOUT_FILENO); // Save original stdout
 	while (j < i)
 	{
@@ -73,9 +75,9 @@ void ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 		}
 		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
 		if (!pipex->cmd) {
-			msg("Command not found");
-			free_pipex(pipex);
-			return;
+			msg("Command not found\n");
+			/*free_pipex(pipex);*/
+			/*return;*/
 		}
 		if (j < i - 1) { // For all commands except the last one
 			if (pipe(pipex->fd_pipe) < 0)

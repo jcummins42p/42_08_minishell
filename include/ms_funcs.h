@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:56:24 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/26 17:42:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int			token_new(t_mshell *msh, char *newtoken, int pos, t_tokentype ttyp);
 void		token_clear(t_tokenlist **tokens);
 
 //	tokenfuncs.c
+void		token_get_info(t_mshell *msh);
 t_tokenlist	*token_at_pos(t_tokenlist **tokens, int serachpos);
 int			token_count_type(t_tokenlist **tokens, char *metachar);
 void		token_pos_type(t_tokenlist **tokens, int **pos, char *metachar);
