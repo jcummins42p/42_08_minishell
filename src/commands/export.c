@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 17:19:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 12:21:44 by jcummins         ###   ########.fr       */
+/*   Created: 2024/07/29 11:21:35 by jcummins          #+#    #+#             */
+/*   Updated: 2024/07/29 12:22:06 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t')
-		return (true);
-	else
-		return (false);
-}
+/*void	export_var(t_mshell *msh)*/
+/*{*/
+	
+
+/*}*/

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/26 17:42:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 13:55:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 
 //	*COMMAND*	//
 
+//	echo_token.c
+void		echo_tokens(t_mshell *msh, int fd);
+
 //	echo.c
+void		echo_expand_str(t_mshell *msh, char *str, int fd);
 
 //	expand.c
 char		**expand_variable(t_envlist **envlist, char *param);

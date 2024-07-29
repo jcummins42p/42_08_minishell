@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/26 17:42:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 14:59:19 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ int	token_addvar(t_tokenlist *token, char *str)
 	i = 0;
 	while (str[i] && !is_whitespace(str[i]) && !is_metachar(&str[i]))
 		i++;
+	if (str[i] && is_whitespace(str[i]))
+		token->trail_space = true;
 	len = i;
 	out = malloc(sizeof(char) * len + 1);
 	out[len] = '\0';
 	while (--i >= 0)
 		out[i] = str[i];
 	token->var = out;
-	return (len + 1);
+	return (len);
 }
 
 int	token_add_dquote(t_tokenlist *token, char *str)
@@ -85,6 +87,7 @@ void	token_init(t_tokenlist *new, char *newtoken, int pos, t_tokentype ttyp)
 	new->width = ft_strlen(newtoken);
 	new->envvar = NULL;
 	new->tokentype = ttyp;
+	new->trail_space = false;
 }
 
 //	creates new node in tokenlist based on token (metachar or command) and the

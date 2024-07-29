@@ -6,14 +6,13 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:56:35 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 13:12:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//	recreates the env in original format so that it can be passed to execve
-
+//	free function for dynamically allocated env char **
 void	env_unset_string(char **env[])
 {
 	int i;
@@ -24,6 +23,7 @@ void	env_unset_string(char **env[])
 	free (*env);
 }
 
+//	recreates the env in original char **format suitable for execve
 void	env_set_string(t_envlist **envlist, char **env[])
 {
 	t_envlist	*curr;
@@ -55,6 +55,26 @@ void	env_unset(t_envlist **envlist, const char *search)
 		ft_printf("Error, no parameter of that name found in env\n");
 }
 
+//	checks that an environment variable name is valid before creating it
+bool	env_valid(const char *search)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isalpha(search[i]) || search[i] == '_')
+		i++;
+	else
+		return (false);
+	while (search[i])
+	{
+		if (ft_isalnum(search[i]) || search[i] == '_')
+		   i++;
+		else
+			return (false);
+	}
+	return (true);
+}
+
 void	env_set(t_envlist **envlist, const char *search, const char *newval)
 {
 	t_envlist	*find;
@@ -67,7 +87,12 @@ void	env_set(t_envlist **envlist, const char *search, const char *newval)
 	}
 	else
 	{
-		ft_printf("Creating variable %s with value %s\n", search, newval);
-		env_new(envlist, search, newval);
+		if (env_valid(search))
+		{
+			ft_printf("creating variable %s with value %s\n", search, newval);
+			env_new(envlist, search, newval);
+		}
+		else
+			ft_printf("export: not valid in this context: %s\n", search);
 	}
 }

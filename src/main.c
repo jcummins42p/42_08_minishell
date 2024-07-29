@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/26 17:41:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 13:55:46 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,20 @@ int	input_read(t_mshell *msh)
 	if (!ft_strncmp(msh->lineread, "exit", 4))
 		return (1);
 	else if (!ft_strncmp(msh->lineread, "echo", 4))
-		printf("%s\n", msh->lineread);
-	/*else if (!ft_strncmp(msh->lineread, "env", 3))*/
-		/*env_print(&msh->envlist);*/
+		echo_tokens(msh, 1);
+		/*echo_expand_str(msh, msh->lineread, 1);*/
+	else if (!ft_strncmp(msh->lineread, "env", 3))
+		env_print(&msh->envlist);
+	else
+		ft_exec_init(msh->tokens, msh->lineread, msh->env);
 	return (0);
+}
+
+void	input_cleanup(t_mshell *msh)
+{
+	token_clear(&msh->tokens);
+	free(msh->lineread);
+	msh->lineread = NULL;
 }
 
 void	input_cycle(t_mshell *msh)
@@ -33,20 +43,13 @@ void	input_cycle(t_mshell *msh)
 	/*printf("path variable is %s\n", *msh->path);*/
 	while (1)
 	{
-		env_set_string(&msh->envlist, &msh->env);
 		msh->lineread = readline(*msh->prompt);
 		add_history(msh->lineread);
 		tokenize(msh);
 		token_get_info(msh);
 		if (input_read(msh))
 			 break ;
-		//Execute command
-		/*if (ft_strrchr(msh->ptr, '|') || msh->tokens->next == NULL)*/
-		ft_exec_init(msh->tokens, msh->lineread, msh->env);
-		/*tokens_print(&msh->tokens);*/
-		token_clear(&msh->tokens);
-		free(msh->lineread);
-		msh->lineread = NULL;
+		input_cleanup(msh);
 	}
 }
 
