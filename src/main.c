@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 15:02:41 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 15:38:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	input_cycle(t_mshell *msh)
 void	shell_init(t_mshell *msh)
 {
 	msh->tokens = NULL;
-	msh->info = malloc(sizeof(t_token_inf *));
+	msh->info = malloc(sizeof(t_token_inf));
 	msh->envlist = NULL;
 	msh->env = NULL;
 	msh->prompt = NULL;
@@ -65,7 +65,6 @@ void	shell_init(t_mshell *msh)
 
 void	shell_free(t_mshell *msh)
 {
-	free (msh->env);
 	if (msh->tokens)
 		token_clear(&msh->tokens);
 	env_list_clear(&msh->envlist);

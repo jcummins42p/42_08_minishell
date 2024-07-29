@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 11:08:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 15:52:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	env_string_clear(char **env)
 	i = 0;
 	while (env[i])
 		free (env[i++]);
+	free (env);
 }
 
 void	env_list_clear(t_envlist **envlist)
@@ -61,13 +62,14 @@ void	env_list_clear(t_envlist **envlist)
 	{
 		swap = curr;
 		curr = curr->next;
-		free(swap->param);
-		free(swap->value);
+		if (swap->param)
+			free(swap->param);
+		if (swap->value)
+			free(swap->value);
 		swap->value = NULL;
 		swap->param = NULL;
 		free(swap);
 	}
-	*envlist = NULL;
 }
 
 void	env_del(t_envlist **envlist)
