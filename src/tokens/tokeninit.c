@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 14:59:19 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 15:13:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,17 @@ int	token_add_squote(t_tokenlist *token, char *str)
 
 void	token_init(t_tokenlist *new, char *newtoken, int pos, t_tokentype ttyp)
 {
-	new->next = NULL;
-	new->var = NULL;
-	new->pos = pos;
 	new->token = ft_strdup(newtoken);
-	new->width = ft_strlen(newtoken);
-	new->envvar = NULL;
 	new->tokentype = ttyp;
+	new->comtype = NO_COM;
+	new->mtctype = NO_MTC;
+	new->pos = pos;
+	new->width = ft_strlen(newtoken);
+	new->var = NULL;
 	new->trail_space = false;
+	new->envvar = NULL;
+	new->next = NULL;
+	new->envvar = NULL;
 }
 
 //	creates new node in tokenlist based on token (metachar or command) and the
@@ -103,15 +106,18 @@ int	token_new(t_mshell *msh, char *newtoken, int pos, t_tokentype ttyp)
 	token_init(new, newtoken, pos, ttyp);
 	if (*newtoken == '$')
 	{
+		new->mtctype = DOLLAR;
 		new->width += token_addvar(new, &msh->lineread[pos + 1]);
 		token_getenv(new, &msh->envlist);
 	}
 	else if (*newtoken == '\"')
 	{
+		new->mtctype = DQUOTE;
 		new->width += token_add_dquote(new, &msh->lineread[pos + 1]);
 	}
 	else if (*newtoken == '\'')
 	{
+		new->mtctype = SQUOTE;
 		new->width += token_add_squote(new, &msh->lineread[pos + 1]);
 	}
 	curr = msh->tokens;

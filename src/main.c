@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 13:55:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 15:02:41 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	input_read(t_mshell *msh)
 		return (1);
 	else if (!ft_strncmp(msh->lineread, "echo", 4))
 		echo_tokens(msh, 1);
-		/*echo_expand_str(msh, msh->lineread, 1);*/
 	else if (!ft_strncmp(msh->lineread, "env", 3))
 		env_print(&msh->envlist);
 	else
