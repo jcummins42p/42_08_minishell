@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/26 18:13:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:47:37 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,64 @@ void	handle_exec_error(t_pipex *pipex, const char *error_message)
 	exit(1);
 }
 
+char **ft_get_arg_pipe(t_mshell *msh)
+{
+	t_tokenlist	*tokens;
+	char		**arg;
+	char		*new_arg;
+	int			i;
+
+	i = 0;
+	tokens = msh->tokens;
+	arg = NULL;
+	arg = (char **)malloc(sizeof(int *) * msh->info->n_pipe + 1);
+	arg[i] = ft_strdup("");
+	if (!arg[i])
+		return (NULL);
+	while (tokens != NULL)
+	{
+		if (strcmp(tokens->token, "|") != 0)
+		{
+			if (tokens->token[0] == '$')
+				new_arg = ft_strjoin(arg[i], tokens->envvar->value);
+			else if (tokens->var)
+				new_arg = ft_strjoin(arg[i], tokens->var);
+			else
+				new_arg = ft_strjoin(arg[i], tokens->token);
+			if (!new_arg)
+			{
+				// free everything in arg + new arg
+				return (NULL);
+			}
+			free(arg[i]);
+			arg[i] = new_arg;
+		}
+		else if (tokens->next != NULL)
+		{
+			i++;
+			arg[i] = ft_strdup("");
+			if (!arg[i])
+			{
+				// free everything in arg + new arg
+				return (NULL);
+			}
+		}
+		tokens = tokens->next;
+	}
+	arg[i + 1] = NULL;
+	return (arg);
+}
+
 void child(t_pipex *pipex, char *env[])
 {
 	close(pipex->fd_pipe[0]); // Close unused read end
 	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
-		handle_exec_error(pipex, "Error duplicating file descriptor for stdin");
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdin\n");
 	if (dup2(pipex->fd_pipe[1], STDOUT_FILENO) == -1)
-		handle_exec_error(pipex, "Error duplicating file descriptor for stdout");
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdout\n");
 	close(pipex->fd_pipe[1]); // Close the copy of write end
 	if (execve(pipex->cmd, pipex->cmd_args, env) < 0)
-		handle_exec_error(pipex, "Execve failed");
+		handle_exec_error(pipex, "Execve failed\n");
 }
 
 void last_child(t_pipex *pipex, char *env[])
@@ -37,22 +85,24 @@ void last_child(t_pipex *pipex, char *env[])
 	close(pipex->fd_pipe[1]); // Close the unused write end
 
 	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
-		handle_exec_error(pipex, "Error duplicating file descriptor for stdin");
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdin\n");
 	close(pipex->fd_pipe[0]); // Close the unused read end
 
 	// Last child outputs to the specified output or terminal
 	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
-		handle_exec_error(pipex, "Error duplicating file descriptor for stdout");
+		handle_exec_error(pipex, "Error duplicating file descriptor for stdout\n");
 	if (execve(pipex->cmd, pipex->cmd_args, env) < 0)
-		handle_exec_error(pipex, "Execve failed");
+		handle_exec_error(pipex, "Execve failed\n");
 }
 
-void ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
+void ft_pipe(t_pipex *pipex, t_mshell *msh)
 {
 	int i;
 	int j;
+	char **av;
 
-	i = number_pipes + 1;
+	av = ft_get_arg_pipe(msh);
+	i = msh->info->n_pipe + 1;
 	j = 0;
 
 	pipex->pid = (pid_t *)malloc(sizeof(pid_t) * i);
@@ -69,7 +119,7 @@ void ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 	{
 		pipex->cmd_args = ft_split(av[j], ' ');
 		if (!pipex->cmd_args) {
-			msg("Command split error");
+			msg("Command split error\n");
 			free_pipex(pipex);
 			return;
 		}
@@ -81,20 +131,20 @@ void ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 		}
 		if (j < i - 1) { // For all commands except the last one
 			if (pipe(pipex->fd_pipe) < 0)
-				handle_exec_error(pipex, "Pipe creation error");
+				handle_exec_error(pipex, "Pipe creation error\n");
 		}
 
 		pipex->pid[j] = fork();
 		if (pipex->pid[j] < 0) {
-			handle_exec_error(pipex, "Fork error");
+			handle_exec_error(pipex, "Fork error\n");
 		}
 
 		if (pipex->pid[j] == 0)
 		{ // Child process
 			if (j == i - 1) { // Last command
-				last_child(pipex, env);
+				last_child(pipex, msh->env);
 			} else {
-				child(pipex, env);
+				child(pipex, msh->env);
 			}
 		}
 	// Parent process: Close write end and update fd_in for next child
@@ -107,7 +157,7 @@ void ft_pipe(int number_pipes, char *av[], char *env[], t_pipex *pipex)
 		j++;
 	}
 	// Wait for all child processes to complete
-	for (int k = 0; k < number_pipes + 1; k++)
+	for (int k = 0; k < msh->info->n_pipe + 1; k++)
 		waitpid(pipex->pid[k], NULL, 0);
 
 	close(pipex->fd_in);

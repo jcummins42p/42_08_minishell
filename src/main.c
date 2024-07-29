@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 15:38:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:43:32 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	input_read(t_mshell *msh)
 	else if (!ft_strncmp(msh->lineread, "env", 3))
 		env_print(&msh->envlist);
 	else
-		ft_exec_init(msh->tokens, msh->lineread, msh->env);
+		ft_exec_init(msh);
 	return (0);
 }
 

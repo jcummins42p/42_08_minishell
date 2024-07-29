@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/26 15:22:50 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:57:35 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,29 @@ void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr)
 		int length = pipe_pos[i] - start;
 		(*pipe_arg)[i] = (char *)malloc(sizeof(char) * (length + 1));
 		ft_strlcpy((*pipe_arg)[i], ptr + start, length + 1);
-		// (*pipe_arg)[i][length] = '\0';
 		start = pipe_pos[i] + 1; // Move start to character after '|'
 		i++;
 	}
 }
 
-void	struct_init(t_pipex *pipex, char *envp[], int num_pipes)
+void	struct_init(t_pipex *pipex, t_mshell *msh)
 {
-	if (num_pipes == 0)
+	if (msh->info->n_pipe == 0)
 		pipex->pid = (pid_t *)malloc(sizeof(pid_t));
 	else
-		pipex->pid = (pid_t *)malloc(sizeof(pid_t) * num_pipes);
-	/*pipex->fd_in = STDIN_FILENO;*/
-	/*pipex->fd_out = STDOUT_FILENO;*/
-	pipex->fd_in = -1;
-	pipex->fd_out = -1;
+		pipex->pid = (pid_t *)malloc(sizeof(pid_t) * msh->info->n_pipe);
+	pipex->fd_in = -1;	//STDIN_FILENO
+	pipex->fd_out = -1;	//STDOUT_FILENO
 	// Arguments for execve
-	pipex->paths = find_path(envp);
+	pipex->paths = find_path(msh->envlist);
 	pipex->cmd_paths = ft_split(pipex->paths, ':');
 	pipex->cmd = NULL;
 	pipex->cmd_args = NULL;
 }
 
-void	ft_exec_cmd(t_pipex *pipex, char *av, char **env)
+void	ft_exec_cmd(t_pipex *pipex, t_mshell *msh)
 {
-	pipex->cmd_args = ft_split(av, ' ');
+	pipex->cmd_args = ft_split(msh->lineread, ' ');
 	if (!pipex->cmd_args)
 	{
 		msg(ERR_MEMORY);
@@ -69,7 +66,7 @@ void	ft_exec_cmd(t_pipex *pipex, char *av, char **env)
 	}
 	if (pipex->pid[0] == 0)
 	{
-		if (!execve(pipex->cmd, pipex->cmd_args, env))
+		if (!execve(pipex->cmd, pipex->cmd_args, msh->env))
 		{
 			msg(ERR_EXEC);
 			exit(1);
@@ -83,11 +80,8 @@ void	ft_exec_cmd(t_pipex *pipex, char *av, char **env)
 	}
 }
 
-void	ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[])
+void	ft_exec_init(t_mshell *msh)
 {
-	char	**pipe_arg;
-	int		*pipe_pos;
-	int		num_pipes;
 	t_pipex	*pipex;
 
 	pipex = (t_pipex *)malloc(sizeof(t_pipex));
@@ -96,37 +90,18 @@ void	ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[])
 		msg(ERR_MEMORY);
 		exit(1);
 	}
-	pipe_pos = NULL;
-	pipe_arg = NULL;
-	num_pipes = token_count_type(&tokens, "|");
-	struct_init(pipex, env, num_pipes);
+	struct_init(pipex, msh);
 
-	if (num_pipes == 0)
+	if (msh->info->n_pipe == 0)
 	{
-		ft_exec_cmd(pipex, ptr, env);
+		ft_exec_cmd(pipex, msh);
 		free_pipex(pipex);
 		return ;
-	}
+	} 
 	else
-	{
-		//prepare arguments for pipe
-		pipe_pos = (int *)malloc(sizeof(int) * (num_pipes + 1));		  // +1 because for input test | arg   we have 2 arguments test and arg.
-		pipe_arg = (char **)malloc(sizeof(char *) * (num_pipes + 1 + 1)); // +1 for NULL termination
-
-		token_pos_type(&tokens, &pipe_pos, "|");
-
-		// Get pipe positions
-		// Get end of the line positions           || the re-direction
-		pipe_pos[num_pipes] = ft_strlen(ptr);
-		pipe_arg[num_pipes + 1] = NULL;
-		pipe_args_fill(num_pipes, pipe_pos, &pipe_arg, ptr);
-		// printf("Number of pipes %i\n", num_pipes);
-		// for (int i = 0; i < num_pipes+1; i++)
-		// printf("pipe arg:%s\n", pipe_arg[i]);
-		ft_pipe(num_pipes, pipe_arg, env, pipex);
+	{		
+		ft_pipe(pipex, msh);
+		// for (int i = 0; i < msh->info->n_pipe + 1; i++)
+		// 	printf("Pipe arg%i is %s\n", i, pipe_arg[i]);
 	}
-	 /*free(pipe_pos);*/
-	 /*for (int i = 0; i <= num_pipes; i++)*/
-		 /*free(pipe_arg[i]);*/
-	 /*free(pipe_arg);*/
 }

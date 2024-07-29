@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 14:38:57 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:26:41 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef enum e_mtctype
 typedef struct s_pipex
 {
 	pid_t	*pid;
-	int		fd_pipe[2];		// not sure if needed
+	int		fd_pipe[2];		// needed for pipe
 	int		fd_in;			// this is for re-direction - From
 	int		fd_out;			// this is for re-direction - To
 	char	*paths;

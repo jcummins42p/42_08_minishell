@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 13:55:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:59:10 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void		echo_expand_str(t_mshell *msh, char *str, int fd);
 //	expand.c
 char		**expand_variable(t_envlist **envlist, char *param);
 
-//exec_cmd.c
-void		pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr);
-void		struct_init(t_pipex *pipex, char *envp[], int num_pipes);
-void		ft_exec_cmd(t_pipex *pipex, char *av, char **env);
-void		ft_exec_init(t_tokenlist *tokens, char *ptr, char *env[]);
+//	exec_cmd.c
+char		**ft_get_arg_pipe(t_mshell *msh);
+void		struct_init(t_pipex *pipex, t_mshell *msh);
+void		ft_exec_cmd(t_pipex *pipex, t_mshell *msh);
+void		ft_exec_init(t_mshell *msh);
 
 //	*ENV*	//
 
@@ -56,18 +56,18 @@ void		env_unset(t_envlist **envlist, const char *search);
 
 //	*PIPE*	//
 
-//pipe.c
-void		ft_pipe(int ac ,char *av[], char *envp[], t_pipex *pipex);
+//	pipe.c
+void		ft_pipe(t_pipex *pipex, t_mshell *msh);
 void		handle_exec_error(t_pipex *pipex, const char *error_message);
 void		child(t_pipex *pipex, char *env[]);
 void		last_child(t_pipex *pipex, char *env[]);
 
-//exec_utils.c
-char		*find_path(char **envp);
+//	exec_utils.c
+char		*find_path(t_envlist *env);
 char		*get_cmd(char **paths, char *cmd);
 void		free_pipex(t_pipex *pipex);
 
-// not needed || will be replaced by universal msg_error
+//	not needed || will be replaced by universal msg_error
 void		msg_error(char *err, t_pipex *pipex);
 int			msg(const char *err);
 
