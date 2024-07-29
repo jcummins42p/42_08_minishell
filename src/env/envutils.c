@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 19:28:12 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/29 11:07:50 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	env_print(t_envlist **envlist)
 	curr = *envlist;
 	while (curr)
 	{
-		printf("%s=%s\n", curr->param, curr->value);
+		if (curr->value)
+			printf("%s=%s\n", curr->param, curr->value);
 		curr = curr->next;
 	}
 }
