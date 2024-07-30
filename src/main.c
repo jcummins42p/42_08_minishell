@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 14:47:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:56:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,22 @@
 
 int	input_read(t_mshell *msh)
 {
+	t_comtype	command;
+
+	command = msh->tokens->comtype;
 	if (msh->tokens)
 	{
-		if (!ft_strncmp(msh->lineread, "exit", 4))
-			return (1);
-		else if (!ft_strncmp(msh->lineread, "echo", 4))
+		if (command == EXIT)
+			msh->running = false;
+		else if (command == ECHO)
 			echo_tokens(msh, 1);
-		else if (!ft_strncmp(msh->lineread, "env", 3))
+		else if (command == ENV)
 			env_print(&msh->envlist);
-		else if (!ft_strncmp(msh->lineread, "unset", 5))
+		else if (command == UNSET)
 			unset(msh);
-		else if (!ft_strncmp(msh->lineread, "export", 6))
+		else if (command == EXPORT)
+			export_var(msh);
+		else if (command == ASSIGN)
 			export_var(msh);
 		else
 			ft_exec_init(msh);
@@ -41,11 +46,7 @@ void	input_cleanup(t_mshell *msh)
 
 void	input_cycle(t_mshell *msh)
 {
-	/*env_set(&msh->envlist, "PS1", "Hello: ");*/
-	/*printf("path variable is %s\n", *msh->path);*/
-	/*env_set(&msh->envlist, "PATH", ";shdflkshdfklghadkfhgsdh");*/
-	/*printf("path variable is %s\n", *msh->path);*/
-	while (1)
+	while (msh->running)
 	{
 		msh->lineread = readline(*msh->prompt);
 		add_history(msh->lineread);
@@ -66,6 +67,7 @@ void	shell_init(t_mshell *msh)
 	msh->prompt = NULL;
 	msh->path = NULL;
 	msh->lineread = NULL;
+	msh->running = true;
 }
 
 void	shell_free(t_mshell *msh)
