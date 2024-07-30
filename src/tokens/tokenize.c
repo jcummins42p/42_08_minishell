@@ -6,11 +6,28 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 13:58:49 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:03:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_assign(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		else
+			i++;
+	}
+	return (0);
+}
 
 int	is_metachar(char *str)
 {
@@ -55,6 +72,8 @@ int	is_builtin(char *str)
 		isbuiltin = ENV;
 	else if (!ft_strncmp(str, "exit", 4))
 		isbuiltin = EXIT;
+	else if (check_assign(str))
+		isbuiltin = ASSIGN;
 	return (isbuiltin);
 }
 

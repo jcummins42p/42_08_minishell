@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 14:05:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:29:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char		**env_get_value(t_envlist **envlist, const char *search);
 
 //	envinit.c
 int			env_new(t_envlist **envlist, const char *newparam, const char *newvalue);
+void		env_from_str(t_envlist **envlist, char *str);
 void		env_init(t_envlist **envlist, char *env[]);
 
 //	envutils.c

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 17:26:41 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/30 14:48:49 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef enum e_comtype
 	EXPORT,
 	UNSET,
 	ENV,
+	ASSIGN,
 	EXIT
 }	t_comtype;
 

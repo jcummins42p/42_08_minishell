@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 13:42:15 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:58:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	token_init(t_tokenlist *new, char *newtoken, int pos, t_tokentype ttyp)
 {
 	new->token = ft_strdup(newtoken);
 	new->tokentype = ttyp;
-	new->comtype = NO_COM;
-	new->mtctype = NO_MTC;
+	new->comtype = is_builtin(newtoken);
+	new->mtctype = is_metachar(newtoken);
 	new->pos = pos;
 	new->width = ft_strlen(newtoken);
 	new->var = NULL;

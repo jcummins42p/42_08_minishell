@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 14:15:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:34:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	env_new(t_envlist **envlist, const char *newparam, const char *newvalue)
 	t_envlist	*curr;
 	t_envlist	*new;
 
+	if (*newparam == '\0' || *newvalue == '\0')
+		return (0);
 	new = malloc(sizeof(t_envlist));
 	if (new == NULL)
 		return (0);
@@ -85,32 +87,36 @@ int	env_new(t_envlist **envlist, const char *newparam, const char *newvalue)
 	return (1);
 }
 
+//	makes new env node from a single string assignation that includes a '='
+void	env_from_str(t_envlist **envlist, char *str)
+{
+	t_envlist	*find;
+	char		*param;
+	char		*value;
+	int			len;
+
+	param = NULL;
+	value = NULL;
+	len = env_init_param(&param, str);
+	env_init_value(&value, str, len);
+	find = env_search(envlist, param);
+	if (find)
+	{
+		free (find->value);
+		find->value = ft_strdup(value);
+	}
+	else
+		env_new(envlist, param, value);
+}
+
 //	takes *env[] input and creates env linked list
 void	env_init(t_envlist **envlist, char *env[])
 {
 	int		i;
-	int		len;
-	char	*param;
-	char	*value;
-	t_envlist	*find;
 
 	i = 0;
-	param = NULL;
-	value = NULL;
 	while (env[i])
-	{
-		len = env_init_param(&param, env[i]);
-		env_init_value(&value, env[i], len);
-		find = env_search(envlist, param);
-		if (find)
-		{
-			free (find->value);
-			find->value = ft_strdup(value);
-		}
-		else
-			env_new(envlist, param, value);
-		i++;
-	}
+		env_from_str(envlist, env[i++]);
 	env_set(envlist, "SHELL", "./minishell");
 	env_set(envlist, "PS1", "$ ");
 }

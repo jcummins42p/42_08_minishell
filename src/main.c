@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 14:05:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:47:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,20 @@
 int	input_read(t_mshell *msh)
 {
 	if (msh->tokens)
-		tokens_print(&msh->tokens);
-	if (!ft_strncmp(msh->lineread, "exit", 4))
-		return (1);
-	else if (!ft_strncmp(msh->lineread, "echo", 4))
-		echo_tokens(msh, 1);
-	else if (!ft_strncmp(msh->lineread, "env", 3))
-		env_print(&msh->envlist);
-	else if (!ft_strncmp(msh->lineread, "unset", 5))
-		unset(msh);
-	else if (!ft_strncmp(msh->lineread, "export", 6))
-		export_var(msh);
-	else
-		ft_exec_init(msh);
+	{
+		if (!ft_strncmp(msh->lineread, "exit", 4))
+			return (1);
+		else if (!ft_strncmp(msh->lineread, "echo", 4))
+			echo_tokens(msh, 1);
+		else if (!ft_strncmp(msh->lineread, "env", 3))
+			env_print(&msh->envlist);
+		else if (!ft_strncmp(msh->lineread, "unset", 5))
+			unset(msh);
+		else if (!ft_strncmp(msh->lineread, "export", 6))
+			export_var(msh);
+		else
+			ft_exec_init(msh);
+	}
 	return (0);
 }
 
