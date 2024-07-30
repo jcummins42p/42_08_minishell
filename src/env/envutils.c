@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 15:52:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:14:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	env_print(t_envlist **envlist)
 	}
 }
 
-int		env_list_size(t_envlist **envlist)
+int	env_list_size(t_envlist **envlist)
 {
 	t_envlist	*curr;
 	int			size;

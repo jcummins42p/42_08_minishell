@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:58:07 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 15:09:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:12:49 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,17 @@ int	token_parse_generic(t_mshell *msh, int *end)
 
 	i = 0;
 	while (is_whitespace(msh->lineread[*end]))
-			(*end)++;
+		(*end)++;
 	start = *end;
 	while (msh->lineread[*end] && !is_metachar(&msh->lineread[*end]) \
-			/*&& !is_builtin(&msh->lineread[*end]) \*/
-			&& !is_whitespace(msh->lineread[*end]))
+		&& !is_whitespace(msh->lineread[*end]))
 		(*end)++;
-	/*if (msh->lineread[*end] && is_whitespace(msh->lineread[*end]))*/
-		/*(*end)++;*/
 	len = *end - start;
 	if (len > 0)
 	{
 		token = malloc(sizeof(char) * len + 1);
 		while (i < len)
-		{
 			token[i++] = msh->lineread[start++];
-		}
 		token[len] = '\0';
 		token_new(msh, token, *end - len, GENERIC);
 		free (token);

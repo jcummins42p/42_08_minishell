@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 17:56:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:16:09 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,25 @@
 
 int	input_read(t_mshell *msh)
 {
-	t_comtype	command;
+	t_tokenlist	*token;
 
-	command = msh->tokens->comtype;
+	token = msh->tokens;
 	if (msh->tokens)
 	{
-		if (command == EXIT)
+		if (token->comtype == EXIT)
 			msh->running = false;
-		else if (command == ECHO)
+		else if (token->comtype == ECHO)
 			echo_tokens(msh, 1);
-		else if (command == ENV)
+		else if (token->comtype == ENV)
 			env_print(&msh->envlist);
-		else if (command == UNSET)
+		else if (token->comtype == UNSET)
 			unset(msh);
-		else if (command == EXPORT)
+		else if (token->comtype == EXPORT)
 			export_var(msh);
-		else if (command == ASSIGN)
+		else if (token->comtype == ASSIGN)
 			export_var(msh);
+		else if (token->comtype == CD)
+			change_dir(msh, token->next->token);
 		else
 			ft_exec_init(msh);
 	}
@@ -53,7 +55,7 @@ void	input_cycle(t_mshell *msh)
 		tokenize(msh);
 		token_get_info(msh);
 		if (input_read(msh))
-			 break ;
+			break ;
 		input_cleanup(msh);
 	}
 }

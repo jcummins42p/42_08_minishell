@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 13:20:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:15:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //	free function for dynamically allocated env char **
 void	env_unset_string(char **env[])
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((*env)[i])
@@ -68,7 +68,7 @@ bool	env_valid(const char *search)
 	while (search[i])
 	{
 		if (ft_isalnum(search[i]) || search[i] == '_')
-		   i++;
+			i++;
 		else
 			return (false);
 	}
@@ -82,6 +82,7 @@ void	env_set(t_envlist **envlist, const char *search, const char *newval)
 	find = env_search(envlist, search);
 	if (find)
 	{
+		ft_printf("Changing variable %s to new value %s\n", search, newval);
 		free (find->value);
 		find->value = ft_strdup(newval);
 	}

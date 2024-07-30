@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 15:29:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:08:18 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define MS_FUNCS_H
 
 //	*COMMAND*	//
+
+//	cd.c
+void		change_dir(t_mshell *msh, char *newdir);
 
 //	echo_token.c
 void		echo_tokens(t_mshell *msh, int fd);

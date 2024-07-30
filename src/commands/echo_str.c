@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   echo_str.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:07:17 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 13:45:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:11:46 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	ft_wordlen(char *str)
 		return (0);
 	i = 0;
 	while (str[i] && !is_whitespace(str[i]) && str[i] != '$')
-	   i++;
+		i++;
 	return (i);
 }
 
-char *echo_get_var(char *str)
+char	*echo_get_var(char *str)
 {
 	char	*out;
 	int		len;
@@ -73,7 +73,7 @@ void	echo_expand_str(t_mshell *msh, char *str, int fd)
 	while (str[i])
 	{
 		while (str[i] && is_whitespace(str[i]))
-				i++;
+			i++;
 		if (str[i] == '$')
 			i += expand_var(msh, &str[i + 1], fd);
 		else
