@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/25 18:03:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:15:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	env_init(t_envlist **envlist, char *env[])
 	int		len;
 	char	*param;
 	char	*value;
+	t_envlist	*find;
 
 	i = 0;
 	param = NULL;
@@ -100,7 +101,14 @@ void	env_init(t_envlist **envlist, char *env[])
 	{
 		len = env_init_param(&param, env[i]);
 		env_init_value(&value, env[i], len);
-		env_new(envlist, param, value);
+		find = env_search(envlist, param);
+		if (find)
+		{
+			free (find->value);
+			find->value = ft_strdup(value);
+		}
+		else
+			env_new(envlist, param, value);
 		i++;
 	}
 	env_set(envlist, "SHELL", "./minishell");

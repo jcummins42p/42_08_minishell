@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 19:59:10 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/30 14:05:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ void		echo_expand_str(t_mshell *msh, char *str, int fd);
 
 //	expand.c
 char		**expand_variable(t_envlist **envlist, char *param);
+
+//	export.c
+void		export_var(t_mshell *msh);
+
+//	unset.c
+void		unset(t_mshell *msh);
 
 //	exec_cmd.c
 char		**ft_get_arg_pipe(t_mshell *msh);

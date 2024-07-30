@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 15:13:51 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 13:42:15 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	token_addvar(t_tokenlist *token, char *str)
 	i = 0;
 	while (str[i] && !is_whitespace(str[i]) && !is_metachar(&str[i]))
 		i++;
-	if (str[i] && is_whitespace(str[i]))
-		token->trail_space = true;
+	if (!str[i] || !is_whitespace(str[i]))
+		token->trail_space = false;
 	len = i;
 	out = malloc(sizeof(char) * len + 1);
 	out[len] = '\0';
@@ -87,7 +87,7 @@ void	token_init(t_tokenlist *new, char *newtoken, int pos, t_tokentype ttyp)
 	new->pos = pos;
 	new->width = ft_strlen(newtoken);
 	new->var = NULL;
-	new->trail_space = false;
+	new->trail_space = true;
 	new->envvar = NULL;
 	new->next = NULL;
 	new->envvar = NULL;

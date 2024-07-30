@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:58:07 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/29 14:43:23 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/30 13:37:15 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int	token_parse_generic(t_mshell *msh, int *end)
 			&& !is_builtin(&msh->lineread[*end]) \
 			&& !is_whitespace(msh->lineread[*end]))
 		(*end)++;
-	if (msh->lineread[*end] && is_whitespace(msh->lineread[*end]))
-		(*end)++;
+	/*if (msh->lineread[*end] && is_whitespace(msh->lineread[*end]))*/
+		/*(*end)++;*/
 	len = *end - start;
 	if (len > 0)
 	{
