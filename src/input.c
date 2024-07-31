@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 15:34:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 19:22:04 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	input_cleanup(t_mshell *msh)
 	msh->lineread = NULL;
 }
 
-int	input_read(t_mshell *msh)
+int	input_execute(t_mshell *msh)
 {
 	t_tokenlist	*token;
 
@@ -55,7 +55,7 @@ void	input_cycle(t_mshell *msh)
 		tokenize(msh);
 		tokens_print(&msh->tokens);
 		token_get_info(msh);
-		if (input_read(msh))
+		if (input_execute(msh))
 			break ;
 		input_cleanup(msh);
 	}

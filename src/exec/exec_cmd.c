@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/31 18:57:09 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:59:20 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	pipex_init(t_mshell *msh)
 	msh->pipex->fd_in = -1;	//STDIN_FILENO
 	msh->pipex->fd_out = -1;	//STDOUT_FILENO
 	// Arguments for execve
-	/*msh->pipex->paths = *msh->path;*/
 	msh->pipex->cmd_paths = ft_split(*msh->path, ':');
 	msh->pipex->cmd = NULL;
 	msh->pipex->cmd_args = NULL;

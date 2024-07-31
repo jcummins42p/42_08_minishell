@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:58:07 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:32:37 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 19:16:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,7 @@ int	token_parse_builtin(t_mshell *msh, int *i)
 		*i += token_new(msh, "env", *i);
 	else if (command == EXIT)
 		*i += token_new(msh, "exit", *i);
+	else if (command == ASSIGN)
+		token_parse_assign(msh, i);
 	return (command);
 }
