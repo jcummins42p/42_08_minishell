@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 14:58:58 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:25:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	token_addvar(t_tokenlist *token, char *str)
 	int			len;
 
 	i = 0;
-	while (str[i] && !is_whitespace(str[i]) && !is_metachar(&str[i]))
+	while (str[i] && !is_whitespace(str[i]) && str[i] != '$')
 		i++;
 	if (!str[i] || !is_whitespace(str[i]))
 		token->trail_space = false;
@@ -78,12 +78,17 @@ int	token_add_squote(t_tokenlist *token, char *str)
 	return (len + 1);
 }
 
-void	token_init(t_tokenlist *new, char *newtoken, int pos, t_tokentype ttyp)
+void	token_init(t_tokenlist *new, char *newtoken, int pos)
 {
 	new->token = ft_strdup(newtoken);
-	new->tokentype = ttyp;
 	new->comtype = is_builtin(newtoken);
 	new->mtctype = is_metachar(newtoken);
+	if (new->comtype)
+		new->tokentype = COMMAND;
+	else if (new->mtctype)
+		new->tokentype = METACHAR;
+	else
+		new->tokentype = GENERIC;
 	new->pos = pos;
 	new->width = ft_strlen(newtoken);
 	new->var = NULL;
@@ -93,44 +98,43 @@ void	token_init(t_tokenlist *new, char *newtoken, int pos, t_tokentype ttyp)
 	new->envvar = NULL;
 }
 
+void	token_append(t_tokenlist **tokens, t_tokenlist **new)
+{
+	t_tokenlist *curr;
+
+	curr = *tokens;
+	if (curr == NULL)
+	{
+		*tokens = *new;
+		(*new)->prev = NULL;
+	}
+	else
+	{
+		curr = token_last(tokens);
+		curr->next = *new;
+		(*new)->prev = curr;
+	}
+}
+
 //	creates new node in tokenlist based on token (metachar or command) and the
 //	variable following that token, such as $VARIABLE
-int	token_new(t_mshell *msh, char *newtoken, int pos, t_tokentype ttyp)
+int	token_new(t_mshell *msh, char *newtoken, int pos)
 {
-	t_tokenlist	*curr;
 	t_tokenlist	*new;
 
 	new = malloc(sizeof(t_tokenlist));
 	if (new == NULL)
 		return (0);
-	token_init(new, newtoken, pos, ttyp);
-	if (*newtoken == '$')
+	token_init(new, newtoken, pos);
+	if (new->mtctype == DOLLAR)
 	{
-		new->mtctype = DOLLAR;
 		new->width += token_addvar(new, &msh->lineread[pos + 1]);
 		token_getenv(new, &msh->envlist);
 	}
-	else if (*newtoken == '\"')
-	{
-		new->mtctype = DQUOTE;
+	else if (new->mtctype == DQUOTE)
 		new->width += token_add_dquote(new, &msh->lineread[pos + 1]);
-	}
-	else if (*newtoken == '\'')
-	{
-		new->mtctype = SQUOTE;
+	else if (new->mtctype == SQUOTE)
 		new->width += token_add_squote(new, &msh->lineread[pos + 1]);
-	}
-	curr = msh->tokens;
-	if (curr == NULL)
-	{
-		msh->tokens = new;
-		new->prev = NULL;
-	}
-	else
-	{
-		curr = token_last(&msh->tokens);
-		curr->next = new;
-		new->prev = curr;
-	}
+	token_append(&msh->tokens, &new);
 	return (new->width);
 }

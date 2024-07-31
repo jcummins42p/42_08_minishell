@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/30 16:28:08 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:24:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,14 @@ void last_child(t_pipex *pipex, char *env[])
 		handle_exec_error(pipex, "Execve failed\n");
 }
 
-void ft_pipe(t_pipex *pipex, t_mshell *msh)
+void ft_pipe(t_mshell *msh)
 {
+	t_pipex	*pipex;
 	int i;
 	int j;
 	char **av;
 
+	pipex = msh->pipex;
 	av = ft_get_arg_pipe(msh);
 	i = msh->info->n_pipe + 1;
 	j = 0;

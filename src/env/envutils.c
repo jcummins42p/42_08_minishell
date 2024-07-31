@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 18:14:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:07:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	env_string_clear(char **env)
 	int	i;
 
 	i = 0;
-	while (env[i])
+	while (env && env[i])
 		free (env[i++]);
 	free (env);
 }
@@ -79,6 +79,10 @@ void	env_del(t_envlist **envlist)
 
 	if (envlist == NULL || *envlist == NULL)
 		return ;
+	if ((*envlist)->value)
+		free((*envlist)->value);
+	if ((*envlist)->param)
+		free((*envlist)->param);
 	next = (*envlist)->next;
 	prev = (*envlist)->prev;
 	if (next)

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 18:15:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:02:22 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	env_set_string(t_envlist **envlist, char **env[])
 		(*env)[line++] = ft_strchrjoin(curr->param, curr->value, '=');
 		curr = curr->next;
 	}
-	*env[line] = NULL;
+	(*env)[line] = NULL;
 }
 
 void	env_unset(t_envlist **envlist, const char *search)

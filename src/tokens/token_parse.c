@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:58:07 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 13:02:42 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:30:04 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	token_parse_generic(t_mshell *msh, int *end)
 		while (i < len)
 			token[i++] = msh->lineread[start++];
 		token[len] = '\0';
-		token_new(msh, token, *end - len, GENERIC);
+		token_new(msh, token, *end - len);
 		free (token);
 		return (1);
 	}
@@ -76,21 +76,21 @@ int	token_parse_metachar(t_mshell *msh, int *i)
 
 	metachar = is_metachar(&msh->lineread[*i]);
 	if (metachar == DOLLAR)
-		*i += token_new(msh, "$", *i, METACHAR);
+		*i += token_new(msh, "$", *i);
 	else if (metachar == SQUOTE)
-		*i += token_new(msh, "'", *i, METACHAR);
+		*i += token_new(msh, "'", *i);
 	else if (metachar == DQUOTE)
-		*i += token_new(msh, "\"", *i, METACHAR);
+		*i += token_new(msh, "\"", *i);
 	else if (metachar == PIPE)
-		*i += token_new(msh, "|", *i, METACHAR);
+		*i += token_new(msh, "|", *i);
 	else if (metachar == RDAPP)
-		*i += token_new(msh, ">>", *i, METACHAR);
+		*i += token_new(msh, ">>", *i);
 	else if (metachar == DELIMIT)
-		*i += token_new(msh, "<<", *i, METACHAR);
+		*i += token_new(msh, "<<", *i);
 	else if (metachar == RDOUT)
-		*i += token_new(msh, ">", *i, METACHAR);
+		*i += token_new(msh, ">", *i);
 	else if (metachar == RDIN)
-		*i += token_new(msh, "<", *i, METACHAR);
+		*i += token_new(msh, "<", *i);
 	return (metachar);
 }
 
@@ -100,18 +100,18 @@ int	token_parse_builtin(t_mshell *msh, int *i)
 
 	command = is_builtin(&msh->lineread[*i]);
 	if (command == ECHO)
-		*i += token_new(msh, "echo", *i, COMMAND);
+		*i += token_new(msh, "echo", *i);
 	else if (command == CD)
-		*i += token_new(msh, "cd", *i, COMMAND);
+		*i += token_new(msh, "cd", *i);
 	else if (command == PWD)
-		*i += token_new(msh, "pwd", *i, COMMAND);
+		*i += token_new(msh, "pwd", *i);
 	else if (command == EXPORT)
-		*i += token_new(msh, "export", *i, COMMAND);
+		*i += token_new(msh, "export", *i);
 	else if (command == UNSET)
-		*i += token_new(msh, "unset", *i, COMMAND);
+		*i += token_new(msh, "unset", *i);
 	else if (command == ENV)
-		*i += token_new(msh, "env", *i, COMMAND);
+		*i += token_new(msh, "env", *i);
 	else if (command == EXIT)
-		*i += token_new(msh, "exit", *i, COMMAND);
+		*i += token_new(msh, "exit", *i);
 	return (command);
 }

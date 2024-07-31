@@ -6,17 +6,17 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 12:44:41 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:29:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_STRUCTS_H
 # define MS_STRUCTS_H
 
-typedef struct s_pipex t_pipex;
-typedef struct s_envlist t_envlist;
-typedef struct s_tokenlist t_tokenlist;
-typedef struct s_mshell t_mshell;
+typedef struct s_pipex		t_pipex;
+typedef struct s_envlist	t_envlist;
+typedef struct s_tokenlist	t_tokenlist;
+typedef struct s_mshell		t_mshell;
 
 typedef enum e_tokentype
 {
@@ -48,7 +48,7 @@ typedef enum e_mtctype
 	RDIN,		// < - redirect input
 	RDOUT,		// > - redirect output (overwrite)
 	RDAPP,		// >> - redirect output (append)
-	DELIMIT		// <<
+	DELIMIT
 }	t_mtctype;
 
 typedef struct s_pipex
@@ -65,25 +65,25 @@ typedef struct s_pipex
 
 typedef struct s_envlist
 {
-	char				*param;	// environment variable
-	char				*value; // variable value
 	struct s_envlist	*next;
 	struct s_envlist	*prev;
+	char				*param;	// environment variable
+	char				*value;	// variable value
 }	t_envlist;
 
 typedef struct s_tokenlist
 {
+	struct s_tokenlist	*next;
+	struct s_tokenlist	*prev;
+	t_envlist			*envvar;		// if token is $, pointer to its env var
 	char				*token;			// metachar or generic string
-	t_tokentype			tokentype; 		// GENERIC, METACHAR, COMMAND
+	t_tokentype			tokentype;		// GENERIC, METACHAR, COMMAND
 	t_comtype			comtype;		// enum for quick ref tokentype
 	t_mtctype			mtctype;		// enum for quick ref tokentype
 	int					pos;			// index of first char within string
 	int					width;			// width of token in char
 	char				*var;			// variable given after $ or between ""
 	bool				trail_space;	// for printing env variable with space
-	struct s_envlist	*envvar;		// if token is $, pointer to its env var
-	struct s_tokenlist	*next;
-	struct s_tokenlist	*prev;
 }	t_tokenlist;
 
 typedef struct s_token_inf
@@ -100,6 +100,7 @@ typedef struct s_token_inf
 
 typedef struct s_mshell
 {
+	t_pipex		*pipex;
 	t_tokenlist	*tokens;
 	t_token_inf	*info;
 	t_envlist	*envlist;
