@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 15:34:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:59:19 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 //	initialises and assigns value to a node in env linked list
 static int	env_init_value(char **value, char *envline, int start)
 {
-	char	*out;
 	int		len;
 	int		i;
 
@@ -24,12 +23,13 @@ static int	env_init_value(char **value, char *envline, int start)
 	i = start;
 	while (envline[i++])
 		len++;
-	out = malloc(sizeof(char) * (len + 1));
+	*value = malloc(sizeof(char) * (len + 1));
+	if (*value == NULL)
+		return (-1);
 	i = 0;
 	while (i < len)
-		out[i++] = envline[start++];
-	out[i] = '\0';
-	*value = out;
+		(*value)[i++] = envline[start++];
+	(*value)[i] = '\0';
 	return (len);
 }
 
@@ -38,7 +38,6 @@ static int	env_init_value(char **value, char *envline, int start)
 //	correct place in that line to retreive the following value
 static int	env_init_param(char **param, char *envline)
 {
-	char	*out;
 	int		i;
 	int		len;
 
@@ -46,32 +45,31 @@ static int	env_init_param(char **param, char *envline)
 	while (envline[i] && envline[i] != '=')
 		i++;
 	len = i;
-	out = malloc(sizeof(char) * (len + 1));
-	out[i--] = '\0';
+	*param = malloc(sizeof(char) * (len + 1));
+	(*param)[i--] = '\0';
 	while (i >= 0)
 	{
-		out[i] = envline[i];
+		(*param)[i] = envline[i];
 		i--;
 	}
-	*param = out;
 	return (len);
 }
 
 //	creates new node of env linked list. Parameter and value have already been
 //	created when this is called.
-int	env_new(t_envlist **envlist, const char *newparam, const char *newvalue)
+int	env_new(t_envlist **envlist, const char *newparam, const char *newval)
 {
 	t_envlist	*curr;
 	t_envlist	*new;
 
-	if (*newparam == '\0' || *newvalue == '\0')
+	if (*newparam == '\0' || *newval == '\0')
 		return (0);
 	new = malloc(sizeof(t_envlist));
 	if (new == NULL)
 		return (0);
 	new->next = NULL;
 	new->param = ft_strdup(newparam);
-	new->value = ft_strdup(newvalue);
+	new->value = ft_strdup(newval);
 	curr = *envlist;
 	if (curr == NULL)
 	{
@@ -103,10 +101,12 @@ void	env_from_str(t_envlist **envlist, char *str)
 	if (find)
 	{
 		free (find->value);
-		find->value = ft_strdup(value);
+		find->value = value;
 	}
 	else
 		env_new(envlist, param, value);
+	free(param);
+	free(value);
 }
 
 //	takes *env[] input and creates env linked list

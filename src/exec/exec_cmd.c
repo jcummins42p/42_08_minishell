@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/29 19:57:35 by akretov          ###   ########.fr       */
+/*   Updated: 2024/07/31 18:23:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,25 @@ void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr)
 	}
 }
 
-void	struct_init(t_pipex *pipex, t_mshell *msh)
+void	struct_init(t_mshell *msh)
 {
 	if (msh->info->n_pipe == 0)
-		pipex->pid = (pid_t *)malloc(sizeof(pid_t));
+		msh->pipex->pid = malloc(sizeof(pid_t));
 	else
-		pipex->pid = (pid_t *)malloc(sizeof(pid_t) * msh->info->n_pipe);
-	pipex->fd_in = -1;	//STDIN_FILENO
-	pipex->fd_out = -1;	//STDOUT_FILENO
+		msh->pipex->pid = malloc(sizeof(pid_t) * msh->info->n_pipe);
+	msh->pipex->fd_in = -1;	//STDIN_FILENO
+	msh->pipex->fd_out = -1;	//STDOUT_FILENO
 	// Arguments for execve
-	pipex->paths = find_path(msh->envlist);
-	pipex->cmd_paths = ft_split(pipex->paths, ':');
-	pipex->cmd = NULL;
-	pipex->cmd_args = NULL;
+	msh->pipex->paths = find_path(msh->envlist);
+	msh->pipex->cmd_paths = ft_split(msh->pipex->paths, ':');
+	msh->pipex->cmd = NULL;
+	msh->pipex->cmd_args = NULL;
 }
 
-void	ft_exec_cmd(t_pipex *pipex, t_mshell *msh)
+void	ft_exec_cmd(t_mshell *msh)
 {
+	t_pipex *pipex = msh->pipex;
+
 	pipex->cmd_args = ft_split(msh->lineread, ' ');
 	if (!pipex->cmd_args)
 	{
@@ -82,25 +84,23 @@ void	ft_exec_cmd(t_pipex *pipex, t_mshell *msh)
 
 void	ft_exec_init(t_mshell *msh)
 {
-	t_pipex	*pipex;
-
-	pipex = (t_pipex *)malloc(sizeof(t_pipex));
-	if (pipex == NULL)
+	msh->pipex = (t_pipex *)malloc(sizeof(t_pipex));
+	if (msh->pipex == NULL)
 	{
 		msg(ERR_MEMORY);
 		exit(1);
 	}
-	struct_init(pipex, msh);
+	struct_init(msh);
 
 	if (msh->info->n_pipe == 0)
 	{
-		ft_exec_cmd(pipex, msh);
-		free_pipex(pipex);
+		ft_exec_cmd(msh);
+		free_pipex(msh->pipex);
 		return ;
-	} 
+	}
 	else
-	{		
-		ft_pipe(pipex, msh);
+	{
+		ft_pipe(msh);
 		// for (int i = 0; i < msh->info->n_pipe + 1; i++)
 		// 	printf("Pipe arg%i is %s\n", i, pipe_arg[i]);
 	}
