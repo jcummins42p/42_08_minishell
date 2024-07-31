@@ -6,20 +6,20 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 15:03:56 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 13:00:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_assign(char *str)
+int	is_assign(char *str)
 {
 	int	i;
 
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i])
+	while (str[i] && !is_whitespace(str[i]))
 	{
 		if (str[i] == '=')
 			return (i);
@@ -72,7 +72,7 @@ int	is_builtin(char *str)
 		isbuiltin = ENV;
 	else if (!ft_strncmp(str, "exit", 4))
 		isbuiltin = EXIT;
-	else if (check_assign(str))
+	else if (is_assign(str))
 		isbuiltin = ASSIGN;
 	return (isbuiltin);
 }
@@ -88,9 +88,8 @@ void	tokenize(t_mshell *msh)
 	{
 		while (msh->lineread[i])
 		{
-			token_parse_metachar(msh, &i);
-			token_parse_builtin(msh, &i);
-			token_parse_generic(msh, &i);
+			if (!token_parse_builtin(msh, &i) && !token_parse_metachar(msh, &i))
+				token_parse_generic(msh, &i);
 		}
 	}
 	else

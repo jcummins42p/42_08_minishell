@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 18:16:09 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:49:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	input_cycle(t_mshell *msh)
 		msh->lineread = readline(*msh->prompt);
 		add_history(msh->lineread);
 		tokenize(msh);
+		tokens_print(&msh->tokens);
 		token_get_info(msh);
 		if (input_read(msh))
 			break ;

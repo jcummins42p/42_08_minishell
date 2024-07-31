@@ -6,11 +6,40 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:58:07 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 18:12:49 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 13:02:42 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	token_parse_assign(t_mshell *msh, int *end)
+{
+	char	*token;
+	int		len;
+	int		start;
+	int		i;
+
+	i = 0;
+	while (is_whitespace(msh->lineread[*end]))
+		(*end)++;
+	start = *end;
+	while (msh->lineread[*end] && (is_metachar(&msh->lineread[*end]) < PIPE)\
+		&& !is_whitespace(msh->lineread[*end]))
+		(*end)++;
+	len = *end - start;
+	if (len > 0)
+	{
+		token = malloc(sizeof(char) * len + 1);
+		while (i < len)
+			token[i++] = msh->lineread[start++];
+		token[len] = '\0';
+		token_new(msh, token, *end - len, GENERIC);
+		free (token);
+		return (1);
+	}
+	else
+		return (0);
+}
 
 int	token_parse_generic(t_mshell *msh, int *end)
 {
@@ -23,7 +52,7 @@ int	token_parse_generic(t_mshell *msh, int *end)
 	while (is_whitespace(msh->lineread[*end]))
 		(*end)++;
 	start = *end;
-	while (msh->lineread[*end] && !is_metachar(&msh->lineread[*end]) \
+	while (msh->lineread[*end] && (is_metachar(&msh->lineread[*end]) < PIPE)\
 		&& !is_whitespace(msh->lineread[*end]))
 		(*end)++;
 	len = *end - start;

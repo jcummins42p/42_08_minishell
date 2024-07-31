@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 17:55:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:44:41 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ typedef enum e_mtctype
 {
 	NO_MTC,
 	DOLLAR,		// $ - environment variable
-	PIPE,		// |
 	SQUOTE,		// '
 	DQUOTE,		// "
+	PIPE,		// |
 	RDIN,		// < - redirect input
 	RDOUT,		// > - redirect output (overwrite)
 	RDAPP,		// >> - redirect output (append)
