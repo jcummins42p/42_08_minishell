@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/31 18:23:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:39:14 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr)
 	}
 }
 
-void	struct_init(t_mshell *msh)
+void	pipex_init(t_mshell *msh)
 {
 	if (msh->info->n_pipe == 0)
 		msh->pipex->pid = malloc(sizeof(pid_t));
@@ -38,7 +38,7 @@ void	struct_init(t_mshell *msh)
 	msh->pipex->fd_in = -1;	//STDIN_FILENO
 	msh->pipex->fd_out = -1;	//STDOUT_FILENO
 	// Arguments for execve
-	msh->pipex->paths = find_path(msh->envlist);
+	msh->pipex->paths = *env_get_value(&msh->envlist, "PATH");
 	msh->pipex->cmd_paths = ft_split(msh->pipex->paths, ':');
 	msh->pipex->cmd = NULL;
 	msh->pipex->cmd_args = NULL;
@@ -90,8 +90,7 @@ void	ft_exec_init(t_mshell *msh)
 		msg(ERR_MEMORY);
 		exit(1);
 	}
-	struct_init(msh);
-
+	pipex_init(msh);
 	if (msh->info->n_pipe == 0)
 	{
 		ft_exec_cmd(msh);

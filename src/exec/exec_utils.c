@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:05:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/31 18:06:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:40:45 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,6 @@ void	msg_error(char *err, t_pipex *pipex)
 	free(pipex);
 	perror(err);
 	exit (1);
-}
-
-// can be used to find any value based on the param - if we add additional arg char *value
-char	*find_path(t_envlist *env)
-{
-	while (env->next != NULL)
-	{
-		if (ft_strncmp("PATH", env->param, 4) == 0)
-			return (env->value);
-		env = env->next;
-	}
-	return (NULL);
 }
 
 char	*get_cmd(char **paths, char *cmd)

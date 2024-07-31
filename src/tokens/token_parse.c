@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 17:58:07 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:30:04 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:32:37 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	token_parse_assign(t_mshell *msh, int *end)
 		while (i < len)
 			token[i++] = msh->lineread[start++];
 		token[len] = '\0';
-		token_new(msh, token, *end - len, GENERIC);
+		token_new(msh, token, *end - len);
 		free (token);
 		return (1);
 	}
