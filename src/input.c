@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 13:51:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:18:14 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	input_execute(t_mshell *msh)
 		else if (token->comtype == ECHO)
 			echo_tokens(msh, 1);
 		else if (token->comtype == ENV)
-			env_print(&msh->envlist);
+			env_print(&msh->envlist, ENVVAR);
 		else if (token->comtype == UNSET)
 			unset(msh);
 		else if (token->comtype == EXPORT)
@@ -53,7 +53,7 @@ void	input_cycle(t_mshell *msh)
 		msh->lineread = readline(*msh->prompt);
 		add_history(msh->lineread);
 		tokenize(msh);
-		tokens_print(&msh->tokens);
+		tokens_print_list(&msh->tokens);
 		token_get_info(msh);
 		if (input_execute(msh))
 			break ;

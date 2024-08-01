@@ -3,94 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:30:22 by jcummins         ###   ########.fr       */
+/*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
+/*   Updated: 2024/08/01 17:17:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_assign(char *str)
+int		token_parse(t_mshell *msh, int end)
 {
-	int	i;
+	char	*input;
+	char	*token;
+	int		start;
+	int		i;
 
 	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] && !is_whitespace(str[i]))
+	input = msh->lineread;
+	while (input[end] && is_whitespace(input[end]))
+		end++;
+	start = end;
+	while (input[end] && !is_whitespace(input[end]))
+		end++;
+	if ((end - start) > 0)
 	{
-		if (str[i] == '=')
-			return (i);
-		else
-			i++;
+		token = malloc(sizeof(char) * (end - start + 1));
+		while (start < end)
+			token[i++] = input[start++];
+		token[i] = '\0';
+		token_new(msh, token, end - i);
+		free(token);
 	}
-	return (0);
+	return (i + 1);
 }
 
-int	is_metachar(char *str)
-{
-	t_mtctype	ismeta;
-
-	ismeta = NO_MTC;
-	if (!ft_strncmp(str, "$", 1))
-		ismeta = DOLLAR;
-	else if (!ft_strncmp(str, "'", 1))
-		ismeta = SQUOTE;
-	else if (!ft_strncmp(str, "\"", 1))
-		ismeta = DQUOTE;
-	else if (!ft_strncmp(str, "|", 1))
-		ismeta = PIPE;
-	else if (!ft_strncmp(str, ">>", 2))
-		ismeta = RDAPP;
-	else if (!ft_strncmp(str, "<<", 2))
-		ismeta = DELIMIT;
-	else if (!ft_strncmp(str, ">", 1))
-		ismeta = RDOUT;
-	else if (!ft_strncmp(str, "<", 1))
-		ismeta = RDIN;
-	return (ismeta);
-}
-
-int	is_builtin(char *str)
-{
-	t_comtype	isbuiltin;
-
-	isbuiltin = NO_COM;
-	if (!ft_strncmp(str, "echo", 4))
-		isbuiltin = ECHO;
-	else if (!ft_strncmp(str, "cd", 2))
-		isbuiltin = CD;
-	else if (!ft_strncmp(str, "pwd", 3))
-		isbuiltin = PWD;
-	else if (!ft_strncmp(str, "export", 6))
-		isbuiltin = EXPORT;
-	else if (!ft_strncmp(str, "unset", 5))
-		isbuiltin = UNSET;
-	else if (!ft_strncmp(str, "env", 3))
-		isbuiltin = ENV;
-	else if (!ft_strncmp(str, "exit", 4))
-		isbuiltin = EXIT;
-	else if (is_assign(str))
-		isbuiltin = ASSIGN;
-	return (isbuiltin);
-}
-
-//	if any parse function finds something to tokenize, it increments i via
-//	pointer to to index immediately after the token
 void	tokenize(t_mshell *msh)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (msh->lineread)
 	{
 		while (msh->lineread[i])
-		{
-			if (!token_parse_builtin(msh, &i) && !token_parse_metachar(msh, &i))
-				token_parse_generic(msh, &i);
-		}
+			i += token_parse(msh, i);
 	}
 	else
 		token_clear(&msh->tokens);

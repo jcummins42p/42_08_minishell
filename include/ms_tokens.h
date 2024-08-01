@@ -6,12 +6,20 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:47:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 15:47:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:51:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_TOKENS_H
 # define MS_TOKENS_H
+
+//	token_print.c
+void		token_print(t_tokenlist *token);
+void		tokens_print_list(t_tokenlist **tokens);
+
+//	new_tokenize.c
+int			new_token_parse(t_mshell *msh, int end);
+void		new_tokenize(t_mshell *msh);
 
 //	tokenize.c
 int			is_builtin(char *str);

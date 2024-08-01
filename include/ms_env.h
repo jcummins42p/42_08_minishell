@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:03 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 13:58:27 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:13:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		env_from_str(t_envlist **envlist, char *str, t_vscope scope);
 void		env_init(t_envlist **envlist, char *env[]);
 
 //	envutils.c
-void		env_print(t_envlist **envlist);
+void		env_print(t_envlist **envlist, t_vscope scope);
 int			env_list_size(t_envlist **envlist);
 void		env_string_clear(char **env);
 void		env_list_clear(t_envlist **envlist);

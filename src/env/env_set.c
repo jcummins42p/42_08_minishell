@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 13:55:23 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:24:07 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,10 @@ void	env_set(t_envlist **envlist, const char *search, const char *newval, \
 	t_envlist	*find;
 
 	if (!envlist || !search || !newval)
-	{
-		ft_printf("error setting env variable: input invalid\n");
 		return ;
-	}
 	find = env_search(envlist, search);
 	if (find)
 	{
-		ft_printf("changing variable %s to new value %s\n", search, newval);
 		free (find->value);
 		find->value = ft_strdup(newval);
 		if (scope == ENVVAR)
@@ -99,10 +95,7 @@ void	env_set(t_envlist **envlist, const char *search, const char *newval, \
 	else
 	{
 		if (env_valid(search))
-		{
-			ft_printf("creating variable %s with value %s\n", search, newval);
 			env_new(envlist, search, newval, scope);
-		}
 		else
 			ft_printf("export: not valid in this context: %s\n", search);
 	}

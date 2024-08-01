@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_token.c                                       :+:      :+:    :+:   */
+/*   com_echo_token.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 13:48:30 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:20:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	echo_one_token(t_tokenlist *token, int fd)
 {
 	if (token->envvar)
 		ft_putstr_fd(token->envvar->value, fd);
-	else if (token->mtctype == DOLLAR && !token->envvar)
+	else if (token->mtctype == DOLLAR && (!token->envvar || *token->var == '\0'))
 		return (0);
 	else if (token->mtctype != DOLLAR && token->var && !token->envvar)
 		ft_putstr_fd(token->var, fd);
