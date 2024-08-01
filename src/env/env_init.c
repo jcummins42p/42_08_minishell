@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 13:10:31 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:00:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,28 +57,29 @@ static int	env_init_param(char **param, char *envline)
 
 //	creates new node of env linked list. Parameter and value have already been
 //	created when this is called.
-int	env_new(t_envlist **envlist, const char *newparam, const char *newval)
+int	env_new(t_envlist **env, const char *param, const char *val, t_vscope scope)
 {
 	t_envlist	*curr;
 	t_envlist	*new;
 
-	if (*newparam == '\0' || *newval == '\0')
+	if (*param == '\0' || *val == '\0')
 		return (0);
 	new = malloc(sizeof(t_envlist));
 	if (new == NULL)
 		return (0);
 	new->next = NULL;
-	new->param = ft_strdup(newparam);
-	new->value = ft_strdup(newval);
-	curr = *envlist;
+	new->param = ft_strdup(param);
+	new->value = ft_strdup(val);
+	new->scope = scope;
+	curr = *env;
 	if (curr == NULL)
 	{
-		*envlist = new;
+		*env = new;
 		new->prev = NULL;
 	}
 	else
 	{
-		curr = env_last(envlist);
+		curr = env_last(env);
 		curr->next = new;
 		new->prev = curr;
 	}
@@ -87,7 +88,7 @@ int	env_new(t_envlist **envlist, const char *newparam, const char *newval)
 
 //	makes new env node from a single string assignation that includes a '='
 //	checks for validity done within the env_set function
-void	env_from_str(t_envlist **envlist, char *str)
+void	env_from_str(t_envlist **envlist, char *str, t_vscope scope)
 {
 	char		*param;
 	char		*value;
@@ -97,7 +98,7 @@ void	env_from_str(t_envlist **envlist, char *str)
 	value = NULL;
 	len = env_init_param(&param, str);
 	env_init_value(&value, str, len);
-	env_set(envlist, param, value);
+	env_set(envlist, param, value, scope);
 	free(param);
 	free(value);
 }
@@ -109,7 +110,7 @@ void	env_init(t_envlist **envlist, char *env[])
 
 	i = 0;
 	while (env[i])
-		env_from_str(envlist, env[i++]);
-	env_set(envlist, "SHELL", "./minishell");
-	env_set(envlist, "PS1", "$ ");
+		env_from_str(envlist, env[i++], ENVVAR);
+	env_set(envlist, "SHELL", "./minishell", ENVVAR);
+	env_set(envlist, "PS1", "$ ", ENVVAR);
 }

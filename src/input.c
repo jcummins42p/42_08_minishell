@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 19:22:04 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:51:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	input_execute(t_mshell *msh)
 		else if (token->comtype == UNSET)
 			unset(msh);
 		else if (token->comtype == EXPORT)
-			export_var(msh);
+			export_var(msh, ENVVAR);
 		else if (token->comtype == ASSIGN)
-			export_var(msh);
+			export_var(msh, SHLVAR);
 		else if (token->comtype == CD)
 			change_dir(msh, token->next->token);
 		else

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 13:16:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:55:23 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	env_set_string(t_envlist **envlist, char **env[])
 	*env = malloc(sizeof (char *) * (size + 1));
 	while (curr)
 	{
-		(*env)[line++] = ft_strchrjoin(curr->param, curr->value, '=');
+		if (curr->scope == ENVVAR)
+			(*env)[line++] = ft_strchrjoin(curr->param, curr->value, '=');
 		curr = curr->next;
 	}
 	(*env)[line] = NULL;
@@ -76,7 +77,8 @@ bool	env_valid(const char *search)
 
 //	either updates search env variable to newval, or creates new node if input
 //	is valid
-void	env_set(t_envlist **envlist, const char *search, const char *newval)
+void	env_set(t_envlist **envlist, const char *search, const char *newval, \
+		t_vscope scope)
 {
 	t_envlist	*find;
 
@@ -91,13 +93,15 @@ void	env_set(t_envlist **envlist, const char *search, const char *newval)
 		ft_printf("changing variable %s to new value %s\n", search, newval);
 		free (find->value);
 		find->value = ft_strdup(newval);
+		if (scope == ENVVAR)
+			find->scope = ENVVAR;
 	}
 	else
 	{
 		if (env_valid(search))
 		{
 			ft_printf("creating variable %s with value %s\n", search, newval);
-			env_new(envlist, search, newval);
+			env_new(envlist, search, newval, scope);
 		}
 		else
 			ft_printf("export: not valid in this context: %s\n", search);

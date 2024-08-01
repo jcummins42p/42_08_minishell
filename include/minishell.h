@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 15:46:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:35:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# include "libft.h"
+
+# include "ms_enums.h"
 # include "ms_structs.h"
 # include "ms_funcs.h"
-# include "libft.h"
 # include "ms_pipe.h"
 # include "ms_env.h"
 # include "ms_tokens.h"

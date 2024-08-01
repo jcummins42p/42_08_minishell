@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:58:16 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:50:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,6 @@ typedef struct s_pipex		t_pipex;
 typedef struct s_envlist	t_envlist;
 typedef struct s_tokenlist	t_tokenlist;
 typedef struct s_mshell		t_mshell;
-
-typedef enum e_tokentype
-{
-	GENERIC,
-	METACHAR,
-	COMMAND
-}	t_tokentype;
-
-typedef enum e_comtype
-{
-	NO_COM,
-	ECHO,
-	CD,
-	PWD,
-	EXPORT,
-	UNSET,
-	ENV,
-	ASSIGN,
-	EXIT
-}	t_comtype;
-
-typedef enum e_mtctype
-{
-	NO_MTC,
-	DOLLAR,		// $ - environment variable
-	SQUOTE,		// '
-	DQUOTE,		// "
-	PIPE,		// |
-	RDIN,		// < - redirect input
-	RDOUT,		// > - redirect output (overwrite)
-	RDAPP,		// >> - redirect output (append)
-	DELIMIT
-}	t_mtctype;
 
 typedef struct s_pipex
 {
@@ -66,6 +33,7 @@ typedef struct s_envlist
 {
 	struct s_envlist	*next;
 	struct s_envlist	*prev;
+	t_vscope			scope;
 	char				*param;	// environment variable
 	char				*value;	// variable value
 }	t_envlist;

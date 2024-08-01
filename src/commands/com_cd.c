@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   com_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:32:29 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 18:10:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:01:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@
 //	correct output using pwd command
 void	change_dir(t_mshell *msh, char *newdir)
 {
-	env_set(&msh->envlist, "OLDPWD", newdir);
+	env_set(&msh->envlist, "OLDPWD", newdir, ENVVAR);
 	env_set_string(&msh->envlist, &msh->env);
 }

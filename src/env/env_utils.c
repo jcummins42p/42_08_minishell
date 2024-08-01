@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envutils.c                                         :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 12:53:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:07:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:04:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	env_print(t_envlist **envlist)
 	curr = *envlist;
 	while (curr)
 	{
-		if (curr->value)
+		if (curr->value && curr->scope == ENVVAR)
 			printf("%s=%s\n", curr->param, curr->value);
 		curr = curr->next;
 	}
