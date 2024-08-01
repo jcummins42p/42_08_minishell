@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 17:18:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:42:17 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ void	input_cleanup(t_mshell *msh)
 	msh->lineread = NULL;
 }
 
-int	input_execute(t_mshell *msh)
+int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 {
-	t_tokenlist	*token;
-
-	token = msh->tokens;
-	if (msh->tokens)
+	if (!token)
+		return (1);
+	else
 	{
 		if (token->comtype == EXIT)
 			msh->running = false;
@@ -41,7 +40,7 @@ int	input_execute(t_mshell *msh)
 		else if (token->comtype == CD)
 			change_dir(msh, token->next->token);
 		else
-			ft_exec_init(msh);
+			return (1);
 	}
 	return (0);
 }
@@ -55,8 +54,10 @@ void	input_cycle(t_mshell *msh)
 		tokenize(msh);
 		tokens_print_list(&msh->tokens);
 		token_get_info(msh);
-		if (input_execute(msh))
-			break ;
+		if (msh->tokens->comtype == EXIT)
+			msh->running = false;
+		else
+			ft_exec_init(msh);
 		input_cleanup(msh);
 	}
 }

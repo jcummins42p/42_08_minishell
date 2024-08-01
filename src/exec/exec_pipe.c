@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/31 19:00:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 18:06:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ void last_child(t_pipex *pipex, char *env[])
 void ft_pipe(t_mshell *msh)
 {
 	t_pipex	*pipex;
-	int i;
-	int j;
-	char **av;
+	char	**av;
+	int		i;
+	int		j;
 
 	pipex = msh->pipex;
 	av = ft_get_arg_pipe(msh);
@@ -131,7 +131,8 @@ void ft_pipe(t_mshell *msh)
 		}
 		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
 		if (!pipex->cmd) {
-			msg("Command not found\n");
+			if (!exec_builtin(msh, msh->tokens))
+				msg("Command not found\n");
 			/*free_pipex(pipex);*/
 			/*return;*/
 		}

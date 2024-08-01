@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 13:50:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:59:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ typedef struct s_mshell		t_mshell;
 
 typedef struct s_pipex
 {
-	pid_t	*pid;
-	int		fd_pipe[2];		// needed for pipe
-	int		fd_in;			// this is for re-direction - From
-	int		fd_out;			// this is for re-direction - To
-	char	**cmd_paths;
-	char	**cmd_args;
-	char	*cmd;
+	t_tokenlist	**cmd_tokens;
+	pid_t		*pid;
+	int			fd_pipe[2];		// needed for pipe
+	int			fd_in;			// this is for re-direction - From
+	int			fd_out;			// this is for re-direction - To
+	char		**cmd_paths;
+	char		**cmd_args;
+	char		*cmd;
 }	t_pipex;
 
 typedef struct s_envlist

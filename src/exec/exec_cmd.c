@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/31 18:59:20 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 18:14:30 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	ft_exec_cmd(t_mshell *msh)
 		exit(1);
 	}
 	pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+	if (exec_builtin(msh, msh->tokens))
+		return ;
 	if (!pipex->cmd)
 	{
 		msg(ERR_CMD);
