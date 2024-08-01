@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envinit.c                                          :+:      :+:    :+:   */
+/*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 17:59:19 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:10:31 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int	env_new(t_envlist **envlist, const char *newparam, const char *newval)
 }
 
 //	makes new env node from a single string assignation that includes a '='
+//	checks for validity done within the env_set function
 void	env_from_str(t_envlist **envlist, char *str)
 {
-	t_envlist	*find;
 	char		*param;
 	char		*value;
 	int			len;
@@ -97,14 +97,7 @@ void	env_from_str(t_envlist **envlist, char *str)
 	value = NULL;
 	len = env_init_param(&param, str);
 	env_init_value(&value, str, len);
-	find = env_search(envlist, param);
-	if (find)
-	{
-		free (find->value);
-		find->value = value;
-	}
-	else
-		env_new(envlist, param, value);
+	env_set(envlist, param, value);
 	free(param);
 	free(value);
 }

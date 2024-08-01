@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envset.c                                           :+:      :+:    :+:   */
+/*   env_set.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:02:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:16:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	env_set_string(t_envlist **envlist, char **env[])
 	(*env)[line] = NULL;
 }
 
+//	deletes env node from linked list based on search parameter
 void	env_unset(t_envlist **envlist, const char *search)
 {
 	t_envlist	*find;
@@ -51,8 +52,6 @@ void	env_unset(t_envlist **envlist, const char *search)
 	find = env_search(envlist, search);
 	if (find)
 		env_del(&find);
-	else
-		ft_printf("Error, no parameter of that name found in env\n");
 }
 
 //	checks that an environment variable name is valid before creating it
@@ -75,14 +74,21 @@ bool	env_valid(const char *search)
 	return (true);
 }
 
+//	either updates search env variable to newval, or creates new node if input
+//	is valid
 void	env_set(t_envlist **envlist, const char *search, const char *newval)
 {
 	t_envlist	*find;
 
+	if (!envlist || !search || !newval)
+	{
+		ft_printf("error setting env variable: input invalid\n");
+		return ;
+	}
 	find = env_search(envlist, search);
 	if (find)
 	{
-		ft_printf("Changing variable %s to new value %s\n", search, newval);
+		ft_printf("changing variable %s to new value %s\n", search, newval);
 		free (find->value);
 		find->value = ft_strdup(newval);
 	}
