@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:31 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 16:24:07 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:57:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ bool	env_valid(const char *search)
 	int	i;
 
 	i = 0;
-	if (ft_isalpha(search[i]) || search[i] == '_')
+	if (ft_isalpha(search[i]) || search[i] == '_' || search[i] == '$' \
+			|| search[i] == '?')
 		i++;
 	else
 		return (false);

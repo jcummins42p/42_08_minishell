@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 13:32:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 13:50:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:46:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,12 @@ typedef enum e_vscope
 	SHLVAR,
 	ENVVAR
 }	t_vscope;
+
+typedef enum e_valid_in
+{
+	VALID_IN,
+	NO_INPUT,
+	NO_QUOTE,
+}	t_valid_in;
 
 #endif

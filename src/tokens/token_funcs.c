@@ -6,13 +6,13 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:15:41 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 16:43:06 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 13:16:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	token_get_info(t_mshell *msh)
+void	tokens_get_info(t_mshell *msh)
 {
 	t_token_inf	*info;
 

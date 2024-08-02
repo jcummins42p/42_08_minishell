@@ -6,25 +6,32 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:47:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 16:51:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 13:33:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_TOKENS_H
 # define MS_TOKENS_H
 
+//	token_checks.c - check a string for its function in the shell
+int			is_assign(char *str);	//	if a=2, returns index of = operator
+int			is_metachar(char *str);	//	return t_mtctype of string
+int			is_builtin(char *str);	//	return t_comtype of string
+
 //	token_print.c
 void		token_print(t_tokenlist *token);
 void		tokens_print_list(t_tokenlist **tokens);
+
+//	token_expand.c
+char 		*expand_string_sq(char *input);
+char 		*expand_string_dq(t_mshell *msh, char *input);
 
 //	new_tokenize.c
 int			new_token_parse(t_mshell *msh, int end);
 void		new_tokenize(t_mshell *msh);
 
 //	tokenize.c
-int			is_builtin(char *str);
-int			is_metachar(char *str);
-void		tokenize(t_mshell *msh);
+int			tokenize(t_mshell *msh);
 
 //	tokenlist.c
 void		tokens_print(t_tokenlist **tokens);
@@ -33,7 +40,7 @@ int			token_new(t_mshell *msh, char *newtoken, int pos);
 void		token_clear(t_tokenlist **tokens);
 
 //	tokenfuncs.c
-void		token_get_info(t_mshell *msh);
+void		tokens_get_info(t_mshell *msh);
 t_tokenlist	*token_at_pos(t_tokenlist **tokens, int serachpos);
 int			token_count_type(t_tokenlist **tokens, char *metachar);
 void		token_pos_type(t_tokenlist **tokens, int **pos, char *metachar);

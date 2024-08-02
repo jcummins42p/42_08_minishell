@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envget.c                                           :+:      :+:    :+:   */
+/*   env_get.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:31:58 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:02:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:31:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_envlist	*env_search(t_envlist **envlist, const char *search)
 	return (NULL);
 }
 
-//	search env list for parameter by search string and return 'value' string
+//	search env list for parameter by search string and return pointer to string
 char	**env_get_value(t_envlist **envlist, const char *search)
 {
 	t_envlist	*find;
@@ -62,4 +62,16 @@ char	**env_get_value(t_envlist **envlist, const char *search)
 		return (&find->value);
 	else
 		return (NULL);
+}
+
+//	search env list for parameter by search string and return 'value' string
+char	*env_get_string(t_envlist **envlist, const char *search)
+{
+	t_envlist	*find;
+
+	find = env_search(envlist, search);
+	if (find)
+		return (ft_strdup(find->value));
+	else
+		return (ft_strdup(""));
 }

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 17:59:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:14:10 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_tokenlist
 	struct s_tokenlist	*prev;
 	t_envlist			*envvar;		// if token is $, pointer to its env var
 	char				*token;			// metachar or generic string
+	char				*expand;
 	t_tokentype			tokentype;		// GENERIC, METACHAR, COMMAND
 	t_comtype			comtype;		// enum for quick ref tokentype
 	t_mtctype			mtctype;		// enum for quick ref tokentype
@@ -76,6 +77,7 @@ typedef struct s_mshell
 	char		**prompt;
 	char		**path;
 	char		*lineread;
+	t_valid_in	valid_input;
 	bool		running;
 }	t_mshell;
 

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/01 18:06:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:07:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char **ft_get_arg_pipe(t_mshell *msh)
 	{
 		if (tokens->mtctype != PIPE)
 		{
+			/*new_arg = ft_strjoin(arg[i], tokens->expand);*/
 			if (tokens->token[0] == '$')
 				new_arg = ft_strjoin(arg[i], tokens->envvar->value);
 			else if (tokens->var)
@@ -116,11 +117,11 @@ void ft_pipe(t_mshell *msh)
 		return;
 	}
 	pipex->fd_in = dup(STDIN_FILENO); // Start reading from stdin initially
-	pipex->fd_out = open("text.txt", O_RDWR); // Save original stdout
-	while (get_next_line(pipex->fd_out))	//	This to append >>
-		;
+	/*pipex->fd_out = open("text.txt", O_RDWR); // Save original stdout*/
+	/*while (get_next_line(pipex->fd_out))	//	This to append >>*/
+		/*;*/
 	/*printf("File descriptor %d", pipex->fd_out);*/
-	/*pipex->fd_out = dup(STDOUT_FILENO); // Save original stdout*/
+	pipex->fd_out = dup(STDOUT_FILENO); // Save original stdout
 	while (j < i)
 	{
 		pipex->cmd_args = ft_split(av[j], ' ');

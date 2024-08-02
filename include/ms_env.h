@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:03 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 14:13:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/02 14:17:49 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 t_envlist	*env_last(t_envlist **envlist);
 t_envlist	*env_search(t_envlist **envlist, const char *search);
 char		**env_get_value(t_envlist **envlist, const char *search);
+char		*env_get_string(t_envlist **envlist, const char *search);
 
 //	envinit.c
 int			env_new(t_envlist **env, const char *param, const char *val, \
