@@ -6,102 +6,164 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/02 16:03:23 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/03 19:03:46 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr)
+void	handle_exec_error(t_pipex *pipex, const char *error_message)
 {
-	int start = 0;
-	int	i;
-
-	start = 0;
-	i = 0;
-	while (i <= num_pipes)
-	{
-		int length = pipe_pos[i] - start;
-		(*pipe_arg)[i] = (char *)malloc(sizeof(char) * (length + 1));
-		ft_strlcpy((*pipe_arg)[i], ptr + start, length + 1);
-		start = pipe_pos[i] + 1; // Move start to character after '|'
-		i++;
-	}
+	(void)pipex;
+	/*free_pipex(pipex);*/
+	msg(error_message);
+	exit(1);
 }
 
-void	pipex_init(t_mshell *msh)
+
+int	ft_open_file(const char *filename, int flags, mode_t mode)
 {
-	if (msh->info->n_pipe == 0)
-		msh->pipex->pid = malloc(sizeof(pid_t));
-	else
-		msh->pipex->pid = malloc(sizeof(pid_t) * msh->info->n_pipe);
-	msh->pipex->fd_in = -1;	//STDIN_FILENO
-	msh->pipex->fd_out = -1;	//STDOUT_FILENO
-	// Arguments for execve
-	msh->pipex->cmd_paths = ft_split(*msh->path, ':');
-	msh->pipex->cmd = NULL;
-	msh->pipex->cmd_args = NULL;
+	int fd = open(filename, flags, mode);
+	if (fd == -1)
+	{
+		write(STDERR_FILENO, "Couldn't open the file\n", 23);
+	}
+	return (fd);
+}
+
+
+void	ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens)
+{
+	if (tokens->mtctype == RDIN)
+	{
+		tokens = tokens->next;
+		pipex->fd_in = ft_open_file(tokens->var, O_RDONLY, 0);
+	}
+	else if (tokens->mtctype == RDOUT)
+	{
+		tokens = tokens->next;
+		pipex->fd_out = ft_open_file(tokens->var, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
+	else if (tokens->mtctype == RDAPP)
+	{
+		tokens = tokens->next;
+		pipex->fd_out = ft_open_file(tokens->var, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
+	tokens = tokens->next;
+}
+
+// Function to get arguments
+char	**ft_get_arg(t_pipex *pipex, t_tokenlist *tokens)
+{
+	char		**arg;
+	int			i;
+	t_tokenlist	*ptr;
+
+	// Count the number of arguments
+	ptr = tokens;
+	i = 0;
+	while (ptr && ptr->mtctype != PIPE)
+	{
+		if (ptr->mtctype != RDIN && ptr->mtctype != RDOUT && ptr->mtctype != RDAPP)
+		{
+			i++;
+		}
+		ptr = ptr->next;
+	}
+
+	// Allocate memory for arguments array
+	arg = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!arg)
+	{
+		write(STDERR_FILENO, "Memory allocation failed\n", 25);
+		return NULL;
+	}
+
+	// Populate the arguments array
+	ptr = tokens;
+	i = 0;
+	while (ptr && ptr->mtctype != PIPE)
+	{
+		if (ptr->mtctype == RDIN || ptr->mtctype == RDOUT || ptr->mtctype == RDAPP)
+		{
+			ft_handle_redirection(pipex, tokens);
+		}
+		else
+		{
+			arg[i] = ptr->var;
+			i++;
+			ptr = ptr->next;
+		}
+	}
+	arg[i] = NULL;
+
+	return arg;
 }
 
 void	ft_exec_cmd(t_mshell *msh)
 {
-	t_pipex *pipex = msh->pipex;
+	t_pipex	*pipex;
+	int		n_pipes;
+	char	**arg;
+	int		j;
 
-	pipex->cmd_args = ft_split(msh->lineread, ' ');
-	if (!pipex->cmd_args)
+	pipex = msh->pipex;
+	n_pipes = msh->info->n_pipe;
+	j = 0;
+	arg = NULL;
+	//If there is 1 builtin command without pipe then it should be executed by main program
+	//Unique case
+	if (n_pipes == 0 && !exec_builtin(msh, msh->tokens))
+		return;
+	else 
 	{
-		msg(ERR_MEMORY);
-		exit(1);
-	}
-	pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
-	if (!exec_builtin(msh, msh->tokens))
-		return ;
-	if (!pipex->cmd)
-	{
-		msg(ERR_CMD);
-		return ;
-	}
-	pipex->pid[0] = fork();
-	if (pipex->pid[0] < 0)
-	{
-		msg(ERR_FORK);
-		return ;
-	}
-	if (pipex->pid[0] == 0)
-	{
-		if (!execve(pipex->cmd, pipex->cmd_args, msh->env))
+		pipex->pid = (pid_t *)malloc(sizeof(pid_t) * (n_pipes + 1));
+		if (!pipex->pid)
 		{
-			msg(ERR_EXEC);
-			exit(1);
+			msg("Memory allocation error");
+			return;
 		}
-	}
-	//in the future setup signals
-	if (waitpid(pipex->pid[0], NULL, 0) == -1)
-	{
-		msg(ERR_WAIT);
-		return ;
-	}
-}
+		while (j < n_pipes)
+		{
+			pipex->cmd_args = ft_get_arg(pipex, msh->tokens);
+			// add error handling for cmd_args
+			for (int i = 0; pipex->cmd_args[i]; i++)
+				printf("Is it working %s\n?", pipex->cmd_args[i]);
+			
+			pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+			// add error handling for cmd
+			if (j < n_pipes - 1)
+			{ // For all commands except the last one
+			if (pipe(pipex->fd_pipe) < 0)
+				handle_exec_error(pipex, "Pipe creation error\n");
+			}
+			pipex->pid[j] = fork();
+		if (pipex->pid[j] < 0) {
+			handle_exec_error(pipex, "Fork error\n");
+		}
 
-void	ft_exec_init(t_mshell *msh)
-{
-	msh->pipex = (t_pipex *)malloc(sizeof(t_pipex));
-	if (msh->pipex == NULL)
-	{
-		msg(ERR_MEMORY);
-		exit(1);
-	}
-	pipex_init(msh);
-	if (msh->info->n_pipe == 0)
-	{
-		ft_exec_cmd(msh);
-		free_pipex(msh->pipex);
-		return ;
-	}
-	else
-	{
-		ft_pipe(msh);
-		// for (int i = 0; i < msh->info->n_pipe + 1; i++)
-		// 	printf("Pipe arg%i is %s\n", i, pipe_arg[i]);
+		if (pipex->pid[j] == 0)
+		{ // Child process
+			if (j == n_pipes - 1) { // Last command
+				last_child(pipex, msh->env);
+			} else {
+				child(pipex, msh->env);
+			}
+		}
+		// Parent process: Close write end and update fd_in for next child
+		close(pipex->fd_pipe[1]);
+		close(pipex->fd_in);
+
+		// For the next command, fd_in becomes the read end of the current pipe
+		if (j < n_pipes - 1)
+			pipex->fd_in = pipex->fd_pipe[0];
+		j++;
+		}
+		// ADD signals
+		for (int k = 0; k < msh->info->n_pipe + 1; k++)
+			waitpid(pipex->pid[k], NULL, 0);
+		close(pipex->fd_in);
+		close(pipex->fd_out);
+		free_pipex(pipex);
 	}
 }
