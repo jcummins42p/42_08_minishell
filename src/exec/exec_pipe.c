@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/03 18:31:58 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/04 17:09:57 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ void child(t_pipex *pipex, char *env[])
 		handle_exec_error(pipex, "Execve failed\n");
 }
 
-void last_child(t_pipex *pipex, char *env[])
+void last_child(t_pipex *pipex, char *env[], int n_pipes)
 {
-	close(pipex->fd_pipe[1]); // Close the unused write end
+	if (n_pipes != 0)
+		close(pipex->fd_pipe[1]); // Close the unused write end
 
 	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
 		handle_exec_error(pipex, "Error duplicating file descriptor for stdin\n");
+	if (n_pipes != 0)
 	close(pipex->fd_pipe[0]); // Close the unused read end
 
 	// Last child outputs to the specified output or terminal

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/03 19:01:26 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/04 17:18:12 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,23 @@
 # define ERR_FORK "Fork wasnt created\n"
 # define ERR_WAIT "Something happened with child process\n"
 
-//	exec_cmd
-void	handle_exec_error(t_pipex *pipex, const char *error_message);
-int		ft_open_file(const char *filename, int flags, mode_t mode);
-void	ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens);
-char	**ft_get_arg(t_pipex *pipex, t_tokenlist *tokens);
-void	ft_exec_cmd(t_mshell *msh);
+//	exec_cmd.c
+void 		handle_exec_error(t_pipex *pipex, char *str);
+void		ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens);
+char		**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens);
+int 		count_args(t_tokenlist *tokens);
+void 		populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg);
+void		ft_exec_cmd(t_mshell *msh);
+int			init_pid(t_pipex *pipex, int n_pipes);
+void		execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes);
+void		fork_and_execute(t_pipex *pipex, t_mshell *msh, int j, int n_pipes);
+void		cleanup(t_pipex *pipex, int n_pipes);
+int			ft_open_file(const char *filename, int flags, mode_t mode);
 
 
 //	exec_pipe.c
 void	child(t_pipex *pipex, char *env[]);
-void	last_child(t_pipex *pipex, char *env[]);
+void 	last_child(t_pipex *pipex, char *env[], int n_pipes);
 
 //	exec_utils.c
 char		*find_path(t_envlist *env);
