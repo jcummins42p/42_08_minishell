@@ -6,11 +6,33 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 15:15:40 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/04 18:10:47 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
+{
+	int i = 0;
+	while (*tokens && (*tokens)->mtctype != PIPE)
+	{
+		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP)
+			ft_handle_redirection(pipex, tokens);
+		else
+		{
+			if ((*tokens)->expand)
+				arg[i] = ft_strdup((*tokens)->expand);
+			else if ((*tokens)->var)
+				arg[i] = ft_strdup((*tokens)->var);
+			else
+				arg[i] = ft_strdup((*tokens)->token);
+			i++;
+			*tokens = (*tokens)->next;
+		}
+	}
+	arg[i] = NULL;
+}
 
 void handle_exec_error(t_pipex *pipex, char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 17:17:57 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/04 18:08:35 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,6 @@ void	ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens)
 		pipex->fd_out = ft_open_file((*tokens)->token, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	}
 	*tokens = (*tokens)->next;
-}
-
-void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
-{
-	int i = 0;
-	while (*tokens && (*tokens)->mtctype != PIPE)
-	{
-		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP)
-			ft_handle_redirection(pipex, tokens);
-		else
-		{
-			if ((*tokens)->var)
-				arg[i] = ft_strdup((*tokens)->var);
-			else
-				arg[i] = ft_strdup((*tokens)->token);
-			i++;
-			*tokens = (*tokens)->next;
-		}
-	}
-	arg[i] = NULL;
 }
 
 char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens)
@@ -90,23 +70,28 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j, int n_pipes)
 	}
 }
 
-void	execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes)
+void execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes)
 {
-	int	j;
+	int j;
 
 	j = 0;
 	while (j < n_pipes + 1)
 	{
-		pipex->cmd_args = ft_get_arg(pipex, &msh->tokens);	
+		pipex->cmd_args = ft_get_arg(pipex, &msh->tokens);
 		if (!pipex->cmd_args)
 			handle_exec_error(pipex, "Failed to get command arguments\n");
+
 		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
 		if (!pipex->cmd)
 			handle_exec_error(pipex, "Command not found\n");
-		if (j < n_pipes && pipe(pipex->fd_pipe) < 0)
-			handle_exec_error(pipex, "Pipe creation error\n");
+
+		if ( n_pipes != 0)
+		{
+			if (pipe(pipex->fd_pipe) < 0)
+				handle_exec_error(pipex, "Pipe creation error\n");
+		}
 		fork_and_execute(pipex, msh, j, n_pipes);
-		if (n_pipes != 0)
+		if (j < n_pipes)
 		{
 			close(pipex->fd_pipe[1]);
 			pipex->fd_in = pipex->fd_pipe[0];

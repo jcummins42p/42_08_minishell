@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 17:09:57 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/04 18:10:53 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ void child(t_pipex *pipex, char *env[])
 void last_child(t_pipex *pipex, char *env[], int n_pipes)
 {
 	if (n_pipes != 0)
+	{
 		close(pipex->fd_pipe[1]); // Close the unused write end
-
-	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
-		handle_exec_error(pipex, "Error duplicating file descriptor for stdin\n");
-	if (n_pipes != 0)
-	close(pipex->fd_pipe[0]); // Close the unused read end
+		if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
+			handle_exec_error(pipex, "Error duplicating file descriptor for stdin\n");
+		close(pipex->fd_pipe[0]); // Close the unused read end
+	}
+	else 
+		if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
+			handle_exec_error(pipex, "Error duplicating file descriptor for stdin\n");
 
 	// Last child outputs to the specified output or terminal
 	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
