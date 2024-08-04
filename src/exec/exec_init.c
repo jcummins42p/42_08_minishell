@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:46:05 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 18:14:28 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/04 18:56:13 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,14 @@ int	init_pid(t_pipex *pipex, int n_pipes)
 	return (1);
 }
 
-
 void	pipex_init(t_mshell *msh)
 {
 	if (msh->info->n_pipe == 0)
 		msh->pipex->pid = malloc(sizeof(pid_t));
 	else
 		msh->pipex->pid = malloc(sizeof(pid_t) * msh->info->n_pipe);
-	msh->pipex->fd_in = STDIN_FILENO;
-	msh->pipex->fd_out = STDOUT_FILENO;
+	msh->pipex->fd_in = dup(STDIN_FILENO);
+	msh->pipex->fd_out = dup(STDOUT_FILENO);
 	// Arguments for execve
 	msh->pipex->cmd_paths = ft_split(*msh->path, ':');
 	if (!msh->pipex->cmd_paths)
@@ -39,6 +38,7 @@ void	pipex_init(t_mshell *msh)
 		// add error handler
 		return ;
 	}
+	msh->pipex->status = 0;
 	msh->pipex->cmd = NULL;
 	msh->pipex->cmd_args = NULL;
 }

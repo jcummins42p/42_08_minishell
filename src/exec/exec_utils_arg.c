@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils_1.c                                     :+:      :+:    :+:   */
+/*   exec_utils_arg.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 18:10:47 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/04 19:01:44 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (*tokens && (*tokens)->mtctype != PIPE)
 	{
 		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP)
@@ -34,25 +36,7 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
 	arg[i] = NULL;
 }
 
-void handle_exec_error(t_pipex *pipex, char *str)
-{
-	printf("%s", str);
-	(void)pipex;
-}
-
-int	ft_open_file(const char *filename, int flags, mode_t mode)
-{
-	int	fd;
-	
-	fd = open(filename, flags, mode);
-	if (fd == -1)
-	{
-		write(STDERR_FILENO, "Couldn't open the file\n", 23);
-	}
-	return (fd);
-}
-
-int count_args(t_tokenlist *tokens)
+int	count_args(t_tokenlist *tokens)
 {
 	int	i;
 	
@@ -66,18 +50,44 @@ int count_args(t_tokenlist *tokens)
 	return i;
 }
 
-void	cleanup(t_pipex *pipex, int n_pipes)
+char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens)
 {
-	int	k;
+	char		**arg;
+	int			i;
+	t_tokenlist	*ptr;
 
-	k = 0;
-	while (k < n_pipes + 1)
+	ptr = *tokens;
+	i = 0;
+	if ((*tokens)->mtctype == PIPE)
 	{
-		waitpid(pipex->pid[k], NULL, 0);
-		k++;
+		*tokens = (*tokens)->next;
+		ptr = ptr->next;
 	}
-	close(pipex->fd_in);
-	close(pipex->fd_out);
-	// free(pipex->pid);
-	// free_pipex(pipex);
+	i = count_args(ptr);
+	arg = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!arg)
+	{
+		write(STDERR_FILENO, "Memory allocation failed\n", 25);
+		return (NULL);
+	}
+	populate_args(pipex, tokens, arg);
+	return (arg);
+}
+
+char	*get_cmd(char **paths, char *cmd)
+{
+	char	*tmp;
+	char	*command;
+
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(command, 0) == 0)
+			return (command);
+		free(command);
+		paths++;
+	}
+	return (NULL);
 }
