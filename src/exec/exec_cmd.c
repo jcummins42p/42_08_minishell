@@ -6,32 +6,32 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 19:15:36 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/05 16:53:31 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j, int n_pipes)
+void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 {
 	pipex->pid[j] = fork();
 	if (pipex->pid[j] < 0)
 		handle_exec_error(pipex, "Fork error\n");
 	if (pipex->pid[j] == 0)
 	{
-		if (j == n_pipes)
-			last_child(pipex, msh, n_pipes);
+		if (j == msh->info->n_pipe)
+			last_child(pipex, msh, msh->info->n_pipe);
 		else
 			child(pipex, msh);
 	}
 }
 
-void	execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes)
+void	execute_commands(t_mshell *msh, t_pipex *pipex)
 {
 	int j;
 
 	j = 0;
-	while (j < n_pipes + 1)
+	while (j < msh->info->n_pipe + 1)
 	{
 		pipex->cmd_args = ft_get_arg(pipex, &msh->tokens);
 		if (!pipex->cmd_args)
@@ -40,13 +40,13 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes)
 		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
 		if (!pipex->cmd)
 			handle_exec_error(pipex, "Command not found\n");
-		if (n_pipes != 0)
+		if (msh->info->n_pipe != 0)
 		{
 			if (pipe(pipex->fd_pipe) < 0)
 				handle_exec_error(pipex, "Pipe creation error\n");
 		}
-		fork_and_execute(pipex, msh, j, n_pipes);
-		if (j < n_pipes)
+		fork_and_execute(pipex, msh, j);
+		if (j < msh->info->n_pipe)
 		{
 			close(pipex->fd_pipe[1]);
 			pipex->fd_in = pipex->fd_pipe[0];
@@ -64,6 +64,6 @@ void	ft_exec_cmd(t_mshell *msh)
 		return ;
 	if (!init_pid(pipex, msh->info->n_pipe))
 		return ;	
-	execute_commands(msh, pipex, msh->info->n_pipe);
+	execute_commands(msh, pipex);
 	cleanup(pipex, msh->info->n_pipe);
 }
