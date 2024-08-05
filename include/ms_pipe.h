@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/07/31 18:23:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:17:11 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,40 @@
 # define ERR_EXEC "Execution didn't work\n"
 # define ERR_FORK "Fork wasnt created\n"
 # define ERR_WAIT "Something happened with child process\n"
+# define ERR_STDIN "Error duplicating file descriptor for stdin\n"
+# define ERR_STDOUT "Error duplicating file descriptor for stdout\n"
 
-//	pipe.c
-void		ft_pipe(t_mshell *msh);
-void		handle_exec_error(t_pipex *pipex, const char *error_message);
-void		child(t_pipex *pipex, char *env[]);
-void		last_child(t_pipex *pipex, char *env[]);
+//exec_child_pr.c
+void	child(t_pipex *pipex, t_mshell *msh);
+void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes);
 
-//	exec_utils.c
-char		*find_path(t_envlist *env);
-char		*get_cmd(char **paths, char *cmd);
-void		free_pipex(t_pipex *pipex);
+//exec_cmd.c
+void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j, int n_pipes);
+void	execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes);
+void	ft_exec_cmd(t_mshell *msh);
 
-//	not needed || will be replaced by universal msg_error
-void		msg_error(char *err, t_pipex *pipex);
-int			msg(const char *err);
+//exec_file_d.c
+void	ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens);
+int		ft_open_file(const char *filename, int flags, mode_t mode);
+
+//exec_init.c
+int		init_pid(t_pipex *pipex, int n_pipes);
+void	pipex_init(t_mshell *msh);
+void	ft_exec_init(t_mshell *msh);
+
+//exec_utils_args.c
+void	populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg);
+int		count_args(t_tokenlist *tokens);
+char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens);
+char	*get_cmd(char **paths, char *cmd);
+
+//exec_utils_err.c			RE-WORK!
+int		msg(const char *err);
+void	msg_error(char *err, t_pipex *pipex);
+void	handle_exec_error(t_pipex *pipex, char *str);
+
+//exec_utils_free.c			Currently issue with free
+void	cleanup(t_pipex *pipex, int n_pipes);
+void	free_pipex(t_pipex *pipex);
 
 #endif

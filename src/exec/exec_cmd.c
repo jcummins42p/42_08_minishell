@@ -6,102 +6,64 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/02 16:03:23 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/04 19:15:36 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pipe_args_fill(int num_pipes, int *pipe_pos, char **pipe_arg[], char *ptr)
+void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j, int n_pipes)
 {
-	int start = 0;
-	int	i;
-
-	start = 0;
-	i = 0;
-	while (i <= num_pipes)
+	pipex->pid[j] = fork();
+	if (pipex->pid[j] < 0)
+		handle_exec_error(pipex, "Fork error\n");
+	if (pipex->pid[j] == 0)
 	{
-		int length = pipe_pos[i] - start;
-		(*pipe_arg)[i] = (char *)malloc(sizeof(char) * (length + 1));
-		ft_strlcpy((*pipe_arg)[i], ptr + start, length + 1);
-		start = pipe_pos[i] + 1; // Move start to character after '|'
-		i++;
+		if (j == n_pipes)
+			last_child(pipex, msh, n_pipes);
+		else
+			child(pipex, msh);
 	}
 }
 
-void	pipex_init(t_mshell *msh)
+void	execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes)
 {
-	if (msh->info->n_pipe == 0)
-		msh->pipex->pid = malloc(sizeof(pid_t));
-	else
-		msh->pipex->pid = malloc(sizeof(pid_t) * msh->info->n_pipe);
-	msh->pipex->fd_in = -1;	//STDIN_FILENO
-	msh->pipex->fd_out = -1;	//STDOUT_FILENO
-	// Arguments for execve
-	msh->pipex->cmd_paths = ft_split(*msh->path, ':');
-	msh->pipex->cmd = NULL;
-	msh->pipex->cmd_args = NULL;
+	int j;
+
+	j = 0;
+	while (j < n_pipes + 1)
+	{
+		pipex->cmd_args = ft_get_arg(pipex, &msh->tokens);
+		if (!pipex->cmd_args)
+			handle_exec_error(pipex, "Failed to get command arguments\n");
+
+		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+		if (!pipex->cmd)
+			handle_exec_error(pipex, "Command not found\n");
+		if (n_pipes != 0)
+		{
+			if (pipe(pipex->fd_pipe) < 0)
+				handle_exec_error(pipex, "Pipe creation error\n");
+		}
+		fork_and_execute(pipex, msh, j, n_pipes);
+		if (j < n_pipes)
+		{
+			close(pipex->fd_pipe[1]);
+			pipex->fd_in = pipex->fd_pipe[0];
+		}
+		j++;
+	}
 }
 
 void	ft_exec_cmd(t_mshell *msh)
 {
-	t_pipex *pipex = msh->pipex;
+	t_pipex	*pipex;
 
-	pipex->cmd_args = ft_split(msh->lineread, ' ');
-	if (!pipex->cmd_args)
-	{
-		msg(ERR_MEMORY);
-		exit(1);
-	}
-	pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
-	if (!exec_builtin(msh, msh->tokens))
+	pipex = msh->pipex;
+	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
 		return ;
-	if (!pipex->cmd)
-	{
-		msg(ERR_CMD);
-		return ;
-	}
-	pipex->pid[0] = fork();
-	if (pipex->pid[0] < 0)
-	{
-		msg(ERR_FORK);
-		return ;
-	}
-	if (pipex->pid[0] == 0)
-	{
-		if (!execve(pipex->cmd, pipex->cmd_args, msh->env))
-		{
-			msg(ERR_EXEC);
-			exit(1);
-		}
-	}
-	//in the future setup signals
-	if (waitpid(pipex->pid[0], NULL, 0) == -1)
-	{
-		msg(ERR_WAIT);
-		return ;
-	}
-}
-
-void	ft_exec_init(t_mshell *msh)
-{
-	msh->pipex = (t_pipex *)malloc(sizeof(t_pipex));
-	if (msh->pipex == NULL)
-	{
-		msg(ERR_MEMORY);
-		exit(1);
-	}
-	pipex_init(msh);
-	if (msh->info->n_pipe == 0)
-	{
-		ft_exec_cmd(msh);
-		free_pipex(msh->pipex);
-		return ;
-	}
-	else
-	{
-		ft_pipe(msh);
-		// for (int i = 0; i < msh->info->n_pipe + 1; i++)
-		// 	printf("Pipe arg%i is %s\n", i, pipe_arg[i]);
-	}
+	if (!init_pid(pipex, msh->info->n_pipe))
+		return ;	
+	execute_commands(msh, pipex, msh->info->n_pipe);
+	cleanup(pipex, msh->info->n_pipe);
 }

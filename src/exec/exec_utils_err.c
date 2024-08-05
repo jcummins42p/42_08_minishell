@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_funcs.h                                         :+:      :+:    :+:   */
+/*   exec_utils_err.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/04 14:42:55 by akretov          ###   ########.fr       */
+/*   Created: 2024/07/20 16:05:39 by akretov           #+#    #+#             */
+/*   Updated: 2024/08/04 19:02:35 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_FUNCS_H
-# define MS_FUNCS_H
+#include "minishell.h"
 
-//	utils.c
-bool		is_whitespace(char c);
+int	msg(const char *err)
+{
+	write(2, err, ft_strlen(err));
+	return (1);
+}
 
-//	shell.c
-void		shell_free(t_mshell *msh);
-void		shell_set_envptrs(t_mshell *msh);
-void		shell_init(t_mshell *msh);
+void	msg_error(char *err, t_pipex *pipex)
+{
+	free(pipex);
+	perror(err);
+	exit (1);
+}
 
-//	input.c
-int			exec_builtin(t_mshell *msh, t_tokenlist *token);
-void		input_cycle(t_mshell *msh);
-
-#endif
+void	handle_exec_error(t_pipex *pipex, char *str)
+{
+	printf("%s", str);
+	(void)pipex;
+}
