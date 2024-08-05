@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 19:17:11 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/05 16:52:57 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	child(t_pipex *pipex, t_mshell *msh);
 void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes);
 
 //exec_cmd.c
-void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j, int n_pipes);
-void	execute_commands(t_mshell *msh, t_pipex *pipex, int n_pipes);
+void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j);
+void	execute_commands(t_mshell *msh, t_pipex *pipex);
 void	ft_exec_cmd(t_mshell *msh);
 
 //exec_file_d.c
