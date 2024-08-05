@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 10:31:06 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 13:46:34 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ char	*isolate_param(char *input)
 		len++;
 	else
 	{
-		while (input[len] && !is_whitespace(input[len]) && ft_isalnum(input[len]))
-		len++;
+		while (ft_isalnum(input[len]))
+			len++;
 	}
 	out = malloc(sizeof(char) * len + 1);
 	if (!out)
@@ -104,7 +104,7 @@ char	*expand_string_dq(t_mshell *msh, char *input)
 		if (input[i] == '$')
 		{
 			i++;
-			if (input[i] == '\"' ||  is_whitespace(input[i]))
+			if (input[i] == '\"' || is_whitespace(input[i]))
 			{
 				value = ft_strdup("$");
 				i++;
