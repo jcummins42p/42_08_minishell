@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/02 17:51:37 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:31:06 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ char	*isolate_param(char *input)
 		len++;
 	else
 	{
-		while (input[len] && !is_whitespace(input[len]) && \
-			input[len] != '$' && input[len] != '\"')
+		while (input[len] && !is_whitespace(input[len]) && ft_isalnum(input[len]))
 		len++;
 	}
 	out = malloc(sizeof(char) * len + 1);
@@ -93,10 +92,8 @@ char	*expand_string_dq(t_mshell *msh, char *input)
 	char	*param;
 	char	*value;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	output = "";
 	if (input[i] == '\"')
 		i++;

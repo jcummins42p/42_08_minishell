@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_str.c                                         :+:      :+:    :+:   */
+/*   com_echo_str.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:07:17 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/30 18:11:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 10:01:17 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ int	expand_var(t_mshell *msh, char *str, int fd)
 void	echo_expand_str(t_mshell *msh, char *str, int fd)
 {
 	int	i;
-	int	var;
 
 	i = 0;
-	var = 0;
 	(void)msh;
 	while (str[i])
 	{

@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/08/01 17:12:31 by jcummins         ###   ########.fr        #
+#    Updated: 2024/08/05 10:17:33 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIB_PATH) $(MLX_PATH)
-	@$(CC) $(CFLAGS) -L$(LIB_DIR) -lreadline $^ -o $@
+	@$(CC) $(CFLAGS) -L$(LIB_DIR) $^ -o $@ -lreadline
 	@echo "✅ Linking object files into executable $@"
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c $(HEADS)
