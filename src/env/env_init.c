@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/02 17:52:50 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:27:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,16 @@ void	env_from_str(t_envlist **envlist, char *str, t_vscope scope)
 //	takes *env[] input and creates env linked list
 void	env_init(t_envlist **envlist, char *env[])
 {
-	int	i;
-	int	pid;
+	int		i;
+	char	*pid;
 
 	i = 0;
-	pid = getpid();
+	pid = ft_itoa(getpid());
 	while (env[i])
 		env_from_str(envlist, env[i++], ENVVAR);
 
-	env_set(envlist, "$", ft_itoa(pid), ENVVAR);
+	env_set(envlist, "$", pid, ENVVAR);
 	env_set(envlist, "SHELL", "./minishell", ENVVAR);
 	env_set(envlist, "PS1", "$ ", ENVVAR);
+	free(pid);
 }

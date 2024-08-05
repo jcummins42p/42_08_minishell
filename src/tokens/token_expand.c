@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 13:46:34 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:34:49 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,70 +62,73 @@ char	*isolate_param(char *input)
 	return (out);
 }
 
-char	*expand_generic(char *input)
+int	expand_generic(char *input, char **output)
 {
-	char	*out;
 	int		len;
 	int		i;
 
-	out = NULL;
+	*output = NULL;
 	len = 0;
 	i = 0;
 	while (input[len] && input[len] != '$' && input[len] != '\"')
 		len++;
-	out = malloc(sizeof(char) * len + 1);
-	if (!out)
-		return (NULL);
+	*output = malloc(sizeof(char) * len + 1);
+	if (!(*output))
+		return (0);
 	while (i < len)
 	{
-		out[i] = input[i];
+		(*output)[i] = input[i];
 		i++;
 	}
-	out[i] = '\0';
-	return (out);
+	(*output)[i] = '\0';
+	return (len);
+}
+
+int	expand_variable(t_mshell *msh, char *input, char **output)
+{
+	char	*param;
+	int		len;
+
+	len = 1;
+	param = NULL;
+	*output = NULL;
+	if (input[len] == '\"' || is_whitespace(input[len]))
+		(*output) = ft_strdup("$");
+	else if (input[len])
+	{
+		param = isolate_param(&input[len]);
+		len += ft_strlen(param);
+		*output = env_get_string(&msh->envlist, param);
+	}
+	if (param)
+		free(param);
+	return (len);
 }
 
 //	if encounter a $, save that in temp value var and check env
 char	*expand_string_dq(t_mshell *msh, char *input)
 {
+	char	*tmp;
 	char	*output;
-	char	*param;
 	char	*value;
 	int		i;
 
 	i = 0;
-	output = "";
+	output = ft_strdup("");
 	if (input[i] == '\"')
 		i++;
 	while (input[i])
 	{
-		param = NULL;
-		value = NULL;
+		tmp = ft_strdup(output);
+		free (output);
 		if (input[i] == '$')
-		{
-			i++;
-			if (input[i] == '\"' || is_whitespace(input[i]))
-			{
-				value = ft_strdup("$");
-				i++;
-			}
-			else if (input[i])
-			{
-				param = isolate_param(&input[i]);
-				i += ft_strlen(param);
-				value = env_get_string(&msh->envlist, param);
-			}
-		}
+			i += expand_variable(msh, &input[i], &value);
 		else
-		{
-			value = expand_generic(&input[i]);
-			i += ft_strlen(value);
-		}
+			i += expand_generic(&input[i], &value);
 		if (value)
-			output = ft_strjoin(output, value);
-		if (param)
-			free(param);
+			output = ft_strjoin(tmp, value);
 		free(value);
+		free(tmp);
 		if (input[i] == '\"')
 			i++;
 	}

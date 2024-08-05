@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_commands.h                                      :+:      :+:    :+:   */
+/*   ms_builtins.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:41:10 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 14:01:31 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:30:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ void		echo_tokens(t_mshell *msh, int fd);
 
 //	echo.c
 void		echo_expand_str(t_mshell *msh, char *str, int fd);
-
-//	expand.c
-char		**expand_variable(t_envlist **envlist, char *param);
 
 //	export.c
 void		export_var(t_mshell *msh, t_vscope scope);
