@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/02 13:16:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:52:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,16 @@ void	input_cycle(t_mshell *msh)
 		msh->lineread = readline(*msh->prompt);
 		add_history(msh->lineread);
 		if (tokenize(msh))
-			continue;
-		tokens_print_list(&msh->tokens);
-		tokens_get_info(msh);
-		if (msh->tokens)
 		{
-			if (msh->tokens->comtype == EXIT)
-				msh->running = false;
-			else
-				ft_exec_init(msh);
+			tokens_print_list(&msh->tokens);
+			tokens_get_info(msh);
+			if (msh->tokens)
+			{
+				if (msh->tokens->comtype == EXIT)
+					msh->running = false;
+				else
+					ft_exec_init(msh);
+			}
 		}
 		input_cleanup(msh);
 	}

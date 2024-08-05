@@ -6,13 +6,13 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 14:16:17 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:52:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		token_parse_meta(t_mshell *msh, int start)
+int	token_parse_meta(t_mshell *msh, int start)
 {
 	t_mtctype	token;
 	int			width;
@@ -32,7 +32,7 @@ int		token_parse_meta(t_mshell *msh, int start)
 	return (width);
 }
 
-int		token_parse_quote(t_mshell *msh, int start, char quote)
+int	token_parse_quote(t_mshell *msh, int start, char quote)
 {
 	char	*input;
 	char	*token;
@@ -59,7 +59,7 @@ int		token_parse_quote(t_mshell *msh, int start, char quote)
 	return (i);
 }
 
-int		token_parse(t_mshell *msh, int start)
+int	token_parse(t_mshell *msh, int start)
 {
 	char	*input;
 	char	*token;
@@ -88,7 +88,7 @@ int		token_parse(t_mshell *msh, int start)
 
 int	tokenize(t_mshell *msh)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	msh->valid_input = VALID_IN;
@@ -109,11 +109,6 @@ int	tokenize(t_mshell *msh)
 		}
 	}
 	if (!msh->lineread || msh->valid_input)
-	{
-		printf("input invalid\n");
-		free(msh->lineread);
-		token_clear(&msh->tokens);
-		return (1);
-	}
-	return (0);
+		return (0);
+	return (1);
 }

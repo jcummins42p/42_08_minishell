@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 18:57:01 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/05 16:33:31 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens)
 int	ft_open_file(const char *filename, int flags, mode_t mode)
 {
 	int	fd;
-	
+
 	fd = open(filename, flags, mode);
 	if (fd == -1)
 	{

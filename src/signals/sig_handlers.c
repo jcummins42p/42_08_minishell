@@ -6,14 +6,8 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:07:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 16:36:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:48:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*void	handle_signal(t_mshell *msh, int signal)*/
-/*{*/
-
-
-/*}*/

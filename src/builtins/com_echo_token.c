@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/02 17:12:25 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 16:33:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,20 @@ int	echo_one_token(t_tokenlist *token, int fd)
 void	echo_tokens(t_mshell *msh, int fd)
 {
 	t_tokenlist	*token;
+	bool		newline;
 
+	newline = true;
+	printf("Using builtin echo function\n");
 	token = msh->tokens;
 	if (token->next)
 		token = token->next;
-	while (token->next && token->mtctype != PIPE)
+	while (token->next && token->mtctype >= PIPE)
 	{
+		if (ft_strncmp(token->expand, "-n", 2))
+		{
+			token = token->next;
+			newline = false;
+		}
 		if (echo_one_token(token, fd) && token->trail_space)
 			write(fd, " ", 1);
 		token = token->next;
@@ -41,6 +49,7 @@ void	echo_tokens(t_mshell *msh, int fd)
 	if (token && token->mtctype != PIPE)
 	{
 		echo_one_token(token, fd);
-		write(fd, "\n", 1);
+		if (!newline)
+			write(fd, "\n", 1);
 	}
 }

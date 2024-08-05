@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/07/31 18:29:34 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:48:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,6 @@ int	main(int argc, char *argv[], char *env[])
 	env_set_string(&msh.envlist, &msh.env);
 	shell_set_envptrs(&msh);
 	input_cycle(&msh);
-	shell_free(&msh);	// env is freed in shell_free:env_clear
+	shell_free(&msh);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 13:56:35 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:46:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	token_init(t_tokenlist *new, char *newtoken, int pos)
 
 void	token_append(t_tokenlist **tokens, t_tokenlist **new)
 {
-	t_tokenlist *curr;
+	t_tokenlist	*curr;
 
 	curr = *tokens;
 	if (curr == NULL)
