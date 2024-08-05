@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:15:41 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 17:57:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 18:25:18 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_tokenlist	*token_after_pipeno(t_tokenlist **tokens, int pipe_no)
 	t_tokenlist	*curr;
 	int			curr_pipe;
 
-	curr = NULL;
+	curr = *tokens;
 	curr_pipe = 0;
 	if (!tokens)
 		return (NULL);

@@ -6,15 +6,16 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 19:04:32 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/05 19:23:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cleanup(t_pipex *pipex, int n_pipes)
+void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes)
 {
-	int	i;
+	int		i;
+	char	*status;
 
 	i = 0;
 	while (i < n_pipes + 1)
@@ -22,6 +23,8 @@ void	cleanup(t_pipex *pipex, int n_pipes)
 		waitpid(pipex->pid[i], &pipex->status, 0);
 		i++;
 	}
+	status = ft_itoa(pipex->status);
+	env_set(&msh->envlist, "?", status, SHLVAR);
 	close(pipex->fd_in);
 	close(pipex->fd_out);
 	// free_pipex(pipex);

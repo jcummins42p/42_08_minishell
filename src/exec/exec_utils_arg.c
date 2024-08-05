@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 19:01:44 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/05 18:10:48 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
 int	count_args(t_tokenlist *tokens)
 {
 	int	i;
-	
+
 	i  = 0;
 	while (tokens && tokens->mtctype != PIPE)
 	{

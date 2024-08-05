@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 15:52:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/05 19:34:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	input_cleanup(t_mshell *msh)
 	msh->lineread = NULL;
 }
 
-int	exec_builtin(t_mshell *msh, t_tokenlist *token)
+int	exec_builtin(t_mshell *msh, t_tokenlist *token, int fd)
 {
 	if (!token)
 		return (1);
@@ -28,7 +28,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 		if (token->comtype == EXIT)
 			msh->running = false;
 		else if (token->comtype == ECHO)
-			echo_tokens(msh, 1);
+			echo_tokens(msh, fd);
 		else if (token->comtype == ENV)
 			env_print(&msh->envlist, ENVVAR);
 		else if (token->comtype == UNSET)
@@ -53,7 +53,6 @@ void	input_cycle(t_mshell *msh)
 		add_history(msh->lineread);
 		if (tokenize(msh))
 		{
-			tokens_print_list(&msh->tokens);
 			tokens_get_info(msh);
 			if (msh->tokens)
 			{

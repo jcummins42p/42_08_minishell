@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/05 16:52:57 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/05 19:22:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define ERR_STDOUT "Error duplicating file descriptor for stdout\n"
 
 //exec_child_pr.c
-void	child(t_pipex *pipex, t_mshell *msh);
-void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes);
+void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe);
+void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes, int curr_pipe);
 
 //exec_cmd.c
 void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j);
@@ -58,7 +58,7 @@ void	msg_error(char *err, t_pipex *pipex);
 void	handle_exec_error(t_pipex *pipex, char *str);
 
 //exec_utils_free.c			Currently issue with free
-void	cleanup(t_pipex *pipex, int n_pipes);
+void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes);
 void	free_pipex(t_pipex *pipex);
 
 #endif
