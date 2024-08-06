@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/06 16:12:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:43:06 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,8 @@ void	token_init(t_mshell *msh, t_tokenlist *new, char *newtoken, int pos)
 		new->tokentype = GENERIC;
 	if (new->mtctype == SQUOTE)
 		new->expand = expand_string_sq(newtoken);
-	/*if (new->mtctype == DOLLAR || new->mtctype == DQUOTE)*/
 	else
 		new->expand = expand_string_dq(msh, newtoken);
-	/*else*/
-		/*new->expand = ft_strdup(new->token);*/
 	new->comtype = is_builtin(new->expand);
 	new->pos = pos;
 	new->trail_space = true;
