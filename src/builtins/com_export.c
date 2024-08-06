@@ -6,25 +6,22 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 11:21:35 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/06 14:39:08 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 17:33:18 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	export_var(t_mshell *msh, t_vscope scope)
+void	export_var(t_mshell *msh, t_tokenlist *token, t_vscope scope)
 {
-	t_tokenlist	*token;
-
-	token = msh->tokens;
 	if (token->comtype == EXPORT)
 		token = token->next;
-	while (token && token->mtctype != PIPE)
+	while (token && token->mtctype < PIPE)
 	{
 		if (token->mtctype)
 			handle_exec_error(NULL, "command not found", token->expand);
 		else
-			env_from_str(&msh->envlist, token->token, scope);
+			env_from_str(&msh->envlist, token->expand, scope);
 		token = token->next;
 	}
 	env_set_string(&msh->envlist, &msh->env);
