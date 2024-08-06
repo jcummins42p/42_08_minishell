@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/05 18:10:48 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:38:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,7 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
 			ft_handle_redirection(pipex, tokens);
 		else
 		{
-			if ((*tokens)->expand)
-				arg[i] = ft_strdup((*tokens)->expand);
-			else if ((*tokens)->var)
-				arg[i] = ft_strdup((*tokens)->var);
-			else
-				arg[i] = ft_strdup((*tokens)->token);
-			i++;
+			arg[i++] = ft_strdup((*tokens)->expand);
 			*tokens = (*tokens)->next;
 		}
 	}

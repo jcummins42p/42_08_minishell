@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 19:34:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:25:18 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,35 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token, int fd)
 	return (0);
 }
 
+int	parse_error(t_tokenlist **tokens)
+{
+	t_tokenlist	*token;
+	int			commands;
+
+	token = *tokens;
+	commands = 0;
+	while (token && token->next)
+	{
+		if (token->mtctype < PIPE)
+			commands++;
+		token = token->next;
+		if (token->mtctype >= PIPE && !commands)
+		{
+			printf("msh: syntax error near `%s\'\n", token->expand);
+			return (1);
+		}
+		else if (token->next && token->mtctype >= PIPE && commands)
+		{
+			token = token->next;
+			commands = 0;
+		}
+	}
+	if (token->mtctype >= PIPE)
+		return (1);
+	else
+		return (0);
+}
+
 void	input_cycle(t_mshell *msh)
 {
 	while (msh->running)
@@ -54,7 +83,8 @@ void	input_cycle(t_mshell *msh)
 		if (tokenize(msh))
 		{
 			tokens_get_info(msh);
-			if (msh->tokens)
+			tokens_print_list(&msh->tokens);
+			if (msh->tokens && !parse_error(&msh->tokens))
 			{
 				if (msh->tokens->comtype == EXIT)
 					msh->running = false;

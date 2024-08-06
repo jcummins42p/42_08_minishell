@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 15:34:49 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:35:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*isolate_param(char *input)
 	out = NULL;
 	len = 0;
 	i = 0;
-	if (input[len] == '$')
+	if (input[len] == '$' || input[len] == '?')
 		len++;
 	else
 	{

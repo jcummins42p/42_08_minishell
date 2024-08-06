@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/06 12:37:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:12:14 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,42 @@ void	token_init(t_mshell *msh, t_tokenlist *new, char *newtoken, int pos)
 		new->tokentype = METACHAR;
 	else
 		new->tokentype = GENERIC;
-	if (new->mtctype == DOLLAR || new->mtctype == DQUOTE)
-		new->expand = expand_string_dq(msh, newtoken);
-	else if (new->mtctype == SQUOTE)
+	if (new->mtctype == SQUOTE)
 		new->expand = expand_string_sq(newtoken);
+	/*if (new->mtctype == DOLLAR || new->mtctype == DQUOTE)*/
 	else
-		new->expand = ft_strdup(new->token);
+		new->expand = expand_string_dq(msh, newtoken);
+	/*else*/
+		/*new->expand = ft_strdup(new->token);*/
 	new->comtype = is_builtin(new->expand);
 	new->pos = pos;
-	new->width = ft_strlen(newtoken);
-	new->var = NULL;
 	new->trail_space = true;
-	new->envvar = NULL;
 	new->next = NULL;
-	new->envvar = NULL;
 }
 
 void	token_append(t_tokenlist **tokens, t_tokenlist **new)
 {
 	t_tokenlist	*curr;
+	int			index;
 
 	curr = *tokens;
+	index = 0;
 	if (curr == NULL)
 	{
 		*tokens = *new;
 		(*new)->prev = NULL;
+		(*new)->index = index;
 	}
 	else
 	{
-		curr = token_last(tokens);
+		index++;
+		while (curr->next)
+		{
+			curr = curr->next;
+			index++;
+		}
 		curr->next = *new;
+		(*new)->index = index;
 		(*new)->prev = curr;
 	}
 }
@@ -67,7 +73,6 @@ int	token_new(t_mshell *msh, char *newtoken, int pos)
 	if (new == NULL)
 		return (0);
 	token_init(msh, new, newtoken, pos);
-	/*printf("Expanded %s\t->\t%s\n", new->token, new->expand);*/
 	token_append(&msh->tokens, &new);
-	return (new->width);
+	return (ft_strlen(newtoken));
 }

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:28:58 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 16:56:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:46:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,9 @@ void	token_print_type(t_tokenlist *token)
 
 void	token_print_each(t_tokenlist *tok)
 {
-	printf("%s at position %d with width %d", tok->token, tok->pos, tok->width);
-	if (tok->envvar)
-		printf(" and variable %s expanding to %s", \
-				tok->envvar->param, tok->envvar->value);
-	else if (tok->var)
-		printf(" containing string: %s (no env variable)", tok->var);
+	printf("Token %d:\t%s at position %d ", tok->index, tok->token, tok->pos);
+	if (tok->expand)
+		printf(" expanding to %s", tok->expand);
 }
 
 void	tokens_print_list(t_tokenlist **tokens)
@@ -87,7 +84,6 @@ void	tokens_print_list(t_tokenlist **tokens)
 	i = 0;
 	while (curr)
 	{
-		printf("Token %d: ", i++);
 		token_print_each(curr);
 		token_print_type(curr);
 		curr = curr->next;

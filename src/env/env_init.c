@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 19:21:45 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:10:59 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	env_init(t_envlist **envlist, char *env[])
 	env_set(envlist, "$", pid, SHLVAR);
 	env_set(envlist, "?", status, SHLVAR);
 	env_set(envlist, "SHELL", "./minishell", ENVVAR);
-	env_set(envlist, "PS1", "$ ", ENVVAR);
+	env_set(envlist, "PS1", "$ ", SHLVAR);
 	free(pid);
+	free(status);
 }

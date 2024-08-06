@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 11:21:35 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 14:02:27 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:39:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void	export_var(t_mshell *msh, t_vscope scope)
 		token = token->next;
 	while (token && token->mtctype != PIPE)
 	{
-		env_from_str(&msh->envlist, token->token, scope);
+		if (token->mtctype)
+			handle_exec_error(NULL, "command not found", token->expand);
+		else
+			env_from_str(&msh->envlist, token->token, scope);
 		token = token->next;
 	}
 	env_set_string(&msh->envlist, &msh->env);

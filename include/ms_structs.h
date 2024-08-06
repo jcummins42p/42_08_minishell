@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/04 18:54:16 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/06 15:39:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,14 @@ typedef struct s_tokenlist
 {
 	struct s_tokenlist	*next;
 	struct s_tokenlist	*prev;
-	t_envlist			*envvar;		// if token is $, pointer to its env var
+	int					index;
 	char				*token;			// metachar or generic string
 	char				*expand;
 	t_tokentype			tokentype;		// GENERIC, METACHAR, COMMAND
 	t_comtype			comtype;		// enum for quick ref tokentype
 	t_mtctype			mtctype;		// enum for quick ref tokentype
 	int					pos;			// index of first char within string
-	int					width;			// width of token in char
-	char				*var;			// variable given after $ or between ""
+	//int					width;			// width of token in char
 	bool				trail_space;	// for printing env variable with space
 }	t_tokenlist;
 
