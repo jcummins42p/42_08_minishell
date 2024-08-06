@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:05:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/04 19:02:35 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/06 12:53:26 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	msg_error(char *err, t_pipex *pipex)
 	exit (1);
 }
 
-void	handle_exec_error(t_pipex *pipex, char *str)
+void	handle_exec_error(t_pipex *pipex, char *str, char *arg)
 {
-	printf("%s", str);
+	printf("%s: %s\n", arg, str);
 	(void)pipex;
 }

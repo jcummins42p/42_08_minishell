@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/05 19:58:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:55:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 	pipex->pid[j] = fork();
 	//	redefine singal handlers here if neccessary for child processes
 	if (pipex->pid[j] < 0)
-		handle_exec_error(pipex, "Fork error\n");
+		handle_exec_error(pipex, "Fork error", "");
 	if (pipex->pid[j] == 0)
 	{
 		if (j == msh->info->n_pipe)
@@ -39,15 +39,12 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 		curr = token_after_pipeno(&msh->tokens, j);
 		pipex->cmd_args = ft_get_arg(pipex, &curr);
 		if (!pipex->cmd_args)
-			handle_exec_error(pipex, "Failed to get command arguments\n");
-
+			handle_exec_error(pipex, "Failed to get command arguments", "");
 		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
-		if (!pipex->cmd)
-			handle_exec_error(pipex, "Command not found\n");
 		if (msh->info->n_pipe != 0)
 		{
 			if (pipe(pipex->fd_pipe) < 0)
-				handle_exec_error(pipex, "Pipe creation error\n");
+				handle_exec_error(pipex, "Pipe creation error", "");
 		}
 		fork_and_execute(pipex, msh, j);
 		if (j < msh->info->n_pipe)

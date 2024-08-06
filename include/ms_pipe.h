@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/05 19:22:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:42:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*get_cmd(char **paths, char *cmd);
 //exec_utils_err.c			RE-WORK!
 int		msg(const char *err);
 void	msg_error(char *err, t_pipex *pipex);
-void	handle_exec_error(t_pipex *pipex, char *str);
+void	handle_exec_error(t_pipex *pipex, char *str, char *arg);
 
 //exec_utils_free.c			Currently issue with free
 void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes);

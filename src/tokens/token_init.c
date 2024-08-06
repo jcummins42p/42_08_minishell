@@ -6,13 +6,13 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 15:46:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/06 12:37:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	token_init(t_tokenlist *new, char *newtoken, int pos)
+void	token_init(t_mshell *msh, t_tokenlist *new, char *newtoken, int pos)
 {
 	new->token = ft_strdup(newtoken);
 	new->comtype = is_builtin(newtoken);
@@ -23,6 +23,13 @@ void	token_init(t_tokenlist *new, char *newtoken, int pos)
 		new->tokentype = METACHAR;
 	else
 		new->tokentype = GENERIC;
+	if (new->mtctype == DOLLAR || new->mtctype == DQUOTE)
+		new->expand = expand_string_dq(msh, newtoken);
+	else if (new->mtctype == SQUOTE)
+		new->expand = expand_string_sq(newtoken);
+	else
+		new->expand = ft_strdup(new->token);
+	new->comtype = is_builtin(new->expand);
 	new->pos = pos;
 	new->width = ft_strlen(newtoken);
 	new->var = NULL;
@@ -59,14 +66,8 @@ int	token_new(t_mshell *msh, char *newtoken, int pos)
 	new = malloc(sizeof(t_tokenlist));
 	if (new == NULL)
 		return (0);
-	token_init(new, newtoken, pos);
-	if (new->mtctype == DOLLAR || new->mtctype == DQUOTE)
-		new->expand = expand_string_dq(msh, newtoken);
-	else if (new->mtctype == SQUOTE)
-		new->expand = expand_string_sq(newtoken);
-	else
-		new->expand = ft_strdup(new->token);
-	printf("Expanded %s\t->\t%s\n", new->token, new->expand);
+	token_init(msh, new, newtoken, pos);
+	/*printf("Expanded %s\t->\t%s\n", new->token, new->expand);*/
 	token_append(&msh->tokens, &new);
 	return (new->width);
 }
