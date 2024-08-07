@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:47:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/06 16:15:27 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:06:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,15 @@ int			is_metachar(char *str);	//	return t_mtctype of string
 int			is_builtin(char *str);	//	return t_comtype of string
 
 //	token_expand.c
-char 		*expand_string_sq(char *input);
+char		*expand_string_sq(char *input);
 char 		*expand_string_dq(t_mshell *msh, char *input);
-
-//	new_tokenize.c
-int			new_token_parse(t_mshell *msh, int end);
-void		new_tokenize(t_mshell *msh);
+char		*expand_string_assign(char *input);
 
 //	tokenize.c
 int			tokenize(t_mshell *msh);
 
 //	token_init.c
-int			token_new(t_mshell *msh, char *newtoken, int pos);
+int			token_new(t_mshell *msh, char *newtoken, int pos, bool trail_space);
 
 //	token_list.c
 void		token_clear(t_tokenlist **tokens);

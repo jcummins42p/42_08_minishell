@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/06 13:04:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:29:42 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,4 @@ void	ft_exec_cmd(t_mshell *msh)
 	if (!init_pid(pipex, msh->info->n_pipe))
 		return ;
 	execute_commands(msh, pipex);
-	cleanup(msh, pipex, msh->info->n_pipe);
 }

@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/06 17:54:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:12:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ int	expand_generic(char *input, char **output, char quote)
 	*output = NULL;
 	len = 0;
 	i = 0;
+	if (input[len] && input[len] == '$')
+	{
+		*output = ft_strdup("$");
+		return (1);
+	}
 	while (input[len] && input[len] != '$' && input[len] != quote)
 		len++;
 	*output = malloc(sizeof(char) * len + 1);
@@ -83,76 +88,6 @@ int	expand_variable(t_mshell *msh, char *input, char **output)
 		free(param);
 	return (len);
 }
-
-int	expand_replicate(char *input, char **output)
-{
-	char	*param;
-	int		len;
-
-	len = 1;
-	param = NULL;
-	*output = NULL;
-	if (input[len])
-	{
-		param = isolate_param(&input[len]);
-		len += ft_strlen(param);
-		*output = ft_strdup(param);
-	}
-	if (param)
-		free(param);
-	return (len);
-}
-
-/*char	*expand_string_sq(char *input)*/
-/*{*/
-	/*char	*output;*/
-	/*int		len;*/
-	/*int		i;*/
-	/*int		j;*/
-
-	/*i = 0;*/
-	/*j = 0;*/
-	/*len = ft_strlen(input) - 2;*/
-	/*output = malloc(sizeof(char) * (len + 1));*/
-	/*if (output == NULL)*/
-		/*return (NULL);*/
-	/*if (input[i] == '\'')*/
-		/*i++;*/
-	/*while (j < len)*/
-		/*output[j++] = input[i++];*/
-	/*output[j] = '\0';*/
-	/*return (output);*/
-/*}*/
-
-char	*expand_string_sq(char *input)
-{
-	char	*tmp;
-	char	*output;
-	char	*value;
-	int		i;
-
-	i = 0;
-	output = ft_strdup("");
-	if (input[i] == '\'')
-		i++;
-	while (input[i])
-	{
-		tmp = ft_strdup(output);
-		free (output);
-		if (input[i] == '$')
-			i += expand_replicate(&input[i], &value);
-		else
-			i += expand_generic(&input[i], &value, '\'');
-		if (value)
-			output = ft_strjoin(tmp, value);
-		free(value);
-		free(tmp);
-		if (input[i] == '\'')
-			i++;
-	}
-	return (output);
-}
-
 //	if encounter a $, save that in temp value var and check env
 char	*expand_string_dq(t_mshell *msh, char *input)
 {
@@ -169,7 +104,7 @@ char	*expand_string_dq(t_mshell *msh, char *input)
 	{
 		tmp = ft_strdup(output);
 		free (output);
-		if (input[i] == '$')
+		if (input[i] == '$' && input[i + 1])
 			i += expand_variable(msh, &input[i], &value);
 		else
 			i += expand_generic(&input[i], &value, '\"');
@@ -182,3 +117,33 @@ char	*expand_string_dq(t_mshell *msh, char *input)
 	}
 	return (output);
 }
+
+char	*expand_string_assign(char *input)
+{
+	char	*output;
+	int		i;
+
+	i = 0;
+	output = NULL;
+	while (input && input[i] && input[i] != '=')
+		i++;
+	output = malloc(sizeof(char) * (i + 1));
+	output[i] = '\0';
+	while (--i >= 0)
+		output[i] = input[i];
+	return (output);
+}
+
+char	*expand_string_sq(char *input)
+{
+	char	*output;
+	int		len;
+
+	len = 0;
+	output = NULL;
+	len = ft_strlen(input);
+	output = malloc(sizeof(char) * len);
+	ft_strlcpy(output, input + 1, len - 1);
+	return (output);
+}
+

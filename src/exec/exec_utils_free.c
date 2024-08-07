@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/05 19:23:56 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:25:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes)
 	env_set(&msh->envlist, "?", status, SHLVAR);
 	close(pipex->fd_in);
 	close(pipex->fd_out);
-	// free_pipex(pipex);
+	free(status);
+	free_pipex(pipex);
 }
 
 void	free_pipex(t_pipex *pipex)
