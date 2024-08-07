@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 16:12:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:06:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,9 @@ char	*expand_string_dq(t_mshell *msh, char *input)
 
 	i = 0;
 	output = ft_strdup("");
-	if (input[i] == '\"')
+	if (input && input[i] == '\"')
 		i++;
-	while (input[i])
+	while (input && input[i] && input[i] != '=')
 	{
 		tmp = ft_strdup(output);
 		free (output);
