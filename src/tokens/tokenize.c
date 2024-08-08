@@ -6,112 +6,113 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 16:08:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:02:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	token_parse_meta(t_mshell *msh, int start)
+int	token_parse_meta(t_mshell *msh, char *input, int index)
 {
 	t_mtctype	token;
-	char		*input;
 	int			width;
 
-	input = &msh->lineread[start];
 	width = 0;
 	token = is_metachar(input);
 	if (token == PIPE)
-		width = token_new(msh, "|", start, is_whitespace(input[start + 1]));
+		width = token_new(msh, "|", index, is_trailspace(input[1]));
 	else if (token == RDIN)
-		width = token_new(msh, "<", start, is_whitespace(input[start + 1]));
+		width = token_new(msh, "<", index, is_trailspace(input[1]));
+	else if (token == ASS)
+		width = token_new(msh, "=", index, is_trailspace(input[1]));
 	else if (token == RDOUT)
-		width = token_new(msh, ">", start, is_whitespace(input[start + 1]));
+		width = token_new(msh, ">", index, is_trailspace(input[1]));
 	else if (token == RDAPP)
-		width = token_new(msh, ">>", start, is_whitespace(input[start + 2]));
+		width = token_new(msh, ">>", index, is_trailspace(input[2]));
 	if (token == DELIMIT)
-		width = token_new(msh, "<<", start, is_whitespace(input[start + 2]));
+		width = token_new(msh, "<<", index, is_trailspace(input[2]));
 	return (width);
 }
 
-int	token_parse_quote(t_mshell *msh, int start, char quote)
+int	token_parse_quote(t_mshell *msh, char *input, char quote, int index)
 {
-	char	*input;
-	char	*token;
-	int		end;
+	char	*output;
+	int		len;
 	int		i;
 
-	i = 0;
-	input = msh->lineread;
-	end = start;
-	if (input[end] == '$')
+	i = -1;
+	len = 0;
+	if (input[len] == '$' && is_trailspace(input[len + 1]))
 	{
-		token_new(msh, "$", 1, is_whitespace(input[end]));
+		token_new(msh, "$", 1, is_whitespace(input[len + 1]));
 		return (1);
 	}
 	else
 	{
-		end++;
-		while (input[end] && (input[end] != quote))
-			end++;
-		if (input[end++] != quote)
+		len++;
+		while (input[len] && (input[len] != quote))
+			len++;
+		if (input[len++] != quote)
 			msh->valid_input = NO_QUOTE;
-		else if ((end - start) > 0)
+		else if (len > 0)
 		{
-			token = malloc(sizeof(char) * (end - start + 1));
-			while (start < end)
-				token[i++] = input[(start)++];
-			token[i] = '\0';
-			token_new(msh, token, end - i, is_whitespace(input[start]));
-			free(token);
+			output = malloc(sizeof(char) * (len + 1));
+			while (++i < len)
+				output[i] = input[i];
+			output[i] = '\0';
+			token_new(msh, output, index, is_whitespace(input[len]));
+			free(output);
 		}
 	}
-	return (i);
+	return (len);
 }
 
-int	token_parse_assign(t_mshell *msh, int start)
+int	token_parse(t_mshell *msh, char *input, int index)
 {
-	char	*input;
 	char	*output;
-	char	len;
+	int		len;
 	int		i;
 
 	i = 0;
-	input = msh->lineread;
-	len = is_assign(&input[start]);
-	output = malloc(sizeof(char) * (len + 1));
-	while (i <= len)
-		output[i++] = input[start++];
-	output[i] = '\0';
-	token_new(msh, output, start - i, is_whitespace(input[start]));
-	return (i);
+	len = 0;
+	if (input[len++] == '$')
+		len++;
+	while (input[len] && !is_whitespace(input[len]) && !is_metachar(&input[len]))
+		len++;
+	if (len > 0)
+	{
+		output = malloc(sizeof(char) * (len + 1));
+		while (i < len)
+		{
+			output[i] = input[i];
+			i++;
+		}
+		output[i] = '\0';
+		token_new(msh, output, index, is_trailspace(input[len]));
+		free(output);
+	}
+	if (is_whitespace(input[len]))
+		return (len + 1);
+	else
+		return (len);
 }
 
-int	token_parse(t_mshell *msh, int start)
+int	token_parse_selector(t_mshell *msh, char *input, int index)
 {
-	char	*input;
-	char	*token;
-	int		end;
-	int		i;
+	int i;
 
 	i = 0;
-	input = msh->lineread;
-	end = start;
-	while (input[end] && !is_whitespace(input[end]))
-		end++;
-	if ((end - start) > 0)
-	{
-		token = malloc(sizeof(char) * (end - start + 1));
-		while (start < end)
-			token[i++] = input[start++];
-		token[i] = '\0';
-		token_new(msh, token, end - i, is_whitespace(input[end]));
-		free(token);
-	}
-	if (is_whitespace(input[end]))
-		return (i + 1);
+	while (input[i] && is_whitespace(input[i]))
+		i++;
+	if (is_metachar(&input[i]) >= ASS)
+		i += token_parse_meta(msh, &input[i], index);
+	else if (input[i] == '\'')
+		i += token_parse_quote(msh, &input[i], '\'', index);
+	else if (input[i] == '\"')
+		i += token_parse_quote(msh, &input[i], '\"', index);
 	else
-		return (i);
+		i += token_parse(msh, &input[i], index);
+	return (i);
 }
 
 int	tokenize(t_mshell *msh)
@@ -121,23 +122,8 @@ int	tokenize(t_mshell *msh)
 	i = 0;
 	msh->valid_input = VALID_IN;
 	if (msh->lineread)
-	{
 		while (msh->lineread[i] && msh->valid_input == VALID_IN)
-		{
-			while (msh->lineread[i] && is_whitespace(msh->lineread[i]))
-				i++;
-			if (is_metachar(&msh->lineread[i]) >= PIPE)
-				i += token_parse_meta(msh, i);
-			else if (msh->lineread[i] == '\'')
-				i += token_parse_quote(msh, i, '\'');
-			else if (msh->lineread[i] == '\"')
-				i += token_parse_quote(msh, i, '\"');
-			else if (is_assign(&msh->lineread[i]))
-				i += token_parse_assign(msh, i);
-			else
-				i += token_parse(msh, i);
-		}
-	}
+			i += token_parse_selector(msh, &msh->lineread[i], i);
 	if (!msh->lineread || msh->valid_input)
 		return (0);
 	return (1);

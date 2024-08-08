@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 17:06:26 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:11:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	token_init(t_mshell *msh, t_tokenlist *new, char *newtoken, int pos)
 {
 	new->token = ft_strdup(newtoken);
 	new->comtype = is_builtin(newtoken);
-	if ((new->comtype != ASSIGN && new->comtype != EXPORT) && new->trail_space)
-		new->comtype = NO_COM;
 	new->mtctype = is_metachar(newtoken);
 	if (new->comtype)
 		new->tokentype = COMMAND;
@@ -25,10 +23,10 @@ void	token_init(t_mshell *msh, t_tokenlist *new, char *newtoken, int pos)
 		new->tokentype = METACHAR;
 	else
 		new->tokentype = GENERIC;
-	if (new->mtctype == SQUOTE)
+	if (new->mtctype >= ASS)
+		new->expand = ft_strdup(new->token);
+	else if (new->mtctype == SQUOTE)
 		new->expand = expand_string_sq(newtoken);
-	else if (new->comtype == ASSIGN)
-		new->expand = expand_string_dq(msh, newtoken);
 	else
 		new->expand = expand_string_dq(msh, newtoken);
 	if (new->comtype != ASSIGN && new->comtype != EXPORT)

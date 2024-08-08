@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:28:58 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 08:41:06 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:05:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	token_print_metachar(t_tokenlist *token)
 		printf(" ' (single quote) ");
 	else if (token->mtctype == DQUOTE)
 		printf(" \" (double quote) ");
+	else if (token->mtctype == ASS)
+		printf(" = (assign) ");
 	else if (token->mtctype == PIPE)
 		printf(" | (pipe) ");
 	else if (token->mtctype == RDAPP)

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 13:45:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:54:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	is_metachar(char *str)
 		ismeta = SQUOTE;
 	else if (!ft_strncmp(str, "\"", 1))
 		ismeta = DQUOTE;
+	else if (!ft_strncmp(str, "=", 1))
+		ismeta = ASS;
 	else if (!ft_strncmp(str, "|", 1))
 		ismeta = PIPE;
 	else if (!ft_strncmp(str, ">>", 2))

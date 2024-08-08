@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 13:32:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 09:08:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:54:24 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ typedef enum e_mtctype
 	DOLLAR,		// $ - environment variable
 	SQUOTE,		// '
 	DQUOTE,		// "
+	ASS,		// assign '='
 	PIPE,		// |
 	RDIN,		// < - redirect input
 	RDOUT,		// > - redirect output (overwrite)
 	RDAPP,		// >> - redirect output (append)
-	DELIMIT
+	DELIMIT,
 }	t_mtctype;
 
 typedef enum e_vscope

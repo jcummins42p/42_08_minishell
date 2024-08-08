@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:47:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 16:06:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:23:41 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,5 @@ t_tokenlist	*token_after_pipeno(t_tokenlist **tokens, int pipe_no);
 t_tokenlist	*token_at_pos(t_tokenlist **tokens, int serachpos);
 int			token_count_type(t_tokenlist **tokens, char *metachar);
 void		token_pos_type(t_tokenlist **tokens, int **pos, char *metachar);
-
-//	token_parse.c
-int			token_parse_generic(t_mshell *msh, int *end);
-int			token_parse_metachar(t_mshell *msh, int *i);
-int			token_parse_builtin(t_mshell *msh, int *i);
 
 #endif

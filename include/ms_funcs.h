@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 18:39:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 13:01:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MS_FUNCS_H
 
 //	utils.c
+bool		is_trailspace(char c);	//	will also return true at end of string
 bool		is_whitespace(char c);
 
 //	shell.c
