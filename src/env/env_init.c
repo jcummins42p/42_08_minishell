@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 09:26:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:21:44 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,34 +105,46 @@ void	env_from_str(t_envlist **envlist, char *str, t_vscope scope)
 
 char	*strcat_from_tokens(t_tokenlist *token)
 {
-	t_tokenlist	*curr;
 	char		*output;
 	char		*swap;
 
 	swap = NULL;
 	output = strdup("");
-	curr = token;
-	while (curr && curr->mtctype < PIPE)
+	while (token && token->mtctype < ASS)
 	{
-		swap = ft_strjoin(output, curr->expand);
+		swap = ft_strjoin(output, token->expand);
 		free (output);
 		output = swap;
-		if (curr->trail_space)
+		if (token->trail_space)
 			break;
-		curr = curr->next;
+		token = token->next;
 	}
 	return (output);
 }
 
-void	env_from_tokens(t_envlist **envlist, t_tokenlist *token, int scope)
+void	env_from_tokens(t_envlist **envlist, t_tokenlist **token, int scope)
 {
-	char	*value;
+	t_tokenlist	*curr;
+	char		*value;
+	char		*param;
 
-	if (!token)
+	curr = *token;
+	if (!curr)
 		return ;
-	if (!token->trail_space && token->next)
-		value = strcat_from_tokens(token->next);
-	env_set(envlist, token->expand, value, scope);
+	if (!curr->trail_space && curr->next)
+		param = strcat_from_tokens(curr);
+	while (curr && !curr->trail_space && curr->mtctype != ASS)
+		curr = curr->next;
+	if (curr && curr->mtctype != ASS)
+		;
+	else if (curr && curr->mtctype == ASS)
+	{
+		curr = curr->next;
+		value = strcat_from_tokens(curr);
+		env_set(envlist, param, value, scope);
+		free(value);
+	}
+	free(param);
 }
 
 void	env_update_exitcode(t_envlist **envlist)

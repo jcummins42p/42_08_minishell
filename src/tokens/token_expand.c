@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 17:06:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:35:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	expand_variable(t_mshell *msh, char *input, char **output)
 		free(param);
 	return (len);
 }
+
 //	if encounter a $, save that in temp value var and check env
 char	*expand_string_dq(t_mshell *msh, char *input)
 {
@@ -146,4 +147,3 @@ char	*expand_string_sq(char *input)
 	ft_strlcpy(output, input + 1, len - 1);
 	return (output);
 }
-

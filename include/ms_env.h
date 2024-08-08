@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:03 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 09:28:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:47:37 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		env_unset_string(char **env[]);
 void		env_set_string(t_envlist **envlist, char **env[]);
 void		env_set(t_envlist **envlist, const char *search, const char *nval, \
 					t_vscope scope);
-void		env_from_tokens(t_envlist **envlist, t_tokenlist *token, int scope);
+void		env_from_tokens(t_envlist **envlist, t_tokenlist **token, int scope);
 void		env_unset(t_envlist **envlist, const char *search);
 
 #endif

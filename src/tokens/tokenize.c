@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 20:02:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:33:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,69 +37,56 @@ int	token_parse_meta(t_mshell *msh, char *input, int index)
 int	token_parse_quote(t_mshell *msh, char *input, char quote, int index)
 {
 	char	*output;
-	int		len;
 	int		i;
 
-	i = -1;
-	len = 0;
-	if (input[len] == '$' && is_trailspace(input[len + 1]))
+	i = 0;
+	if (input[i] == '$' && is_trailspace(input[i + 1]))
 	{
-		token_new(msh, "$", 1, is_whitespace(input[len + 1]));
+		token_new(msh, "$", 1, is_whitespace(input[i + 1]));
 		return (1);
 	}
 	else
 	{
-		len++;
-		while (input[len] && (input[len] != quote))
-			len++;
-		if (input[len++] != quote)
+		i++;
+		while (input[i] && (input[i] != quote))
+			i++;
+		if (input[i++] != quote)
 			msh->valid_input = NO_QUOTE;
-		else if (len > 0)
+		else if (i > 0)
 		{
-			output = malloc(sizeof(char) * (len + 1));
-			while (++i < len)
-				output[i] = input[i];
-			output[i] = '\0';
-			token_new(msh, output, index, is_whitespace(input[len]));
+			output = ft_strldup(input, i);
+			token_new(msh, output, index, is_trailspace(input[i]));
 			free(output);
 		}
 	}
-	return (len);
+	return (i);
 }
 
 int	token_parse(t_mshell *msh, char *input, int index)
 {
 	char	*output;
-	int		len;
 	int		i;
 
 	i = 0;
-	len = 0;
-	if (input[len++] == '$')
-		len++;
-	while (input[len] && !is_whitespace(input[len]) && !is_metachar(&input[len]))
-		len++;
-	if (len > 0)
+	if (input[i++] == '$')
+		i++;
+	while (input[i] && !is_whitespace(input[i]) && !is_metachar(&input[i]))
+		i++;
+	if (i > 0)
 	{
-		output = malloc(sizeof(char) * (len + 1));
-		while (i < len)
-		{
-			output[i] = input[i];
-			i++;
-		}
-		output[i] = '\0';
-		token_new(msh, output, index, is_trailspace(input[len]));
+		output = ft_strldup(input, i);
+		token_new(msh, output, index, is_trailspace(input[i]));
 		free(output);
 	}
-	if (is_whitespace(input[len]))
-		return (len + 1);
+	if (is_whitespace(input[i]))
+		return (i + 1);
 	else
-		return (len);
+		return (i);
 }
 
 int	token_parse_selector(t_mshell *msh, char *input, int index)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (input[i] && is_whitespace(input[i]))
