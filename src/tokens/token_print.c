@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:28:58 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/06 15:46:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 08:41:06 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,10 @@ void	token_print_each(t_tokenlist *tok)
 void	tokens_print_list(t_tokenlist **tokens)
 {
 	t_tokenlist	*curr;
-	int			i;
 
 	if (tokens == NULL || *tokens == NULL)
 		return ;
 	curr = *tokens;
-	i = 0;
 	while (curr)
 	{
 		token_print_each(curr);

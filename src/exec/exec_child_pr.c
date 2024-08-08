@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/06 12:49:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:00:36 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	else
 		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0) //add condition either execve or builtin
 			handle_exec_error(pipex, "command not found", curr->expand);
+	exit(1);
 }
 
 void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes, int curr_pipe)
@@ -54,4 +55,5 @@ void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes, int curr_pipe)
 	else
 		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0) //add condition either execve or builtin
 			handle_exec_error(pipex, "command not found", curr->expand);
+	exit(1);
 }
