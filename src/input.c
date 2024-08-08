@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 08:38:41 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:27:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	input_cycle(t_mshell *msh)
 				else
 					ft_exec_init(msh);
 			}
+			env_update_exitcode(&msh->envlist);
 		}
 		input_cleanup(msh);
 	}

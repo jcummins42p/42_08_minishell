@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:43:03 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 15:37:50 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:28:22 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char		*env_get_string(t_envlist **envlist, const char *search);
 int			env_new(t_envlist **env, const char *param, const char *val, \
 					t_vscope scope);
 void		env_from_str(t_envlist **envlist, char *str, t_vscope scope);
+void		env_update_exitcode(t_envlist **envlist);
 void		env_init(t_envlist **envlist, char *env[]);
 
 //	envutils.c

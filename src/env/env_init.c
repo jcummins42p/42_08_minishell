@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/07 15:52:36 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:26:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,22 +135,28 @@ void	env_from_tokens(t_envlist **envlist, t_tokenlist *token, int scope)
 	env_set(envlist, token->expand, value, scope);
 }
 
+void	env_update_exitcode(t_envlist **envlist)
+{
+	char	*exitcode;
+
+	exitcode = ft_itoa(g_exitcode);
+	env_set(envlist, "?", exitcode, SHLVAR);
+	free(exitcode);
+}
+
 //	takes *env[] input and creates env linked list
 void	env_init(t_envlist **envlist, char *env[])
 {
 	int		i;
 	char	*pid;
-	char	*status;
 
 	i = 0;
-	status = ft_strdup("0");
 	pid = ft_itoa(getpid());
 	while (env[i])
 		env_from_str(envlist, env[i++], ENVVAR);
 	env_set(envlist, "$", pid, SHLVAR);
-	env_set(envlist, "?", status, SHLVAR);
 	env_set(envlist, "SHELL", "./minishell", ENVVAR);
 	env_set(envlist, "PS1", "$ ", SHLVAR);
+	env_update_exitcode(envlist);
 	free(pid);
-	free(status);
 }

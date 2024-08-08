@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 18:22:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:09:19 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@
 # include "ms_env.h"
 # include "ms_tokens.h"
 # include "ms_builtins.h"
+# include "ms_globals.h"
 
 #endif

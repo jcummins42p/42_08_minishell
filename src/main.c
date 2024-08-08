@@ -6,11 +6,13 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 15:48:58 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/08 09:15:37 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exitcode = 0;
 
 int	main(int argc, char *argv[], char *env[])
 {
