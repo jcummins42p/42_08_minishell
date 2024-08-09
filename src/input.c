@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 15:47:10 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:01:18 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	input_cleanup(t_mshell *msh)
 
 int	exec_builtin(t_mshell *msh, t_tokenlist *token, int fd)
 {
+	/*ft_handle_redirection(msh->pipex, token);*/ // need to init pipex early
 	if (!token)
 		return (1);
 	else
@@ -57,11 +58,11 @@ int	parse_error_check(t_tokenlist **tokens)
 	t_tokenlist	*token;
 
 	token = *tokens;
-	if (token->mtctype >= PIPE)
+	if (token->mtctype == PIPE)
 		return (parse_error_print(token));
 	while (token && token->next)
 	{
-		if (token->mtctype >= PIPE && token->next->mtctype >= PIPE)
+		if (token->mtctype == PIPE && token->next->mtctype == PIPE)
 			return (parse_error_print(token));
 		else
 			token = token->next;
@@ -88,7 +89,10 @@ void	input_cycle(t_mshell *msh)
 				if (msh->tokens->comtype == EXIT)
 					msh->running = false;
 				else
+				{
+					pipex_init(msh);
 					ft_exec_init(msh);
+				}
 			}
 		}
 		input_cleanup(msh);

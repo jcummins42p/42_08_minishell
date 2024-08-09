@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 15:41:58 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:12:14 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	echo_tokens(t_tokenlist *token, int fd)
 {
 	bool		newline;
 
+	printf("builtin echo\n");
 	newline = true;
 	if (token->next)
 		token = token->next;
@@ -24,7 +25,7 @@ void	echo_tokens(t_tokenlist *token, int fd)
 		token = token->next;
 		newline = false;
 	}
-	while (token && token->next && token->mtctype < PIPE)
+	while (token && token->mtctype < PIPE)
 	{
 		ft_putstr_fd(token->expand, fd);
 		if (token->trail_space)
