@@ -6,12 +6,12 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 16:25:42 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 19:05:11 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+// delete?
 void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes)
 {
 	int		i;

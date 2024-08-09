@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 16:22:00 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:41:50 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 		if (msh->info->n_pipe != 0)
 			if (pipe(pipex->fd_pipe) < 0)
 				handle_exec_error(pipex, "Pipe creation error", "");
+		if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
+			return ;
 		fork_and_execute(pipex, msh, j);
 		if (j < msh->info->n_pipe)
 		{
@@ -68,8 +70,8 @@ void	ft_exec_cmd(t_mshell *msh)
 	t_pipex	*pipex;
 
 	pipex = msh->pipex;
-	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens, pipex->fd_out))
-		return ;
+	// if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens, pipex->fd_out))
+	// 	return ;
 	if (!init_pid(pipex, msh->info->n_pipe))
 		return ;
 	execute_commands(msh, pipex);

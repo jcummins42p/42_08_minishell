@@ -3,21 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   com_echo_token.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 17:12:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 18:17:16 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo_tokens(t_tokenlist *token, int fd)
+void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 {
 	bool		newline;
+	t_tokenlist	*cur;
 
-	printf("builtin echo\n");
 	newline = true;
+	cur = token;
 	if (token->next)
 		token = token->next;
 	if (!ft_strncmp(token->expand, "-n", 2))
@@ -25,17 +26,38 @@ void	echo_tokens(t_tokenlist *token, int fd)
 		token = token->next;
 		newline = false;
 	}
-	while (token && token->mtctype < PIPE)
+	//to go through the string first in order to prepare fd_out
+	while (cur)
 	{
-		ft_putstr_fd(token->expand, fd);
-		if (token->trail_space)
-			write(fd, " ", 1);
-		token = token->next;
+		if (token->mtctype == RDIN
+			|| token->mtctype == RDOUT
+			|| token->mtctype == RDAPP)
+			ft_handle_redirection(msh->pipex, &cur);
+		else
+			cur = cur->next;
 	}
-	if (token && token->mtctype != PIPE)
+	while (token && token->mtctype != PIPE)
 	{
-		ft_putstr_fd(token->expand, fd);
+		// skip all the redirection as it was check above
+		if (token->mtctype == RDIN
+			|| token->mtctype == RDOUT
+			|| token->mtctype == RDAPP)
+			token = token->next->next;
+		else
+		{
+			ft_putstr_fd(token->expand, msh->pipex->fd_out);
+			if (token->trail_space)
+				write(msh->pipex->fd_out, " ", 1);
+			token = token->next;
+		}
+	}
+	if (token && token->mtctype != PIPE
+		&& token->mtctype != RDIN
+			&& token->mtctype != RDOUT
+			&& token->mtctype != RDAPP)
+	{
+		ft_putstr_fd(token->expand, msh->pipex->fd_out);
 		if (newline)
-			write(fd, "\n", 1);
+			write(msh->pipex->fd_out, "\n", 1);
 	}
 }

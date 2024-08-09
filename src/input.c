@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 17:01:18 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:34:19 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	input_cleanup(t_mshell *msh)
 	msh->lineread = NULL;
 }
 
-int	exec_builtin(t_mshell *msh, t_tokenlist *token, int fd)
+int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 {
 	/*ft_handle_redirection(msh->pipex, token);*/ // need to init pipex early
 	if (!token)
@@ -29,7 +29,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token, int fd)
 		if (token->comtype == EXIT)
 			msh->running = false;
 		else if (token->comtype == ECHO)
-			echo_tokens(token, fd);
+			echo_tokens(msh, token);
 		else if (token->comtype == ENV)
 			env_print(&msh->envlist, ENVVAR);
 		else if (token->comtype == UNSET)

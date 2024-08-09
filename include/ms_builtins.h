@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtins.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:41:10 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 15:41:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 17:34:14 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void		change_dir(t_mshell *msh, char *newdir);
 
 //	echo_token.c
-void		echo_tokens(t_tokenlist *token, int fd);
+void		echo_tokens(t_mshell *msh, t_tokenlist *token);
 
 //	export.c
 void		export_var(t_mshell *msh, t_tokenlist *token, t_vscope scope);

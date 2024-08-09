@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 16:16:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 19:05:15 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
 	i = 0;
 	while (*tokens && (*tokens)->mtctype != PIPE)
 	{
-		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP)
+		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP || (*tokens)->mtctype == DELIMIT)
 			ft_handle_redirection(pipex, tokens);
 		else
 		{
@@ -37,7 +37,7 @@ int	count_args(t_tokenlist *tokens)
 	i  = 0;
 	while (tokens && tokens->mtctype != PIPE)
 	{
-		if (tokens->mtctype != RDIN && tokens->mtctype != RDOUT && tokens->mtctype != RDAPP)
+		if (tokens->mtctype != RDIN && tokens->mtctype != RDOUT && tokens->mtctype != RDAPP && tokens->mtctype != DELIMIT)
 			i++;
 		tokens = tokens->next;
 	}
