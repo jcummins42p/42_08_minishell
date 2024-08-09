@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 14:36:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:47:10 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token, int fd)
 		if (token->comtype == EXIT)
 			msh->running = false;
 		else if (token->comtype == ECHO)
-			echo_tokens(msh, fd);
+			echo_tokens(token, fd);
 		else if (token->comtype == ENV)
 			env_print(&msh->envlist, ENVVAR);
 		else if (token->comtype == UNSET)

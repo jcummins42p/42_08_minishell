@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/06 12:42:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:16:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	pipex_init(t_mshell *msh);
 void	ft_exec_init(t_mshell *msh);
 
 //exec_utils_args.c
-void	populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg);
+void	populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[]);
 int		count_args(t_tokenlist *tokens);
 char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens);
 char	*get_cmd(char **paths, char *cmd);

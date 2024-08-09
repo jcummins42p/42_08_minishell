@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 14:38:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:22:00 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 void	execute_commands(t_mshell *msh, t_pipex *pipex)
 {
 	int 		j;
+	int			i;
 	t_tokenlist	*curr;
 
 	j = 0;
@@ -51,8 +52,13 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 			pipex->fd_in = pipex->fd_pipe[0];
 		}
 		j++;
+		i = 0;
+		while (pipex->cmd_args[i])
+			free(pipex->cmd_args[i++]);
 		free(pipex->cmd_args);
 		pipex->cmd_args = NULL;
+		free(pipex->cmd);
+		pipex->cmd = NULL;
 	}
 	waitpid(pipex->pid[msh->info->n_pipe], &msh->exitcode, 0);
 }

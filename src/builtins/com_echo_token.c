@@ -6,19 +6,17 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 17:57:19 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 15:41:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	echo_tokens(t_mshell *msh, int fd)
+void	echo_tokens(t_tokenlist *token, int fd)
 {
-	t_tokenlist	*token;
 	bool		newline;
 
 	newline = true;
-	token = msh->tokens;
 	if (token->next)
 		token = token->next;
 	if (!ft_strncmp(token->expand, "-n", 2))

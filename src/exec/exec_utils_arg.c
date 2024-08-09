@@ -6,13 +6,13 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/06 15:38:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 16:16:02 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
+void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
 {
 	int	i;
 
@@ -23,11 +23,11 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg)
 			ft_handle_redirection(pipex, tokens);
 		else
 		{
-			arg[i++] = ft_strdup((*tokens)->expand);
+			(*arg)[i++] = ft_strdup((*tokens)->expand);
 			*tokens = (*tokens)->next;
 		}
 	}
-	arg[i] = NULL;
+	(*arg)[i] = NULL;
 }
 
 int	count_args(t_tokenlist *tokens)
@@ -58,13 +58,13 @@ char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens)
 		ptr = ptr->next;
 	}
 	i = count_args(ptr);
-	arg = (char **)malloc(sizeof(char *) * (i + 1));
+	arg = malloc(sizeof(char *) * (i + 1));
 	if (!arg)
 	{
 		write(STDERR_FILENO, "Memory allocation failed\n", 25);
 		return (NULL);
 	}
-	populate_args(pipex, tokens, arg);
+	populate_args(pipex, tokens, &arg);
 	return (arg);
 }
 
