@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 18:41:50 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/09 20:00:11 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 	curr = NULL;
 	while (j <= msh->info->n_pipe)
 	{
+		if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
+			return ;
 		curr = token_after_pipeno(&msh->tokens, j);
 		pipex->cmd_args = ft_get_arg(pipex, &curr);
 		if (!pipex->cmd_args)
@@ -45,8 +47,6 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 		if (msh->info->n_pipe != 0)
 			if (pipe(pipex->fd_pipe) < 0)
 				handle_exec_error(pipex, "Pipe creation error", "");
-		if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
-			return ;
 		fork_and_execute(pipex, msh, j);
 		if (j < msh->info->n_pipe)
 		{
