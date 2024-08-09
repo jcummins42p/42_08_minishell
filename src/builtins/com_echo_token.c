@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 18:17:16 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/09 19:47:40 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 	{
 		if (token->mtctype == RDIN
 			|| token->mtctype == RDOUT
-			|| token->mtctype == RDAPP)
+			|| token->mtctype == RDAPP
+			|| token->mtctype == DELIMIT)
 			ft_handle_redirection(msh->pipex, &cur);
 		else
 			cur = cur->next;
@@ -41,8 +42,13 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 		// skip all the redirection as it was check above
 		if (token->mtctype == RDIN
 			|| token->mtctype == RDOUT
-			|| token->mtctype == RDAPP)
+			|| token->mtctype == RDAPP
+			|| token->mtctype == DELIMIT)
+		{
+			if (!token->next->next)
+				return ;
 			token = token->next->next;
+		}
 		else
 		{
 			ft_putstr_fd(token->expand, msh->pipex->fd_out);
@@ -54,7 +60,8 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 	if (token && token->mtctype != PIPE
 		&& token->mtctype != RDIN
 			&& token->mtctype != RDOUT
-			&& token->mtctype != RDAPP)
+			&& token->mtctype != RDAPP
+			&& token->mtctype != DELIMIT)
 	{
 		ft_putstr_fd(token->expand, msh->pipex->fd_out);
 		if (newline)
