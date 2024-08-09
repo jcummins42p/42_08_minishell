@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/08 09:34:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:31:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 		handle_exec_error(pipex, ERR_STDOUT, "");
 	close(pipex->fd_pipe[1]); // Close the copy of write end
 	if (!exec_builtin(msh, curr, STDOUT_FILENO))
-		exit (0);
+		exit (40);
 	else
 		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 			handle_exec_error(pipex, "command not found", curr->expand);
-	g_exitcode = 11;
-	exit(g_exitcode);
+	exit(54);
 }
 
 void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes, int curr_pipe)
@@ -52,10 +51,9 @@ void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes, int curr_pipe)
 	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
 		handle_exec_error(pipex, ERR_STDOUT, "");
 	if (!exec_builtin(msh, curr, pipex->fd_out))
-		exit (0);
+		exit (45);
 	else
 		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 			handle_exec_error(pipex, "command not found", curr->expand);
-	g_exitcode = 11;
-	exit(g_exitcode);
+	exit(55);
 }

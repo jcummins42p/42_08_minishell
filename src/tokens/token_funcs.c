@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 14:15:41 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/05 18:25:18 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:28:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,13 @@ void	tokens_get_info(t_mshell *msh)
 	t_token_inf	*info;
 
 	info = msh->info;
-	info->n_dollar = token_count_type(&msh->tokens, "$");
-	info->n_pipe = token_count_type(&msh->tokens, "|");
-	info->n_squote = token_count_type(&msh->tokens, "\'");
-	info->n_dquote = token_count_type(&msh->tokens, "\"");
-	info->n_rdin = token_count_type(&msh->tokens, "<");
-	info->n_rdout = token_count_type(&msh->tokens, ">");
-	info->n_rdapp = token_count_type(&msh->tokens, ">>");
-	info->n_delimit = token_count_type(&msh->tokens, "<<");
+	info->n_pipe = token_count_type(&msh->tokens, PIPE);
+	info->n_ass = token_count_type(&msh->tokens, ASS);
+	info->n_rdin = token_count_type(&msh->tokens, RDIN);
+	info->n_rdout = token_count_type(&msh->tokens, RDOUT);
+	info->n_rdapp = token_count_type(&msh->tokens, RDAPP);
+	info->n_delimit = token_count_type(&msh->tokens, DELIMIT);
 }
-//	debug code to print token info
-	/*printf("$\t-\t%d\n|\t-\t%d\n'\t-\t%d\n\"\t-\t%d\n", \*/
-			/*info->n_dollar, info->n_pipe, info->n_squote, info->n_dquote);*/
-	/*printf("<\t-\t%d\n>\t-\t%d\n>>\t-\t%d\n<<\t-\t%d\n", \*/
-			/*info->n_rdin, info->n_rdout, info->n_rdapp, info->n_delimit);*/
 
 t_tokenlist	*token_after_pipeno(t_tokenlist **tokens, int pipe_no)
 {
@@ -73,20 +66,18 @@ t_tokenlist	*token_at_pos(t_tokenlist **tokens, int searchpos)
 	return (NULL);
 }
 
-int	token_count_type(t_tokenlist **tokens, char *metachar)
+int	token_count_type(t_tokenlist **tokens, t_mtctype search)
 {
 	t_tokenlist	*curr;
 	int			count;
-	int			len;
 
 	count = 0;
-	len = ft_strlen(metachar);
 	curr = *tokens;
 	if (!tokens)
 		return (0);
 	while (curr)
 	{
-		if (!strncmp(curr->token, metachar, len))
+		if (curr->mtctype == search)
 			count++;
 		curr = curr->next;
 	}

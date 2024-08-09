@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:32:23 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/02 12:56:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:33:20 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,5 @@ void	shell_init(t_mshell *msh)
 	msh->path = NULL;
 	msh->lineread = NULL;
 	msh->running = true;
+	msh->exitcode = 0;
 }

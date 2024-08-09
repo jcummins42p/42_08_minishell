@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:47:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 15:23:41 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:26:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		tokens_print_list(t_tokenlist **tokens);
 void		tokens_get_info(t_mshell *msh);
 t_tokenlist	*token_after_pipeno(t_tokenlist **tokens, int pipe_no);
 t_tokenlist	*token_at_pos(t_tokenlist **tokens, int serachpos);
-int			token_count_type(t_tokenlist **tokens, char *metachar);
+int			token_count_type(t_tokenlist **tokens, t_mtctype search);
 void		token_pos_type(t_tokenlist **tokens, int **pos, char *metachar);
 
 #endif

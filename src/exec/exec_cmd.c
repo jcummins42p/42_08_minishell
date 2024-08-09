@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/08 09:50:45 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:38:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 
 	j = 0;
 	curr = NULL;
-	while (j < msh->info->n_pipe + 1)
+	while (j <= msh->info->n_pipe)
 	{
 		curr = token_after_pipeno(&msh->tokens, j);
 		pipex->cmd_args = ft_get_arg(pipex, &curr);
@@ -54,7 +54,7 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 		free(pipex->cmd_args);
 		pipex->cmd_args = NULL;
 	}
-	waitpid(pipex->pid[msh->info->n_pipe], &g_exitcode, 0);
+	waitpid(pipex->pid[msh->info->n_pipe], &msh->exitcode, 0);
 }
 
 void	ft_exec_cmd(t_mshell *msh)
@@ -67,5 +67,4 @@ void	ft_exec_cmd(t_mshell *msh)
 	if (!init_pid(pipex, msh->info->n_pipe))
 		return ;
 	execute_commands(msh, pipex);
-	env_update_exitcode(&msh->envlist);
 }

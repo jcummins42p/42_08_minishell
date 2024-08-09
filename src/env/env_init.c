@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 21:21:44 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:35:07 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,11 @@ void	env_from_tokens(t_envlist **envlist, t_tokenlist **token, int scope)
 	free(param);
 }
 
-void	env_update_exitcode(t_envlist **envlist)
+void	env_update_exitcode(t_mshell *msh, t_envlist **envlist)
 {
 	char	*exitcode;
 
-	exitcode = ft_itoa(g_exitcode);
+	exitcode = ft_itoa(msh->exitcode);
 	env_set(envlist, "?", exitcode, SHLVAR);
 	free(exitcode);
 }
@@ -169,6 +169,5 @@ void	env_init(t_envlist **envlist, char *env[])
 	env_set(envlist, "$", pid, SHLVAR);
 	env_set(envlist, "SHELL", "./minishell", ENVVAR);
 	env_set(envlist, "PS1", "$ ", SHLVAR);
-	env_update_exitcode(envlist);
 	free(pid);
 }
