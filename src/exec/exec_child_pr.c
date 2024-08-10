@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 17:43:00 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/10 19:11:42 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	exit(54);
 }
 
-void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes, int curr_pipe)
+void	last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 {
 	t_tokenlist	*curr;
 
 	curr = token_after_pipeno(&msh->tokens, curr_pipe);
-	if (n_pipes != 0)
+	if (curr_pipe != 0)
 	{
 		close(pipex->fd_pipe[1]); // Close the unused write end
 		if (dup2(pipex->fd_in, STDIN_FILENO) == -1)

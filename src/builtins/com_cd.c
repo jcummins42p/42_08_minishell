@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   com_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:32:29 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/01 14:01:56 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/10 19:06:33 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,7 @@ void	change_dir(t_mshell *msh, char *newdir)
 {
 	env_set(&msh->envlist, "OLDPWD", newdir, ENVVAR);
 	env_set_string(&msh->envlist, &msh->env);
+	//  at the beginning OLDPWD and PWD = getcwd;
+	// PWD = cd;
+	// CD = home if next token == NULL | next token == Pipe
 }

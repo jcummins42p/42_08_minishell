@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 20:00:11 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/10 19:12:39 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 		handle_exec_error(pipex, "Fork error", "");
 	if (pipex->pid[j] == 0)
 	{
+		// child process
+		// setup_signal_handlers_child();
 		if (j == msh->info->n_pipe)
-			last_child(pipex, msh, msh->info->n_pipe, j);
+			last_child(pipex, msh, j);
 		else
 			child(pipex, msh, j);
 	}
@@ -62,7 +64,12 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 		free(pipex->cmd);
 		pipex->cmd = NULL;
 	}
-	waitpid(pipex->pid[msh->info->n_pipe], &msh->exitcode, 0);
+	i = 0;
+	while (i < (msh->info->n_pipe + 1))
+	{
+		waitpid(pipex->pid[i], &msh->exitcode, 0);
+		i++;
+	}
 }
 
 void	ft_exec_cmd(t_mshell *msh)

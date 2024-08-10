@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 17:34:19 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/10 17:56:07 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 		else if (token->comtype == ASSIGN)
 			export_var(msh, token, SHLVAR);
 		else if (token->comtype == CD)
-			change_dir(msh, token->next->token);
+			change_dir(msh, token->next->token);	//need to check if token->next->token exists
 		else
 			return (1);
 	}
