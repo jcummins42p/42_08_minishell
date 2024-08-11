@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/10 16:19:25 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/11 10:53:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
 
 	if (pipe(pipex->fd_pipe) == -1)
 	{
-		write(STDERR_FILENO, "Couldn't create pipe\n", 23);
+		write(STDERR_FILENO, "Couldn't create pipe\n", 22);
 		return;
 	}
 	while (1)
