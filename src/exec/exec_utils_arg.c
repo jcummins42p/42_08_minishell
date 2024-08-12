@@ -6,21 +6,38 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 19:05:15 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 18:17:46 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	do_redirection(t_mshell *msh, t_tokenlist *token)
+{
+	t_tokenlist	*curr;
+
+	curr = token;
+	while (curr)
+	{
+		if (is_redirect(curr))
+			ft_handle_redirection(msh->pipex, &curr);
+		else
+			curr = curr->next;
+	}
+}
+
 
 void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
 {
 	int	i;
 
 	i = 0;
+	(void)pipex;
 	while (*tokens && (*tokens)->mtctype != PIPE)
 	{
 		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP || (*tokens)->mtctype == DELIMIT)
-			ft_handle_redirection(pipex, tokens);
+			*tokens = (*tokens)->next->next;
+			// ft_handle_redirection(pipex, tokens);
 		else
 		{
 			(*arg)[i++] = ft_strdup((*tokens)->expand);
@@ -39,6 +56,8 @@ int	count_args(t_tokenlist *tokens)
 	{
 		if (tokens->mtctype != RDIN && tokens->mtctype != RDOUT && tokens->mtctype != RDAPP && tokens->mtctype != DELIMIT)
 			i++;
+		else 
+			tokens = tokens->next;
 		tokens = tokens->next;
 	}
 	return i;
