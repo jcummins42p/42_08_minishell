@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/12 18:29:21 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 19:42:50 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex);
 void	ft_exec_cmd(t_mshell *msh);
 
 //	exec_redir.c
+bool	is_redirect(t_tokenlist *token);
+void	do_redirection(t_mshell *msh, t_tokenlist *token);
 void	ft_handle_rdin(t_pipex *pipex, t_tokenlist *token);
 void	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token);
 void	ft_handle_app(t_pipex *pipex, t_tokenlist *token);
 
 //	exec_file_d.c
-void	ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens);
+void	ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens);
 int		ft_open_file(const char *filename, int flags, mode_t mode);
 
 //	exec_init.c
@@ -56,8 +58,6 @@ void	populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[]);
 int		count_args(t_tokenlist *tokens);
 char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens);
 char	*get_cmd(char **paths, char *cmd);
-void	do_redirection(t_mshell *msh, t_tokenlist *token);
-bool	is_redirect(t_tokenlist *token);
 
 //	exec_utils_err.c			RE-WORK!
 int		msg(const char *err);
