@@ -6,17 +6,29 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/12 14:55:18 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 17:38:50 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	skip_redirection(t_tokenlist **token)
+int	skip_redirection(t_tokenlist **token)
 {
-	if (!token->next->next)
-		return ;
-	token = token->next->next;
+	if (!(*token)->next->next)
+		return (1);
+	*(*token) = *(*token)->next->next;
+	return (0);
+}
+
+bool	is_redirect(t_tokenlist *token)
+{
+	if (token->mtctype == RDIN
+		|| token->mtctype == RDOUT
+		|| token->mtctype == RDAPP
+		|| token->mtctype == DELIMIT)
+		return (true);
+	else
+		return (false);
 }
 
 void do_redirection(t_mshell *msh, t_tokenlist *token)
@@ -31,17 +43,6 @@ void do_redirection(t_mshell *msh, t_tokenlist *token)
 		else
 			curr = curr->next;
 	}
-}
-
-bool	is_redirect(t_tokenlist *token)
-{
-	if (token->mtctype == RDIN
-		|| token->mtctype == RDOUT
-		|| token->mtctype == RDAPP
-		|| token->mtctype == DELIMIT)
-		return (true);
-	else
-		return (false);
 }
 
 void	echo_tokens(t_mshell *msh, t_tokenlist *token)
@@ -64,7 +65,10 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 	{
 		// skip all the redirection as it was check above
 		if (is_redirect(token))
-			skip_redirection(&token);
+		{
+			if (skip_redirection(&token))
+				return ;
+		}
 		else
 		{
 			ft_putstr_fd(token->expand, msh->pipex->fd_out);

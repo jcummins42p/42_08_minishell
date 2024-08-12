@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/12 13:24:16 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:49:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,5 @@ void	ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens)
 		}
 	}
 	if (*tokens)
-		*tokens = (*tokens)->next;
+		**tokens = *(*tokens)->next;
 }

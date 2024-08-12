@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/10 19:11:42 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 15:26:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 		handle_exec_error(pipex, ERR_STDOUT, "");
 	close(pipex->fd_pipe[1]); // Close the copy of write end
 	if (!exec_builtin(msh, curr))
-		exit (40);
+		exit (1);
 	else
 		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 			handle_exec_error(pipex, "command not found", curr->expand);
@@ -51,7 +51,7 @@ void	last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
 		handle_exec_error(pipex, ERR_STDOUT, "");
 	if (!exec_builtin(msh, curr))
-		exit (45);
+		exit (1);
 	else
 		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 			handle_exec_error(pipex, "command not found", curr->expand);

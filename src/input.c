@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/12 14:21:16 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:28:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	input_cycle(t_mshell *msh)
 		if (tokenize(msh))
 		{
 			tokens_get_info(msh);
-			tokens_print_list(&msh->tokens);
+			/*tokens_print_list(&msh->tokens);*/
 			if (msh->tokens && !parse_error_check(&msh->tokens))
 			{
 				if (msh->tokens->comtype == EXIT)

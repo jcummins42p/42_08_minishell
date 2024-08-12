@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/10 19:12:39 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 15:37:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 		waitpid(pipex->pid[i], &msh->exitcode, 0);
 		i++;
 	}
+	if (WIFEXITED(msh->exitcode))
+		msh->exitcode = WEXITSTATUS(msh->exitcode);
 }
 
 void	ft_exec_cmd(t_mshell *msh)

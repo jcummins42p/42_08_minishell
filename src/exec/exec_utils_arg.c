@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 19:05:15 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 17:51:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
 	while (*tokens && (*tokens)->mtctype != PIPE)
 	{
 		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP || (*tokens)->mtctype == DELIMIT)
+		{
 			ft_handle_redirection(pipex, tokens);
+			if ((*tokens)->next)
+				*tokens = (*tokens)->next;
+		}
 		else
 		{
 			(*arg)[i++] = ft_strdup((*tokens)->expand);

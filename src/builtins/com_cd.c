@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:32:29 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/12 14:40:06 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:20:17 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,25 @@
 //	correct output using pwd command
 void	change_dir(t_mshell *msh, t_tokenlist *token)
 {
-	/*(void)msh;*/
-	/*(void)token;*/
-	char	*curr_pwd;
+	char	*tmp_dir;
+	char	buff[2048];
 
-	curr_pwd = NULL;
-	curr_pwd = env_get_string(&msh->envlist, "PWD");
-	env_set(&msh->envlist, "OLDPWD", curr_pwd, ENVVAR);
-	if (token->next)
+	tmp_dir = NULL;
+	tmp_dir = env_get_string(&msh->envlist, "PWD");
+	free (tmp_dir);
+	env_set(&msh->envlist, "OLDPWD", tmp_dir, ENVVAR);
+	if (token->next && ft_strncmp(token->next->expand, "~/", 2))
 	{
 		if (chdir(token->next->expand))
-			printf("Invalid directory\n");	
+			printf("Invalid directory\n");
 	}
-	/*if (token->next)*/
-		/*token = token->next;*/
-	/*else*/
-	/*{*/
-		/*// change directory to home*/
-		/*return ;*/
-	/*}*/
-
-	/*env_set_string(&msh->envlist, &msh->env);*/
-	//  at the beginning OLDPWD and PWD = getcwd;
-	// PWD = cd;
-	// CD = home if next token == NULL | next token == Pipe
+	else
+	{
+		tmp_dir	= env_get_string(&msh->envlist, "HOME");
+		if (chdir(tmp_dir))
+			printf("Invalid directory\n");
+		free (tmp_dir);
+	}
+	tmp_dir = NULL;
+	env_set(&msh->envlist, "PWD", getcwd(buff, 2048), ENVVAR);
 }
