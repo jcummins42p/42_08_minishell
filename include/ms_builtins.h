@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:41:10 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 17:34:14 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 14:19:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MS_COMMANDS_H
 
 //	cd.c
-void		change_dir(t_mshell *msh, char *newdir);
+void		change_dir(t_mshell *msh, t_tokenlist *token);
 
 //	echo_token.c
 void		echo_tokens(t_mshell *msh, t_tokenlist *token);

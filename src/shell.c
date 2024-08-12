@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:32:23 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 15:35:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/12 14:27:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ void	shell_free(t_mshell *msh)
 
 void	shell_set_envptrs(t_mshell *msh)
 {
+	char	buff[2048];
 	msh->prompt = env_get_value(&msh->envlist, "PS1");
 	msh->path = env_get_value(&msh->envlist, "PATH");
+	env_set(&msh->envlist, "OLDPWD", getcwd(buff, 2048), ENVVAR);
 }
 
 void	shell_init(t_mshell *msh)

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/10 19:10:47 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 13:26:45 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,41 @@
 # define ERR_STDIN "Error duplicating file descriptor for stdin\n"
 # define ERR_STDOUT "Error duplicating file descriptor for stdout\n"
 
-//exec_child_pr.c
+//	exec_child_pr.c
 void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe);
 void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes);
 
-//exec_cmd.c
+//	exec_cmd.c
 void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j);
 void	execute_commands(t_mshell *msh, t_pipex *pipex);
 void	ft_exec_cmd(t_mshell *msh);
 
-//exec_file_d.c
+//	exec_redir.c
+void	ft_handle_rdin(t_pipex *pipex, t_tokenlist *token);
+void	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token);
+void	ft_handle_app(t_pipex *pipex, t_tokenlist *token);
+
+//	exec_file_d.c
 void	ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens);
 int		ft_open_file(const char *filename, int flags, mode_t mode);
 
-//exec_init.c
+//	exec_init.c
 int		init_pid(t_pipex *pipex, int n_pipes);
 void	pipex_init(t_mshell *msh);
 void	ft_exec_init(t_mshell *msh);
 
-//exec_utils_args.c
+//	exec_utils_args.c
 void	populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[]);
 int		count_args(t_tokenlist *tokens);
 char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens);
 char	*get_cmd(char **paths, char *cmd);
 
-//exec_utils_err.c			RE-WORK!
+//	exec_utils_err.c			RE-WORK!
 int		msg(const char *err);
 void	msg_error(char *err, t_pipex *pipex);
 void	handle_exec_error(t_pipex *pipex, char *str, char *arg);
 
-//exec_utils_free.c			Currently issue with free
+//	exec_utils_free.c			Currently issue with free
 void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes);
 void	free_pipex(t_pipex *pipex);
 

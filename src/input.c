@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/10 17:56:07 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 14:21:16 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	input_cleanup(t_mshell *msh)
 
 int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 {
-	/*ft_handle_redirection(msh->pipex, token);*/ // need to init pipex early
 	if (!token)
 		return (1);
 	else
@@ -39,7 +38,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 		else if (token->comtype == ASSIGN)
 			export_var(msh, token, SHLVAR);
 		else if (token->comtype == CD)
-			change_dir(msh, token->next->token);	//need to check if token->next->token exists
+			change_dir(msh, token);	//need to check if token->next->token exists
 		else
 			return (1);
 	}

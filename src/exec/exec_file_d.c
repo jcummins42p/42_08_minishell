@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/11 10:53:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:24:16 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,24 @@ int	ft_open_file(const char *filename, int flags, mode_t mode)
 	return (fd);
 }
 
-void ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
+void	ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
 {
-	char *line;
+	char	*line;
 
 	if (pipe(pipex->fd_pipe) == -1)
 	{
 		write(STDERR_FILENO, "Couldn't create pipe\n", 22);
-		return;
+		return ;
 	}
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+			break ;
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		write(pipex->fd_pipe[1], line, ft_strlen(line));
 		write(pipex->fd_pipe[1], "\n", 1);
@@ -53,25 +53,11 @@ void	ft_handle_redirection(t_pipex *pipex, t_tokenlist **tokens)
 	if (*tokens == NULL)
 		return ;
 	if ((*tokens)->mtctype == RDIN)
-	{
-		*tokens = (*tokens)->next;
-		if (*tokens)
-			pipex->fd_in = ft_open_file((*tokens)->token, O_RDONLY, 0);
-	}
+		ft_handle_rdin(pipex, *tokens);
 	else if ((*tokens)->mtctype == RDOUT)
-	{
-		*tokens = (*tokens)->next;
-		if (*tokens)
-			pipex->fd_out = ft_open_file((*tokens)->token,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	}
+		ft_handle_rdout(pipex, *tokens);
 	else if ((*tokens)->mtctype == RDAPP)
-	{
-		*tokens = (*tokens)->next;
-		if (*tokens)
-			pipex->fd_out = ft_open_file((*tokens)->token,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
-	}
+		ft_handle_app(pipex, *tokens);
 	else if ((*tokens)->mtctype == DELIMIT)
 	{
 		*tokens = (*tokens)->next;

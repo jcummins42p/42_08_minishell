@@ -6,19 +6,30 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 19:47:40 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 12:59:57 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+bool	is_redirect(t_tokenlist *token)
+{
+	if (token->mtctype == RDIN
+		|| token->mtctype == RDOUT
+		|| token->mtctype == RDAPP
+		|| token->mtctype == DELIMIT)
+		return (true);
+	else
+		return (false);
+}
+
 void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 {
 	bool		newline;
-	t_tokenlist	*cur;
+	t_tokenlist	*curr;
 
 	newline = true;
-	cur = token;
+	curr = token;
 	if (token->next)
 		token = token->next;
 	if (!ft_strncmp(token->expand, "-n", 2))
@@ -27,23 +38,17 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 		newline = false;
 	}
 	//to go through the string first in order to prepare fd_out
-	while (cur)
+	while (curr)
 	{
-		if (token->mtctype == RDIN
-			|| token->mtctype == RDOUT
-			|| token->mtctype == RDAPP
-			|| token->mtctype == DELIMIT)
-			ft_handle_redirection(msh->pipex, &cur);
+		if (is_redirect(curr))
+			ft_handle_redirection(msh->pipex, &curr);
 		else
-			cur = cur->next;
+			curr = curr->next;
 	}
-	while (token && token->mtctype != PIPE)
+	while (token && token->next && token->mtctype != PIPE)
 	{
 		// skip all the redirection as it was check above
-		if (token->mtctype == RDIN
-			|| token->mtctype == RDOUT
-			|| token->mtctype == RDAPP
-			|| token->mtctype == DELIMIT)
+		if (is_redirect(token))
 		{
 			if (!token->next->next)
 				return ;
@@ -57,14 +62,10 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 			token = token->next;
 		}
 	}
-	if (token && token->mtctype != PIPE
-		&& token->mtctype != RDIN
-			&& token->mtctype != RDOUT
-			&& token->mtctype != RDAPP
-			&& token->mtctype != DELIMIT)
+	if (token && token->mtctype != PIPE && !is_redirect(token))
 	{
 		ft_putstr_fd(token->expand, msh->pipex->fd_out);
 		if (newline)
-			write(msh->pipex->fd_out, "\n", 1);
+			ft_putstr_fd("\n", msh->pipex->fd_out);
 	}
 }
