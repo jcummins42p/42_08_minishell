@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/12 18:07:14 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/12 18:29:21 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		count_args(t_tokenlist *tokens);
 char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens);
 char	*get_cmd(char **paths, char *cmd);
 void	do_redirection(t_mshell *msh, t_tokenlist *token);
-
+bool	is_redirect(t_tokenlist *token);
 
 //	exec_utils_err.c			RE-WORK!
 int		msg(const char *err);
