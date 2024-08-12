@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:41:10 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/12 14:19:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:07:57 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 void		change_dir(t_mshell *msh, t_tokenlist *token);
 
 //	echo_token.c
+bool		is_redirect(t_tokenlist *token);
 void		echo_tokens(t_mshell *msh, t_tokenlist *token);
 
 //	export.c
