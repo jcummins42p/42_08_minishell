@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:32:29 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/12 18:20:17 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:32:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	change_dir(t_mshell *msh, t_tokenlist *token)
 
 	tmp_dir = NULL;
 	tmp_dir = env_get_string(&msh->envlist, "PWD");
-	free (tmp_dir);
 	env_set(&msh->envlist, "OLDPWD", tmp_dir, ENVVAR);
+	free (tmp_dir);
 	if (token->next && ft_strncmp(token->next->expand, "~/", 2))
 	{
 		if (chdir(token->next->expand))
