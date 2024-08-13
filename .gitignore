@@ -3,3 +3,6 @@ lib/libft.a
 tags
 *.txt
 .*.c
+minishell
+*.t
+*.txt

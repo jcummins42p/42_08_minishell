@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 16:26:58 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/13 16:46:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,22 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 		token = token->next;
 		newline = false;
 	}
-	while (token && token->next && token->mtctype != PIPE)
+	while (token && token->mtctype != PIPE)
 	{
-		
 		if (is_redirect(token))
 		{
 			if (!token->next->next)
-			return ;
+				return ;
 			token = token->next->next;
 		}
 		else
 		{
 			printf("%s", token->expand);
-			// ft_putstr_fd(token->expand, msh->pipex->fd_out);
-			if (token->trail_space)
+			if (token->trail_space && token->next && token->next->mtctype != PIPE)
 				printf(" ");
-				// write(msh->pipex->fd_out, " ", 1);
+			else if (newline && (!token->next || (token->next && token->next->mtctype == PIPE)))
+				printf("\n");
 			token = token->next;
 		}
-	}
-	if (token && token->mtctype != PIPE && !is_redirect(token))
-	{
-		printf("%s", token->expand);
-		// ft_putstr_fd(token->expand, msh->pipex->fd_out);
-		if (newline)
-			printf("\n");
-			// ft_putstr_fd("\n", msh->pipex->fd_out);
 	}
 }
