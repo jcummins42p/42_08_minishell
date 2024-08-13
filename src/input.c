@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/12 16:28:08 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 14:50:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,29 @@ void	input_cleanup(t_mshell *msh)
 	msh->lineread = NULL;
 }
 
+void	exec_exit(t_mshell *msh, t_tokenlist *token)
+{
+	int	i;
+
+	i = 0;
+	msh->running = false;
+	if (token->next)
+	{
+		while (token->next->expand[i])
+		{
+			if (!ft_isdigit(token->next->expand[i++]))
+			{
+				printf("msh: %s: %s: numeric argument required\n", \
+						token->expand, token->next->expand);
+				msh->exitcode = 2;
+				return ;
+			}
+		}
+		msh->exitcode = ft_atoi(token->next->expand);
+	}
+	printf("exit\n");
+}
+
 int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 {
 	if (!token)
@@ -26,7 +49,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 	else
 	{
 		if (token->comtype == EXIT)
-			msh->running = false;
+			exec_exit(msh, token);
 		else if (token->comtype == ECHO)
 			echo_tokens(msh, token);
 		else if (token->comtype == ENV)
@@ -85,13 +108,8 @@ void	input_cycle(t_mshell *msh)
 			/*tokens_print_list(&msh->tokens);*/
 			if (msh->tokens && !parse_error_check(&msh->tokens))
 			{
-				if (msh->tokens->comtype == EXIT)
-					msh->running = false;
-				else
-				{
-					pipex_init(msh);
-					ft_exec_init(msh);
-				}
+				pipex_init(msh);
+				ft_exec_init(msh);
 			}
 		}
 		input_cleanup(msh);
