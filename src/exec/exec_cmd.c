@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 19:22:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:32:15 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 	curr = NULL;
 	curr = token_after_pipeno(&msh->tokens, j);
 	do_redirection(msh, curr);
-	/*if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))*/
-		/*return (-1);*/
+	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
+		return (-1);
 	pipex->cmd_args = ft_get_arg(pipex, &curr);
 	if (!pipex->cmd_args)
 		handle_exec_error(pipex, "Failed to get command arguments", "");
@@ -78,9 +78,8 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 		close(pipex->fd_pipe[1]);
 		pipex->fd_in = pipex->fd_pipe[0];
 	}
-	j++;
 	execute_cleanup(pipex);
-	return (j);
+	return (++j);
 }
 
 void	ft_exec_cmd(t_mshell *msh)

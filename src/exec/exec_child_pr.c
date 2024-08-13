@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 15:38:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:49:46 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	else
 		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 		{
+			//	need to send errors direct to stderr instead of fd_out
 			handle_exec_error(pipex, "command not found", curr->expand);
 			exit(EX_COMMAND_NOT_FOUND);
 		}

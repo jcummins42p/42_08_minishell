@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 19:26:24 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/13 19:29:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 		}
 		else
 		{
-			echo_one_token(token, newline);
+			if (msh->info->n_pipe == 0)
+				echo_one_token_no_pipe(msh, token, newline);
+			else
+				echo_one_token(token, newline);
 			token = token->next;
 		}
 	}
