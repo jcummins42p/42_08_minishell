@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 19:17:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 20:24:34 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ void	ft_exec_cmd(t_mshell *msh);
 
 //	exec_redir.c
 bool	is_redirect(t_tokenlist *token);
-void	do_redirection(t_mshell *msh, t_tokenlist *token);
-void	ft_handle_rdin(t_pipex *pipex, t_tokenlist *token);
+int		do_redirection(t_mshell *msh, t_tokenlist *token);
+int		ft_handle_rdin(t_pipex *pipex, t_tokenlist *token);
 void	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token);
 void	ft_handle_app(t_pipex *pipex, t_tokenlist *token);
 
 //	exec_file_d.c
-void	ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens);
+int		ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens);
 int		ft_open_file(const char *filename, int flags, mode_t mode);
 
 //	exec_init.c

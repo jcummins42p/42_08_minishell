@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 19:32:15 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 20:51:22 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,13 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 
 	curr = NULL;
 	curr = token_after_pipeno(&msh->tokens, j);
-	do_redirection(msh, curr);
+	if (do_redirection(msh, curr) == 1 && msh->info->n_pipe == 0)
+		return (-1);
 	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
 		return (-1);
 	pipex->cmd_args = ft_get_arg(pipex, &curr);
+	if (pipex->cmd_args[0] == NULL)
+		return (-1);
 	if (!pipex->cmd_args)
 		handle_exec_error(pipex, "Failed to get command arguments", "");
 	if (ft_strchr(pipex->cmd_args[0], '/'))
@@ -93,5 +96,6 @@ void	ft_exec_cmd(t_mshell *msh)
 		return ;
 	while (j >= 0 && j <= msh->info->n_pipe)
 		j = execute_commands(msh, pipex, j);
-	execute_finish(msh, pipex);
+	if (j != -1)
+		execute_finish(msh, pipex);
 }
