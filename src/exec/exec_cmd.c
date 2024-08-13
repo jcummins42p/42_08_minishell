@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 16:14:15 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/13 16:35:55 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 		pipex->cmd_args = ft_get_arg(pipex, &curr);
 		if (!pipex->cmd_args)
 			handle_exec_error(pipex, "Failed to get command arguments", "");
-		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+		if (ft_strchr(pipex->cmd_args[0], '/'))
+			pipex->cmd = pipex->cmd_args[0];
+		else
+			pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
 		if (msh->info->n_pipe != 0)
 			if (pipe(pipex->fd_pipe) < 0)
 				handle_exec_error(pipex, "Pipe creation error", "");
