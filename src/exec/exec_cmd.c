@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 19:04:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:22:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,47 +53,46 @@ void	execute_cleanup(t_pipex *pipex)
 	pipex->cmd = NULL;
 }
 
-void	execute_commands(t_mshell *msh, t_pipex *pipex)
+int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 {
-	int 		j;
 	t_tokenlist	*curr;
 
-	j = 0;
-	while (j <= msh->info->n_pipe)
+	curr = NULL;
+	curr = token_after_pipeno(&msh->tokens, j);
+	do_redirection(msh, curr);
+	/*if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))*/
+		/*return (-1);*/
+	pipex->cmd_args = ft_get_arg(pipex, &curr);
+	if (!pipex->cmd_args)
+		handle_exec_error(pipex, "Failed to get command arguments", "");
+	if (ft_strchr(pipex->cmd_args[0], '/'))
+		pipex->cmd = ft_strdup(pipex->cmd_args[0]);
+	else
+		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+	if (msh->info->n_pipe != 0)
+		if (pipe(pipex->fd_pipe) < 0)
+			handle_exec_error(pipex, "Pipe creation error", "");
+	fork_and_execute(pipex, msh, j);
+	if (j < msh->info->n_pipe)
 	{
-		curr = NULL;
-		curr = token_after_pipeno(&msh->tokens, j);
-		do_redirection(msh, curr);
-		if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
-			return ;
-		pipex->cmd_args = ft_get_arg(pipex, &curr);
-		if (!pipex->cmd_args)
-			handle_exec_error(pipex, "Failed to get command arguments", "");
-		if (ft_strchr(pipex->cmd_args[0], '/'))
-			pipex->cmd = ft_strdup(pipex->cmd_args[0]);
-		else
-			pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
-		if (msh->info->n_pipe != 0)
-			if (pipe(pipex->fd_pipe) < 0)
-				handle_exec_error(pipex, "Pipe creation error", "");
-		fork_and_execute(pipex, msh, j);
-		if (j < msh->info->n_pipe)
-		{
-			close(pipex->fd_pipe[1]);
-			pipex->fd_in = pipex->fd_pipe[0];
-		}
-		j++;
-		execute_cleanup(pipex);
+		close(pipex->fd_pipe[1]);
+		pipex->fd_in = pipex->fd_pipe[0];
 	}
+	j++;
+	execute_cleanup(pipex);
+	return (j);
 }
 
 void	ft_exec_cmd(t_mshell *msh)
 {
-	t_pipex	*pipex;
+	t_pipex		*pipex;
+	int			j;
 
+	j = 0;
 	pipex = msh->pipex;
 	if (init_pid(pipex, msh->info->n_pipe))
 		return ;
-	execute_commands(msh, pipex);
+	while (j >= 0 && j <= msh->info->n_pipe)
+		j = execute_commands(msh, pipex, j);
 	execute_finish(msh, pipex);
 }
