@@ -6,11 +6,20 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 18:19:50 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:26:24 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void echo_one_token_no_pipe(t_mshell *msh, t_tokenlist *token, bool newline)
+{
+	write(msh->pipex->fd_out, token->expand, strlen(token->expand));
+	if (token->trail_space && token->next && token->next->mtctype != PIPE)
+		write(msh->pipex->fd_out, " ", 1);
+	else if (newline && (!token->next || (token->next->mtctype == PIPE)))
+		write(msh->pipex->fd_out, "\n", 1);
+}
 
 void	echo_one_token(t_tokenlist *token, bool newline)
 {
