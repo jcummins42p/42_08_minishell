@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 14:50:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:07:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,6 @@ void	input_cleanup(t_mshell *msh)
 	token_clear(&msh->tokens);
 	free(msh->lineread);
 	msh->lineread = NULL;
-}
-
-void	exec_exit(t_mshell *msh, t_tokenlist *token)
-{
-	int	i;
-
-	i = 0;
-	msh->running = false;
-	if (token->next)
-	{
-		while (token->next->expand[i])
-		{
-			if (!ft_isdigit(token->next->expand[i++]))
-			{
-				printf("msh: %s: %s: numeric argument required\n", \
-						token->expand, token->next->expand);
-				msh->exitcode = 2;
-				return ;
-			}
-		}
-		msh->exitcode = ft_atoi(token->next->expand);
-	}
-	printf("exit\n");
 }
 
 int	exec_builtin(t_mshell *msh, t_tokenlist *token)

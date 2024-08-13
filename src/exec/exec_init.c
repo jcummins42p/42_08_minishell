@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:46:05 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/09 17:07:42 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:32:06 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ int	init_pid(t_pipex *pipex, int n_pipes)
 	if (!pipex->pid)
 	{
 		msg("Memory allocation error");
-		return (0);
+		exit (EX_GENERAL_ERROR);
 	}
-	return (1);
+	return (0);
 }
 
 void	pipex_init(t_mshell *msh)
@@ -29,7 +29,7 @@ void	pipex_init(t_mshell *msh)
 	if (msh->pipex == NULL)
 	{
 		msg(ERR_MEMORY);
-		exit(1);
+		exit(EX_GENERAL_ERROR);
 	}
 	msh->pipex->fd_in = dup(STDIN_FILENO);
 	msh->pipex->fd_out = dup(STDOUT_FILENO);
