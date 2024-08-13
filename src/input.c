@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 16:26:33 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/13 18:14:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 		return (1);
 	else
 	{
+		/*dup2(msh->pipex->fd_out, STDOUT_FILENO);*/
 		if (token->comtype == EXIT)
 			exec_exit(msh, token);
 		else if (token->comtype == ECHO)

@@ -6,19 +6,26 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 16:46:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:19:50 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	echo_one_token(t_tokenlist *token, bool newline)
+{
+	printf("%s", token->expand);
+	if (token->trail_space && token->next && token->next->mtctype != PIPE)
+		printf(" ");
+	else if (newline && (!token->next || (token->next->mtctype == PIPE)))
+		printf("\n");
+}
+
 void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 {
 	bool		newline;
-	t_tokenlist	*curr;
 
 	newline = true;
-	curr = token;
 	(void)msh;
 	if (token->next)
 		token = token->next;
@@ -37,11 +44,7 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 		}
 		else
 		{
-			printf("%s", token->expand);
-			if (token->trail_space && token->next && token->next->mtctype != PIPE)
-				printf(" ");
-			else if (newline && (!token->next || (token->next && token->next->mtctype == PIPE)))
-				printf("\n");
+			echo_one_token(token, newline);
 			token = token->next;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 16:38:44 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:17:33 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 	int 		j;
 	int			i;
 	t_tokenlist	*curr;
-	t_tokenlist	*ptr_redirect;
 
 	j = 0;
-	curr = NULL;
-	ptr_redirect = msh->tokens;
+	/*curr = NULL;*/
+	/*curr = token_after_pipeno(&msh->tokens, j);*/
+	/*do_redirection(msh, curr);*/
 	while (j <= msh->info->n_pipe)
 	{
+		curr = NULL;
 		curr = token_after_pipeno(&msh->tokens, j);
 		do_redirection(msh, curr);
 		if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
