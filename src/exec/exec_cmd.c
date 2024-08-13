@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 18:17:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:04:59 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,36 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 	}
 }
 
+void	execute_finish(t_mshell *msh, t_pipex *pipex)
+{
+	int i;
+
+	i = -1;
+	while (++i < (msh->info->n_pipe + 1))
+		waitpid(pipex->pid[i], &msh->exitcode, 0);
+	if (WIFEXITED(msh->exitcode))
+		msh->exitcode = WEXITSTATUS(msh->exitcode);
+}
+
+void	execute_cleanup(t_pipex *pipex)
+{
+	int	i;
+
+	i = 0;
+	while (pipex->cmd_args[i])
+		free(pipex->cmd_args[i++]);
+	free(pipex->cmd_args);
+	pipex->cmd_args = NULL;
+	free(pipex->cmd);
+	pipex->cmd = NULL;
+}
+
 void	execute_commands(t_mshell *msh, t_pipex *pipex)
 {
 	int 		j;
-	int			i;
 	t_tokenlist	*curr;
 
 	j = 0;
-	/*curr = NULL;*/
-	/*curr = token_after_pipeno(&msh->tokens, j);*/
-	/*do_redirection(msh, curr);*/
 	while (j <= msh->info->n_pipe)
 	{
 		curr = NULL;
@@ -63,22 +83,8 @@ void	execute_commands(t_mshell *msh, t_pipex *pipex)
 			pipex->fd_in = pipex->fd_pipe[0];
 		}
 		j++;
-		i = 0;
-		while (pipex->cmd_args[i])
-			free(pipex->cmd_args[i++]);
-		free(pipex->cmd_args);
-		pipex->cmd_args = NULL;
-		free(pipex->cmd);
-		pipex->cmd = NULL;
+		execute_cleanup(pipex);
 	}
-	i = 0;
-	while (i < (msh->info->n_pipe + 1))
-	{
-		waitpid(pipex->pid[i], &msh->exitcode, 0);
-		i++;
-	}
-	if (WIFEXITED(msh->exitcode))
-		msh->exitcode = WEXITSTATUS(msh->exitcode);
 }
 
 void	ft_exec_cmd(t_mshell *msh)
@@ -86,9 +92,8 @@ void	ft_exec_cmd(t_mshell *msh)
 	t_pipex	*pipex;
 
 	pipex = msh->pipex;
-	// if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens, pipex->fd_out))
-	// 	return ;
 	if (init_pid(pipex, msh->info->n_pipe))
 		return ;
 	execute_commands(msh, pipex);
+	execute_finish(msh, pipex);
 }

@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/08/05 10:17:33 by jcummins         ###   ########.fr        #
+#    Updated: 2024/08/13 19:07:46 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEAD_DIR = include
 SRC_DIR = src
 OBJ_DIR = obj
 CC = cc
-CFLAGS = -g -Werror -Wextra -Wall -pedantic -I$(HEAD_DIR)
+CFLAGS = -g3 -Werror -Wextra -Wall -pedantic -I$(HEAD_DIR)
 LIB = libft.a
 LIB_DIR = lib
 LIB_PATH = $(LIB_DIR)/$(LIB)
