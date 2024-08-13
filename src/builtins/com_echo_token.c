@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 16:16:05 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/13 16:26:58 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,9 @@ void	echo_tokens(t_mshell *msh, t_tokenlist *token)
 		token = token->next;
 		newline = false;
 	}
-	// while (curr)
-	// {
-	// 	if (is_redirect(curr))
-	// 		ft_handle_redirection(msh->pipex, &curr);
-	// 	else
-	// 		curr = curr->next;
-	// }
-	//to go through the string first in order to prepare fd_out
 	while (token && token->next && token->mtctype != PIPE)
 	{
-		// skip all the redirection as it was check above
+		
 		if (is_redirect(token))
 		{
 			if (!token->next->next)
