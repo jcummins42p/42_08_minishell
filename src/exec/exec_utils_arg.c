@@ -6,13 +6,13 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/14 13:57:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:06:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
+void	populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
 {
 	int	i;
 
@@ -33,18 +33,18 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
 
 int	count_args(t_tokenlist *tokens)
 {
-	int	i;
+	int	count;
 
-	i  = 0;
+	count = 0;
 	while (tokens && tokens->mtctype != PIPE)
 	{
 		if (tokens->mtctype < RDIN)
-			i++;
+			count++;
 		else
 			tokens = tokens->next;
 		tokens = tokens->next;
 	}
-	return i;
+	return (count);
 }
 
 char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens)
