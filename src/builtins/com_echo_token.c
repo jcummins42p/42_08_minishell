@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 12:13:23 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:06:26 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	echo_tokens_cycle(t_mshell *msh, t_tokenlist *token, bool newline)
 	}
 }
 
-void	echo_tokens(t_mshell *msh, t_tokenlist *token)
+void	com_echo(t_mshell *msh, t_tokenlist *token)
 {
 	bool		newline;
 

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 13:31:17 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:16:55 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 	else
 	{
 		if (token->comtype == EXIT)
-			exec_exit(msh, token);
+			com_exit(msh, token);
 		else if (token->comtype == ECHO)
-			echo_tokens(msh, token);
+			com_echo(msh, token);
 		else if (token->comtype == ENV)
-			env_print(&msh->envlist, ENVVAR);
+			com_env(&msh->envlist, ENVVAR);
 		else if (token->comtype == UNSET)
-			unset(msh);
+			com_unset(msh);
 		else if (token->comtype == EXPORT)
-			export_var(msh, token, ENVVAR);
+			com_export(msh, token, ENVVAR);
 		else if (token->comtype == ASSIGN)
-			export_var(msh, token, SHLVAR);
+			com_export(msh, token, SHLVAR);
 		else if (token->comtype == CD)
-			change_dir(msh, token);
+			com_cd(msh, token);
 		else
 			return (1);
 	}

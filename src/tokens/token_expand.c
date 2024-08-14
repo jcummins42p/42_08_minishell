@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/02 11:50:18 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 20:35:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:54:07 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,22 +116,6 @@ char	*expand_string_dq(t_mshell *msh, char *input)
 		if (input[i] == '\"')
 			i++;
 	}
-	return (output);
-}
-
-char	*expand_string_assign(char *input)
-{
-	char	*output;
-	int		i;
-
-	i = 0;
-	output = NULL;
-	while (input && input[i] && input[i] != '=')
-		i++;
-	output = malloc(sizeof(char) * (i + 1));
-	output[i] = '\0';
-	while (--i >= 0)
-		output[i] = input[i];
 	return (output);
 }
 

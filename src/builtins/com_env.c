@@ -1,37 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   com_exit.c                                         :+:      :+:    :+:   */
+/*   com_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/13 15:05:56 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 16:06:43 by jcummins         ###   ########.fr       */
+/*   Created: 2024/08/14 16:17:54 by jcummins          #+#    #+#             */
+/*   Updated: 2024/08/14 16:18:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	com_exit(t_mshell *msh, t_tokenlist *token)
+void	com_env(t_envlist **envlist, t_vscope scope)
 {
-	int	i;
+	t_envlist	*curr;
 
-	i = 0;
-	msh->running = false;
-	if (token->next)
+	curr = *envlist;
+	while (curr)
 	{
-		while (token->next->expand[i])
-		{
-			if (!ft_isdigit(token->next->expand[i++]))
-			{
-				printf("msh: %s: %s: numeric argument required\n", \
-						token->expand, token->next->expand);
-				msh->exitcode = 2;
-				return ;
-			}
-		}
-		msh->exitcode = ft_atoi(token->next->expand);
+		if (curr->value && curr->scope >= scope)
+			printf("%s=%s\n", curr->param, curr->value);
+		curr = curr->next;
 	}
-	if (msh->info->n_pipe == 0)
-		printf("exit\n");
 }

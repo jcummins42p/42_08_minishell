@@ -6,13 +6,13 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:12:14 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/12 18:51:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:19:06 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	unset(t_mshell *msh)
+void	com_unset(t_mshell *msh)
 {
 	t_tokenlist	*token;
 

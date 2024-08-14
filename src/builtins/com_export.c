@@ -6,13 +6,13 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 11:21:35 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 12:19:23 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 16:03:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	export_var(t_mshell *msh, t_tokenlist *token, t_vscope scope)
+void	com_export(t_mshell *msh, t_tokenlist *token, t_vscope scope)
 {
 	if (token->comtype == EXPORT)
 		token = token->next;
