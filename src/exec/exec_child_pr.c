@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 19:49:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:53:34 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,11 @@ void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	close(pipex->fd_pipe[1]); // Close the copy of write end
 	if (!exec_builtin(msh, curr))
 		exit (EX_SUCCESS);
-	else
-		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
-		{
-			//	need to send errors direct to stderr instead of fd_out
-			handle_exec_error(pipex, "command not found", curr->expand);
-			exit(EX_COMMAND_NOT_FOUND);
-		}
-	exit(EX_SUCCESS);
+	if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
+	{
+		handle_exec_error(pipex, "command not found", curr->expand);
+		exit(EX_COMMAND_NOT_FOUND);
+	}
 }
 
 void	last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
@@ -50,17 +47,14 @@ void	last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	else
 		if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
 			handle_exec_error(pipex, ERR_STDIN, "");
-
 	// Last child outputs to the specified output or terminal
 	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
 		handle_exec_error(pipex, ERR_STDOUT, "");
 	if (!exec_builtin(msh, curr))
 		exit (EX_SUCCESS);
-	else
-		if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
-		{
-			handle_exec_error(pipex, "command not found", curr->expand);
-			exit(EX_COMMAND_NOT_FOUND);
-		}
-	exit(EX_SUCCESS);
+	if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
+	{
+		handle_exec_error(pipex, "command not found", curr->expand);
+		exit(EX_COMMAND_NOT_FOUND);
+	}
 }

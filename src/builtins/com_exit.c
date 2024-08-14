@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:05:56 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 15:11:02 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:57:15 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ void	exec_exit(t_mshell *msh, t_tokenlist *token)
 		}
 		msh->exitcode = ft_atoi(token->next->expand);
 	}
-	printf("exit\n");
+	if (msh->info->n_pipe == 0)
+		printf("exit\n");
 }

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/14 14:12:34 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:36:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 
 void	execute_finish(t_mshell *msh, t_pipex *pipex)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < (msh->info->n_pipe + 1))
@@ -40,25 +40,32 @@ void	execute_finish(t_mshell *msh, t_pipex *pipex)
 		msh->exitcode = WEXITSTATUS(msh->exitcode);
 }
 
-int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
+int	init_command_args(t_pipex *pipex, t_tokenlist *curr)
 {
-	t_tokenlist	*curr;
-
-	curr = NULL;
-	curr = token_after_pipeno(&msh->tokens, j);
-	if (do_redirection(msh, curr) == 1 && msh->info->n_pipe == 0)
-		return (-1);
-	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
-		return (-1);
 	pipex->cmd_args = ft_get_arg(pipex, &curr);
-	if (pipex->cmd_args[0] == NULL)
-		return (-1);
-	if (!pipex->cmd_args)
+	if (!pipex->cmd_args || pipex->cmd_args[0] == NULL)
+	{
 		handle_exec_error(pipex, "Failed to get command arguments", "");
+		return (1);
+	}
 	if (ft_strchr(pipex->cmd_args[0], '/'))
 		pipex->cmd = ft_strdup(pipex->cmd_args[0]);
 	else
 		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+	return (0);
+}
+
+int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
+{
+	t_tokenlist	*curr;
+
+	curr = token_after_pipeno(&msh->tokens, j);
+	if (do_redirection(msh, curr) && msh->info->n_pipe == 0)
+		return (-1);
+	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
+		return (-1);
+	if (init_command_args(pipex, curr))
+		return (-1);
 	if (msh->info->n_pipe != 0)
 		if (pipe(pipex->fd_pipe) < 0)
 			handle_exec_error(pipex, "Pipe creation error", "");
