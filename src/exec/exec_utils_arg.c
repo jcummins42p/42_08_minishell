@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 14:51:39 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 18:48:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:57:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ void populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[])
 	(void)pipex;
 	while (*tokens && (*tokens)->mtctype != PIPE)
 	{
-		if ((*tokens)->mtctype == RDIN || (*tokens)->mtctype == RDOUT || (*tokens)->mtctype == RDAPP || (*tokens)->mtctype == DELIMIT)
+		if ((*tokens)->mtctype >= RDIN)
 			*tokens = (*tokens)->next->next;
-			// ft_handle_redirection(pipex, tokens);
 		else
 		{
 			(*arg)[i++] = ft_strdup((*tokens)->expand);
@@ -39,7 +38,7 @@ int	count_args(t_tokenlist *tokens)
 	i  = 0;
 	while (tokens && tokens->mtctype != PIPE)
 	{
-		if (tokens->mtctype != RDIN && tokens->mtctype != RDOUT && tokens->mtctype != RDAPP && tokens->mtctype != DELIMIT)
+		if (tokens->mtctype < RDIN)
 			i++;
 		else
 			tokens = tokens->next;

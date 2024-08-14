@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 20:51:22 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/14 13:32:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,6 @@ void	execute_finish(t_mshell *msh, t_pipex *pipex)
 		msh->exitcode = WEXITSTATUS(msh->exitcode);
 }
 
-void	execute_cleanup(t_pipex *pipex)
-{
-	int	i;
-
-	i = 0;
-	while (pipex->cmd_args[i])
-		free(pipex->cmd_args[i++]);
-	free(pipex->cmd_args);
-	pipex->cmd_args = NULL;
-	free(pipex->cmd);
-	pipex->cmd = NULL;
-}
-
 int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 {
 	t_tokenlist	*curr;
@@ -81,7 +68,6 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 		close(pipex->fd_pipe[1]);
 		pipex->fd_in = pipex->fd_pipe[0];
 	}
-	execute_cleanup(pipex);
 	return (++j);
 }
 

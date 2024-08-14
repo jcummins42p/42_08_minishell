@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:53:00 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 15:27:13 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:00:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,14 @@ void	env_from_str(t_envlist **envlist, char *str, t_vscope scope)
 	free(value);
 }
 
-char	*strcat_from_tokens(t_tokenlist *token)
+char	*strcat_from_tokens(t_tokenlist *token, t_mtctype terminate)
 {
 	char		*output;
 	char		*swap;
 
 	swap = NULL;
 	output = strdup("");
-	while (token && token->mtctype < ASS)
+	while (token && token->mtctype < terminate)
 	{
 		swap = ft_strjoin(output, token->expand);
 		free (output);
@@ -129,18 +129,17 @@ void	env_from_tokens(t_envlist **envlist, t_tokenlist **token, int scope)
 	char		*param;
 
 	curr = *token;
-	if (!curr)
+	if (!curr || !curr->next || curr->trail_space || curr->next->mtctype >= PIPE)
 		return ;
-	if (!curr->trail_space && curr->next)
-		param = strcat_from_tokens(curr);
+	param = strcat_from_tokens(curr, ASS);
 	while (curr && !curr->trail_space && curr->mtctype != ASS)
 		curr = curr->next;
-	if (curr && curr->mtctype != ASS)
+	if (!curr || (curr && curr->mtctype != ASS))
 		;
-	else if (curr && curr->mtctype == ASS)
+	else
 	{
 		curr = curr->next;
-		value = strcat_from_tokens(curr);
+		value = strcat_from_tokens(curr, PIPE);
 		env_set(envlist, param, value, scope);
 		free(value);
 	}

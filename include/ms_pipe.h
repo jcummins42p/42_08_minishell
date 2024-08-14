@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 20:24:34 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/14 13:27:22 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	msg_error(char *err, t_pipex *pipex);
 void	handle_exec_error(t_pipex *pipex, char *str, char *arg);
 
 //	exec_utils_free.c			Currently issue with free
+void	execute_cleanup(t_pipex *pipex);
 void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes);
 void	free_pipex(t_pipex *pipex);
 

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 19:12:24 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:31:17 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 		return (1);
 	else
 	{
-		/*dup2(msh->pipex->fd_out, STDOUT_FILENO);*/
 		if (token->comtype == EXIT)
 			exec_exit(msh, token);
 		else if (token->comtype == ECHO)
@@ -39,7 +38,7 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 		else if (token->comtype == ASSIGN)
 			export_var(msh, token, SHLVAR);
 		else if (token->comtype == CD)
-			change_dir(msh, token);	//need to check if token->next->token exists
+			change_dir(msh, token);
 		else
 			return (1);
 	}
@@ -88,6 +87,8 @@ void	input_cycle(t_mshell *msh)
 			{
 				pipex_init(msh);
 				ft_exec_init(msh);
+				/*execute_cleanup(msh->pipex);*/
+				free_pipex(msh->pipex);
 			}
 		}
 		input_cleanup(msh);
