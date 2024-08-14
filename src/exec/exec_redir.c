@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:23:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 14:39:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:40:42 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	do_redirection(t_mshell *msh, t_tokenlist *token)
 		&& msh->info->n_delimit == 0)
 		return (0);
 	curr = token;
-	while (curr)
+	while (curr && curr->mtctype != PIPE)
 	{
 		if (is_redirect(curr))
 			if (ft_handle_redirection(msh->pipex, curr) == 1)
@@ -51,6 +51,8 @@ int	ft_handle_rdin(t_pipex *pipex, t_tokenlist *token)
 			handle_exec_error(pipex, "No such file or dir", token->expand);
 			return (1);
 		}
+		dup2(pipex->fd_in, STDIN_FILENO);
+		close(pipex->fd_in);
 	}
 	else
 	{
@@ -65,8 +67,16 @@ void	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token)
 {
 	token = token->next;
 	if (token)
+	{
 		pipex->fd_out = ft_open_file(token->expand,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (pipex->fd_out == -1)
+		{
+			handle_exec_error(pipex, "No such file or dir", token->expand);
+		}
+		dup2(pipex->fd_out, STDOUT_FILENO);
+		close(pipex->fd_out);
+	}
 }
 
 void	ft_handle_app(t_pipex *pipex, t_tokenlist *token)
