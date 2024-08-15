@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 16:39:09 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/15 19:33:26 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	free_cmd_args(t_pipex *pipex)
 
 void	free_file_d(t_pipex *pipex)
 {
+	(void)pipex;
 	if (pipex->fd_in > 0)
 		close(pipex->fd_in);
 	if (pipex->fd_out > 0)

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 18:22:20 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/15 18:54:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ typedef struct s_pipex
 	t_tokenlist	**cmd_tokens;
 	pid_t		*pid;
 	int			status;
+	bool		rd_flag;
 	int			fd_pipe[2];		// needed for pipe
 	int			fd_in;			// this is for re-direction - From
 	int			fd_out;			// this is for re-direction - To
-	int			orig_stdin;		// Store original stdin
-	int			orig_stdout;		// Store original stdout
 	char		**cmd_paths;
 	char		**cmd_args;
 	char		*cmd;

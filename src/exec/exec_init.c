@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:46:05 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 16:38:57 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/15 18:54:31 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	pipex_init(t_mshell *msh)
 	msh->pipex->cmd = NULL;
 	msh->pipex->cmd_args = NULL;
 	msh->pipex->pid = NULL;
+	msh->pipex->rd_flag = false;
 }
 
 void	ft_exec_init(t_mshell *msh)
