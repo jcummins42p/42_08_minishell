@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:32:23 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 13:41:57 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:37:46 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ void	shell_free(t_mshell *msh)
 	if (msh->lineread)
 		free(msh->lineread);
 	free (msh->info);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
 }
 
 void	shell_set_envptrs(t_mshell *msh)

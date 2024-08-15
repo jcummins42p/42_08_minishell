@@ -6,11 +6,26 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 13:07:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:42:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	close_all_fd(t_pipex *pipex)
+{
+	if (pipex->fd_in)
+		close(pipex->fd_in);
+	if (pipex->fd_out)
+		close(pipex->fd_out);
+	if (pipex->fd_pipe[0])
+		close(pipex->fd_pipe[0]);
+	if (pipex->fd_pipe[1])
+		close(pipex->fd_pipe[1]);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+}
 
 void	free_cmd_paths(t_pipex *pipex)
 {

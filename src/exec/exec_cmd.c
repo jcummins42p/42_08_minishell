@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 13:09:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:47:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	init_command_args(t_pipex *pipex, t_tokenlist *curr)
 		return (1);
 	}
 	if (pipex->cmd)
-		free(pipex->cmd);
+	free(pipex->cmd);
 	if (ft_strchr(pipex->cmd_args[0], '/'))
 		pipex->cmd = ft_strdup(pipex->cmd_args[0]);
 	else
