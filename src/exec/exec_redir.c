@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:23:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/15 16:21:55 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/15 16:48:38 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ int ft_handle_rdin(t_pipex *pipex, t_tokenlist *token)
 			handle_exec_error(pipex, "No such file or dir", token->expand);
 			return (1);
 		}
-		if (pipex->fd_in != 0)
-		{
-			close(pipex->fd_in);
-		}
+		close(pipex->fd_in);
 		pipex->fd_in = dup(temp);
 		close(temp);
 	}
@@ -76,10 +73,7 @@ int ft_handle_rdout(t_pipex *pipex, t_tokenlist *token)
 			handle_exec_error(pipex, "No such file or dir", token->expand);
 			return (1);
 		}
-		if (pipex->fd_out != 0)
-		{
-			close(pipex->fd_out);
-		}
+		close(pipex->fd_out);
 		pipex->fd_out = dup(temp);
 		close(temp);
 	}
@@ -99,10 +93,7 @@ int ft_handle_app(t_pipex *pipex, t_tokenlist *token)
 			handle_exec_error(pipex, "No such file or dir", token->expand);
 			return (1);
 		}
-		if (pipex->fd_out != 0)
-		{
-			close(pipex->fd_out);
-		}
+		close(pipex->fd_out);
 		pipex->fd_out = dup(temp);
 		close(temp);
 	}
