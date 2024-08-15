@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 16:16:55 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 11:10:07 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,27 +47,36 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 
 int	parse_error_print(t_tokenlist *token)
 {
-	printf("msh: syntax error near token");
+	printf("msh: syntax error near token ");
 	printf("%d `%s\'\n", token->index + 1, token->expand);
 	return (1);
 }
 
-int	parse_error_check(t_tokenlist **tokens)
+int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
 {
 	t_tokenlist	*token;
 
 	token = *tokens;
 	if (token->mtctype == PIPE)
+	{
+		msh->exitcode = EX_SYNTAX_ERROR;
 		return (parse_error_print(token));
+	}
 	while (token && token->next)
 	{
-		if (token->mtctype == PIPE && token->next->mtctype == PIPE)
+		if (token->mtctype >= PIPE && token->next->mtctype >= PIPE)
+		{
+			msh->exitcode = EX_SYNTAX_ERROR;
 			return (parse_error_print(token));
+		}
 		else
 			token = token->next;
 	}
 	if (token->mtctype >= PIPE)
+	{
+		msh->exitcode = EX_SYNTAX_ERROR;
 		return (parse_error_print(token));
+	}
 	else
 		return (0);
 }
@@ -82,12 +91,10 @@ void	input_cycle(t_mshell *msh)
 		if (tokenize(msh))
 		{
 			tokens_get_info(msh);
-			/*tokens_print_list(&msh->tokens);*/
-			if (msh->tokens && !parse_error_check(&msh->tokens))
+			if (msh->tokens && !parse_error_check(msh, &msh->tokens))
 			{
 				pipex_init(msh);
 				ft_exec_init(msh);
-				/*execute_cleanup(msh->pipex);*/
 				free_pipex(msh->pipex);
 			}
 		}

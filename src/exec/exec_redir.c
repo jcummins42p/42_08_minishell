@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:23:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 15:40:42 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 11:17:46 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	ft_handle_rdin(t_pipex *pipex, t_tokenlist *token)
 	token = token->next;
 	if (token && token->expand)
 	{
+		if (pipex->fd_in)
+			close(pipex->fd_in);
 		pipex->fd_in = ft_open_file(token->expand, O_RDONLY, 0);
 		if (pipex->fd_in == -1)
 		{
@@ -68,14 +70,16 @@ void	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token)
 	token = token->next;
 	if (token)
 	{
+		if (pipex->fd_out)
+			close(pipex->fd_out);
 		pipex->fd_out = ft_open_file(token->expand,
 				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (pipex->fd_out == -1)
-		{
-			handle_exec_error(pipex, "No such file or dir", token->expand);
-		}
-		dup2(pipex->fd_out, STDOUT_FILENO);
-		close(pipex->fd_out);
+		/*if (pipex->fd_out == -1)*/
+		/*{*/
+			/*handle_exec_error(pipex, "No such file or dir", token->expand);*/
+		/*}*/
+		/*dup2(pipex->fd_out, STDOUT_FILENO);*/
+		/*close(pipex->fd_out);*/
 	}
 }
 
@@ -83,6 +87,10 @@ void	ft_handle_app(t_pipex *pipex, t_tokenlist *token)
 {
 	token = token->next;
 	if (token)
+	{
+		if (pipex->fd_out)
+			close(pipex->fd_out);
 		pipex->fd_out = ft_open_file(token->expand,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
+	}
 }

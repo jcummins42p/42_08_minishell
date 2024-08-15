@@ -6,7 +6,7 @@
 #    By: jcummins <jcummins@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/26 18:08:59 by jcummins          #+#    #+#              #
-#    Updated: 2024/08/13 19:07:46 by jcummins         ###   ########.fr        #
+#    Updated: 2024/08/15 10:27:25 by jcummins         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ $(LIB_PATH):
 
 clean:
 	@echo "💥 Removing all object files"
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR) *.txt
 	@(cd $(LIB_DIR) && make clean)
 
 fclean: clean

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 16:06:26 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 10:41:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 void	echo_one_token_no_pipe(t_mshell *msh, t_tokenlist *token, bool newline)
 {
 	write(msh->pipex->fd_out, token->expand, strlen(token->expand));
-	if (token->trail_space && token->next)
+	if (token->trail_space && token->next && token->next->mtctype < PIPE)
 		write(msh->pipex->fd_out, " ", 1);
-	else if (newline && !token->next)
+	else if (newline && (!token->next || (token->next->mtctype >= PIPE)))
 		write(msh->pipex->fd_out, "\n", 1);
 }
 
 void	echo_one_token(t_tokenlist *token, bool newline)
 {
 	printf("%s", token->expand);
-	if (token->trail_space && token->next && token->next->mtctype != PIPE)
+	if (token->trail_space && token->next && token->next->mtctype < PIPE)
 		printf(" ");
-	else if (newline && (!token->next || (token->next->mtctype == PIPE)))
+	else if (newline && (!token->next || (token->next->mtctype >= PIPE)))
 		printf("\n");
 }
 
