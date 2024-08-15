@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:23:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 15:40:42 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:21:55 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,49 +40,71 @@ int	do_redirection(t_mshell *msh, t_tokenlist *token)
 	return (0);
 }
 
-int	ft_handle_rdin(t_pipex *pipex, t_tokenlist *token)
+int ft_handle_rdin(t_pipex *pipex, t_tokenlist *token)
 {
+	int	temp;
+
 	token = token->next;
 	if (token && token->expand)
 	{
-		pipex->fd_in = ft_open_file(token->expand, O_RDONLY, 0);
-		if (pipex->fd_in == -1)
+		temp = ft_open_file(token->expand, O_RDONLY, 0);
+		if (temp == -1)
 		{
 			handle_exec_error(pipex, "No such file or dir", token->expand);
 			return (1);
 		}
-		dup2(pipex->fd_in, STDIN_FILENO);
-		close(pipex->fd_in);
-	}
-	else
-	{
-		// if it's already checked in parsing then it's not needed
-		handle_exec_error(pipex, "Syntax error: missing file after '<'", "");
-		return (1);
+		if (pipex->fd_in != 0)
+		{
+			close(pipex->fd_in);
+		}
+		pipex->fd_in = dup(temp);
+		close(temp);
 	}
 	return (0);
 }
 
-void	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token)
+int ft_handle_rdout(t_pipex *pipex, t_tokenlist *token)
 {
+	int	temp;
+
 	token = token->next;
 	if (token)
 	{
-		pipex->fd_out = ft_open_file(token->expand,
-				O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (pipex->fd_out == -1)
+		temp = ft_open_file(token->expand, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (temp == -1)
 		{
 			handle_exec_error(pipex, "No such file or dir", token->expand);
+			return (1);
 		}
-		dup2(pipex->fd_out, STDOUT_FILENO);
-		close(pipex->fd_out);
+		if (pipex->fd_out != 0)
+		{
+			close(pipex->fd_out);
+		}
+		pipex->fd_out = dup(temp);
+		close(temp);
 	}
+	return (0);
 }
 
-void	ft_handle_app(t_pipex *pipex, t_tokenlist *token)
+int ft_handle_app(t_pipex *pipex, t_tokenlist *token)
 {
+	int	temp;
+
 	token = token->next;
 	if (token)
-		pipex->fd_out = ft_open_file(token->expand,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
+	{
+		temp = ft_open_file(token->expand, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (temp == -1)
+		{
+			handle_exec_error(pipex, "No such file or dir", token->expand);
+			return (1);
+		}
+		if (pipex->fd_out != 0)
+		{
+			close(pipex->fd_out);
+		}
+		pipex->fd_out = dup(temp);
+		close(temp);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:46:05 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/14 13:29:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:06:13 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	pipex_init(t_mshell *msh)
 		msg(ERR_MEMORY);
 		exit(EX_GENERAL_ERROR);
 	}
-	msh->pipex->fd_in = dup(STDIN_FILENO);
-	msh->pipex->fd_out = dup(STDOUT_FILENO);
+	msh->pipex->fd_in = 0;
+	msh->pipex->fd_out = 0;
 	// Arguments for execve
 	msh->pipex->cmd_paths = ft_split(*msh->path, ':');
 	if (!msh->pipex->cmd_paths)
@@ -40,6 +40,8 @@ void	pipex_init(t_mshell *msh)
 		// add error handler
 		return ;
 	}
+	msh->pipex->orig_stdin = dup(STDIN_FILENO);
+	msh->pipex->orig_stdout = dup(STDOUT_FILENO);
 	msh->pipex->status = 0;
 	msh->pipex->cmd = NULL;
 	msh->pipex->cmd_args = NULL;

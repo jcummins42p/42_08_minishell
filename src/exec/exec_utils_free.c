@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/14 16:06:31 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/14 18:03:45 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ void	free_file_d(t_pipex *pipex)
 		close(pipex->fd_in);
 	if (pipex->fd_out > 0)
 		close(pipex->fd_out);
+	if (pipex->orig_stdout > 0)
+		close(pipex->orig_stdout);
+	if (pipex->orig_stdin > 0)
+		close(pipex->orig_stdin);
 }
 
 void	free_pipex(t_pipex *pipex)
