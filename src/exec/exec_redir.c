@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:23:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/15 11:17:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 11:58:16 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ bool	is_redirect(t_tokenlist *token)
 int	do_redirection(t_mshell *msh, t_tokenlist *token)
 {
 	t_tokenlist	*curr;
+
 
 	if (msh->info->n_rdin == 0
 		&& msh->info->n_rdout == 0

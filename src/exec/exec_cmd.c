@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 10:30:30 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:09:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,16 @@ void	execute_finish(t_mshell *msh, t_pipex *pipex)
 
 int	init_command_args(t_pipex *pipex, t_tokenlist *curr)
 {
+	if (pipex->cmd_args)
+		free_cmd_args(pipex);
 	pipex->cmd_args = ft_get_arg(pipex, &curr);
 	if (!pipex->cmd_args || pipex->cmd_args[0] == NULL)
 	{
 		handle_exec_error(pipex, "Failed to get command arguments", "");
 		return (1);
 	}
+	if (pipex->cmd)
+		free(pipex->cmd);
 	if (ft_strchr(pipex->cmd_args[0], '/'))
 		pipex->cmd = ft_strdup(pipex->cmd_args[0]);
 	else
@@ -73,6 +77,7 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 	if (j < msh->info->n_pipe)
 	{
 		close(pipex->fd_pipe[1]);
+		close(pipex->fd_in);
 		pipex->fd_in = pipex->fd_pipe[0];
 	}
 	return (++j);

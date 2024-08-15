@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/14 13:27:22 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:07:36 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int		ft_open_file(const char *filename, int flags, mode_t mode);
 //	exec_init.c
 int		init_pid(t_pipex *pipex, int n_pipes);
 void	pipex_init(t_mshell *msh);
-void	ft_exec_init(t_mshell *msh);
 
 //	exec_utils_args.c
 void	populate_args(t_pipex *pipex, t_tokenlist **tokens, char **arg[]);
@@ -67,6 +66,8 @@ void	handle_exec_error(t_pipex *pipex, char *str, char *arg);
 //	exec_utils_free.c			Currently issue with free
 void	execute_cleanup(t_pipex *pipex);
 void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes);
+void	free_cmd_paths(t_pipex *pipex);
+void	free_cmd_args(t_pipex *pipex);
 void	free_pipex(t_pipex *pipex);
 
 #endif

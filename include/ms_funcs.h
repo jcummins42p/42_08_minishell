@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 18:28:12 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 17:35:19 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/15 12:45:09 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void		shell_init(t_mshell *msh);
 
 //	input.c
 int			exec_builtin(t_mshell *msh, t_tokenlist *token);
+void		free_pipex(t_pipex *pipex);
+void		input_cleanup(t_mshell *msh);
 void		input_cycle(t_mshell *msh);
 
 #endif
