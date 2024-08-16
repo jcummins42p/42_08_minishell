@@ -6,65 +6,84 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 13:51:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:39:26 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
+void child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 {
-	t_tokenlist	*curr;
+	t_tokenlist *curr;
 
 	curr = token_after_pipeno(&msh->tokens, curr_pipe);
-	close(pipex->fd_pipe[0]); // Close unused read end
+
+	// Close unused pipe ends
+	close(pipex->fd_pipe[0]);
+
+	// Redirect input
 	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
-		handle_exec_error(pipex, ERR_STDIN, "");
-	if (dup2(pipex->fd_pipe[1], STDOUT_FILENO) == -1)
-		handle_exec_error(pipex, ERR_STDOUT, "");
-	close(pipex->fd_in);
-	close(pipex->fd_out);
-	close(pipex->fd_pipe[1]); // Close the copy of write end
-	if (!exec_builtin(msh, curr))
 	{
-		close_all_fd(msh->pipex);
-		exit(EX_SUCCESS);
+		handle_exec_error(pipex, ERR_STDIN, "");
+		exit(EXIT_FAILURE);
 	}
-	if (!pipex->cmd)
+	close(pipex->fd_in);
+
+	// Redirect output
+	if (pipex->rd_flag)
+	{
+		if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
+		{
+			handle_exec_error(pipex, ERR_STDOUT, "");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		if (dup2(pipex->fd_pipe[1], STDOUT_FILENO) == -1)
+		{
+			handle_exec_error(pipex, ERR_STDOUT, "");
+			exit(EXIT_FAILURE);
+		}
+	}
+	close(pipex->fd_out);
+	close(pipex->fd_pipe[1]);
+	if (!exec_builtin(msh, curr))
+		exit(EX_SUCCESS);
+
+	// Execute the command using execve. If execve fails, handle the error and exit
+	if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 	{
 		handle_exec_error(pipex, "command not found", curr->expand);
-		close_all_fd(msh->pipex);
-		free_pipex(pipex);
-		input_cleanup(msh);
-		shell_free(msh);
 		exit(EX_COMMAND_NOT_FOUND);
 	}
-	else
-		execve(pipex->cmd, pipex->cmd_args, msh->env);
 }
 
-void	last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
+void last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 {
-	t_tokenlist	*curr;
+	t_tokenlist *curr;
 
 	curr = token_after_pipeno(&msh->tokens, curr_pipe);
-	if (curr_pipe != 0)
+
+	close(pipex->fd_pipe[1]);
+	close(pipex->fd_pipe[0]);
+	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
 	{
-		close(pipex->fd_pipe[1]); // Close the unused write end
-		if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
-			handle_exec_error(pipex, ERR_STDIN, "");
-		close(pipex->fd_pipe[0]); // Close the unused read end
+		handle_exec_error(pipex, ERR_STDIN, "");
+		exit(EXIT_FAILURE);
 	}
-	else
-		if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
-			handle_exec_error(pipex, ERR_STDIN, "");
-	// Last child outputs to the specified output or terminal
-	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
-		handle_exec_error(pipex, ERR_STDOUT, "");
 	close(pipex->fd_in);
+	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
+	{
+		handle_exec_error(pipex, ERR_STDOUT, "");
+		exit(EXIT_FAILURE);
+	}
 	close(pipex->fd_out);
-	close(pipex->fd_pipe[1]); // Close the copy of write end
+
 	if (!exec_builtin(msh, curr))
+		exit(EX_SUCCESS);
+
+	if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 	{
 		close(pipex->fd_pipe[0]);
 		close_all_fd(msh->pipex);

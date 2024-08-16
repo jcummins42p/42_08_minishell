@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 13:30:27 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:32:34 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	ft_exec_cmd(t_mshell *msh);
 bool	is_redirect(t_tokenlist *token);
 int		do_redirection(t_mshell *msh, t_tokenlist *token);
 int		ft_handle_rdin(t_pipex *pipex, t_tokenlist *token);
-void	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token);
-void	ft_handle_app(t_pipex *pipex, t_tokenlist *token);
+int		ft_handle_rdout(t_pipex *pipex, t_tokenlist *token);
+int		ft_handle_app(t_pipex *pipex, t_tokenlist *token);
 
 //	exec_file_d.c
 int		ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens);
@@ -65,6 +65,8 @@ void	handle_exec_error(t_pipex *pipex, char *str, char *arg);
 
 //	exec_utils_free.c			Currently issue with free
 void	close_all_fd(t_pipex *pipex);
+void	free_cmd_args(t_pipex *pipex);
+void	execute_cleanup(t_pipex *pipex);
 void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes);
 void	free_cmd_paths(t_pipex *pipex);
 void	free_cmd_args(t_pipex *pipex);

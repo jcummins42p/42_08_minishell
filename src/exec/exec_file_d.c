@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/13 20:37:34 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/15 18:56:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ void	ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
 		free(line);
 	}
 	close(pipex->fd_pipe[1]);
+	close(pipex->fd_in);
+	pipex->fd_in = dup(pipex->fd_pipe[0]);
+	close(pipex->fd_pipe[0]);
 }
-
-int	ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens)
+int ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens)
 {
 	if (tokens == NULL)
 		return (1);
@@ -56,17 +58,23 @@ int	ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens)
 			return (1);
 	}
 	else if (tokens->mtctype == RDOUT)
-		ft_handle_rdout(pipex, tokens);
+	{
+		pipex->rd_flag = true;
+		if (ft_handle_rdout(pipex, tokens) == 1)
+			return (1);
+	}
 	else if (tokens->mtctype == RDAPP)
-		ft_handle_app(pipex, tokens);
+	{
+		pipex->rd_flag = true;
+		if (ft_handle_app(pipex, tokens) == 1)
+			return (1);
+	}
 	else if (tokens->mtctype == DELIMIT)
 	{
 		tokens = tokens->next;
 		if (tokens)
 		{
 			ft_handle_heredoc(pipex, tokens->token);
-			pipex->fd_in = dup(pipex->fd_pipe[0]);
-			close(pipex->fd_pipe[0]);
 		}
 	}
 	if (tokens)
