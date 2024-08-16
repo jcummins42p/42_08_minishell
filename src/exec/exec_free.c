@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils_free.c                                  :+:      :+:    :+:   */
+/*   exec_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 11:36:29 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:26:23 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	close_all_fd(t_pipex *pipex)
 		close(pipex->fd_pipe[0]);
 	if (pipex->fd_pipe[1])
 		close(pipex->fd_pipe[1]);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
+	/*close(STDIN_FILENO);*/
+	/*close(STDOUT_FILENO);*/
+	/*close(STDERR_FILENO);*/
 }
 
 void	free_cmd_paths(t_pipex *pipex)
@@ -61,7 +61,6 @@ void	free_cmd_args(t_pipex *pipex)
 
 void	free_file_d(t_pipex *pipex)
 {
-	(void)pipex;
 	if (pipex->fd_in > 0)
 		close(pipex->fd_in);
 	if (pipex->fd_out > 0)
@@ -72,7 +71,8 @@ void	free_pipex(t_pipex *pipex)
 {
 	if (!pipex)
 		return ;
-	free_file_d(pipex);
+	close_all_fd(pipex);
+	/*free_file_d(pipex);*/
 	free_cmd_paths(pipex);
 	free_cmd_args(pipex);
 	free(pipex->cmd);

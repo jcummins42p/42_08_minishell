@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 12:07:35 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:13:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,6 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 		else
 			child(pipex, msh, j);
 	}
-}
-
-int	init_command_args(t_pipex *pipex, t_tokenlist *curr)
-{
-	free_cmd_args(pipex);
-	free(pipex->cmd);
-	pipex->cmd_args = ft_get_arg(pipex, &curr);
-	if (!pipex->cmd_args || pipex->cmd_args[0] == NULL)
-	{
-		handle_exec_error(pipex, "Failed to get command arguments", "");
-		return (1);
-	}
-	if (ft_strchr(pipex->cmd_args[0], '/'))
-		pipex->cmd = ft_strdup(pipex->cmd_args[0]);
-	else
-		pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
-	return (0);
 }
 
 int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)

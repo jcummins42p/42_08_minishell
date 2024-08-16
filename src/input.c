@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/15 13:40:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:13:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	input_cycle(t_mshell *msh)
 			tokens_get_info(msh);
 			if (msh->tokens && !parse_error_check(msh, &msh->tokens))
 			{
-				pipex_init(msh);
+				init_pipex(msh);
 				ft_exec_cmd(msh);
 				free_pipex(msh->pipex);
 			}

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 12:24:49 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:17:43 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,15 @@ void	msg_error(char *err, t_pipex *pipex);
 void	handle_exec_error(t_pipex *pipex, char *str, char *arg);
 
 //	exec_init.c
+int		init_command_args(t_pipex *pipex, t_tokenlist *curr);
 int		init_pid(t_pipex *pipex, int n_pipes);
-void	pipex_init(t_mshell *msh);
+void	init_pipex(t_mshell *msh);
 
 //	exec_free.c			Currently issue with free
 void	close_all_fd(t_pipex *pipex);
-void	free_cmd_args(t_pipex *pipex);
-void	execute_cleanup(t_pipex *pipex);
-void	cleanup(t_mshell *msh, t_pipex *pipex, int n_pipes);
 void	free_cmd_paths(t_pipex *pipex);
 void	free_cmd_args(t_pipex *pipex);
+void	free_file_d(t_pipex *pipex);
 void	free_pipex(t_pipex *pipex);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 11:39:26 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:37:57 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,18 @@ void child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	close(pipex->fd_pipe[1]);
 	if (!exec_builtin(msh, curr))
 		exit(EX_SUCCESS);
+	if (!pipex->cmd)
+	{
+		handle_exec_error(pipex, "command not found", curr->expand);
+		close_all_fd(msh->pipex);
+		free_pipex(pipex);
+		input_cleanup(msh);
+		shell_free(msh);
+		exit(EX_COMMAND_NOT_FOUND);
+	}
 
 	// Execute the command using execve. If execve fails, handle the error and exit
-	if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
+	else if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 	{
 		handle_exec_error(pipex, "command not found", curr->expand);
 		exit(EX_COMMAND_NOT_FOUND);
@@ -82,16 +91,8 @@ void last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 
 	if (!exec_builtin(msh, curr))
 		exit(EX_SUCCESS);
-
-	if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
-	{
-		close(pipex->fd_pipe[0]);
-		close_all_fd(msh->pipex);
-		exit (EX_SUCCESS);
-	}
 	if (!pipex->cmd)
 	{
-		close(pipex->fd_pipe[0]);
 		handle_exec_error(pipex, "command not found", curr->expand);
 		close_all_fd(msh->pipex);
 		free_pipex(pipex);
@@ -99,9 +100,9 @@ void last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 		shell_free(msh);
 		exit(EX_COMMAND_NOT_FOUND);
 	}
-	else
+	else if (execve(pipex->cmd, pipex->cmd_args, msh->env))
 	{
-		close(pipex->fd_pipe[0]);
-		execve(pipex->cmd, pipex->cmd_args, msh->env);
+		handle_exec_error(pipex, "command not found", curr->expand);
+		exit(EX_COMMAND_NOT_FOUND);
 	}
 }
