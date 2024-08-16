@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 11:33:04 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:01:57 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_mshell
 	t_valid_in	valid_input;
 	bool		running;
 	int			exitcode;
+	int			sigint;
 }	t_mshell;
 
 #endif

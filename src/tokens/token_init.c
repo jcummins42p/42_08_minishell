@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 18:11:03 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:59:57 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	token_init(t_mshell *msh, t_tokenlist *new, char *newtoken, int pos)
 		new->expand = expand_string_sq(newtoken);
 	else
 		new->expand = expand_string_dq(msh, newtoken);
-	if (new->comtype != ASSIGN && new->comtype != EXPORT)
+	if (new->comtype != C_ASSIGN && new->comtype != C_EXPORT)
 		new->comtype = is_builtin(new->expand);
 	new->pos = pos;
 	new->next = NULL;

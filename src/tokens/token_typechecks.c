@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 16:33:09 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 17:54:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:56:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,22 +59,22 @@ int	is_builtin(char *str)
 {
 	t_comtype	isbuiltin;
 
-	isbuiltin = NO_COM;
+	isbuiltin = C_NONE;
 	if (!ft_strncmp(str, "echo\0", 5))
-		isbuiltin = ECHO;
+		isbuiltin = C_ECHO;
 	else if (!ft_strncmp(str, "cd\0", 3))
-		isbuiltin = CD;
+		isbuiltin = C_CD;
 	else if (!ft_strncmp(str, "pwd\0", 4))
-		isbuiltin = PWD;
+		isbuiltin = C_PWD;
 	else if (!ft_strncmp(str, "export\0", 7))
-		isbuiltin = EXPORT;
+		isbuiltin = C_EXPORT;
 	else if (!ft_strncmp(str, "unset\0", 6))
-		isbuiltin = UNSET;
+		isbuiltin = C_UNSET;
 	else if (!ft_strncmp(str, "env\0", 4))
-		isbuiltin = ENV;
+		isbuiltin = C_ENV;
 	else if (!ft_strncmp(str, "exit\0", 5))
-		isbuiltin = EXIT;
+		isbuiltin = C_EXIT;
 	else if (is_assign(str))
-		isbuiltin = ASSIGN;
+		isbuiltin = C_ASSIGN;
 	return (isbuiltin);
 }

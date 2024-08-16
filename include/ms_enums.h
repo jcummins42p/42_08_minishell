@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 13:32:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 15:43:16 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:53:50 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ typedef enum e_tokentype
 
 typedef enum e_comtype
 {
-	NO_COM,
-	ECHO,
-	CD,
-	PWD,
-	EXPORT,
-	UNSET,
-	ENV,
-	ASSIGN,
-	EXIT
+	C_NONE,
+	C_ECHO,
+	C_CD,
+	C_PWD,
+	C_EXPORT,
+	C_UNSET,
+	C_ENV,
+	C_ASSIGN,
+	C_EXIT
 }	t_comtype;
 
 typedef enum e_mtctype

@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_globals.h                                       :+:      :+:    :+:   */
+/*   ms_signals.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
+/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/08 09:09:54 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 15:46:33 by jcummins         ###   ########.fr       */
+/*   Created: 2024/08/16 15:15:35 by jcummins          #+#    #+#             */
+/*   Updated: 2024/08/16 16:02:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MS_GLOBALS_H
-# define MS_GLOBALS_H
+#ifndef MS_SIGNALS_H
+# define MS_SIGNALS_H
 
-extern int	g_siginfo;
+//	sig_init.c
+void	sig_init(t_mshell *msh);
+
+//	sig_handlers.c
+void	ms_sighandle(int sig, siginfo_t *info, void *ucontext);
 
 #endif

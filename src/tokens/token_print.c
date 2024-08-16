@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 16:28:58 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 18:05:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:59:22 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,21 @@ void	token_print_metachar(t_tokenlist *token)
 
 void	token_print_command(t_tokenlist *token)
 {
-	if (token->comtype == ECHO)
+	if (token->comtype == C_ECHO)
 		printf(" echo ");
-	else if (token->comtype == CD)
+	else if (token->comtype == C_CD)
 		printf(" cd ");
-	else if (token->comtype == PWD)
+	else if (token->comtype == C_PWD)
 		printf(" pwd ");
-	else if (token->comtype == EXPORT)
+	else if (token->comtype == C_EXPORT)
 		printf(" export ");
-	else if (token->comtype == UNSET)
+	else if (token->comtype == C_UNSET)
 		printf(" unset ");
-	else if (token->comtype == ENV)
+	else if (token->comtype == C_ENV)
 		printf(" env ");
-	else if (token->comtype == EXIT)
+	else if (token->comtype == C_EXIT)
 		printf(" exit ");
-	else if (token->comtype == ASSIGN)
+	else if (token->comtype == C_ASSIGN)
 		printf(" assign ");
 }
 

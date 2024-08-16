@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 11:21:35 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 16:03:53 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 15:58:09 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	com_export(t_mshell *msh, t_tokenlist *token, t_vscope scope)
 {
-	if (token->comtype == EXPORT)
+	if (token->comtype == C_EXPORT)
 		token = token->next;
 	else if (token->comtype)
 		handle_exec_error(NULL, "command not found", token->expand);
