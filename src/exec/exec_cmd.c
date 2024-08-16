@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 14:05:52 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:23:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,5 @@ void	ft_exec_cmd(t_mshell *msh)
 	}
 	if (j != -1)
 		execute_finish(msh, pipex);
+	/*if (j == -1)*/
 }

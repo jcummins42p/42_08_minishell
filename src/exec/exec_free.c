@@ -6,13 +6,13 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 14:59:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:30:15 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_curr_fd(t_pipex *pipex)
+void	close_curr_fd(t_pipex *pipex, bool free_all)
 {
 	struct stat st;
 
@@ -20,10 +20,13 @@ void	close_curr_fd(t_pipex *pipex)
 		close(pipex->fd_in);
 	if (fstat(pipex->fd_out, &st) == 0)
 		close(pipex->fd_out);
-	if (fstat(pipex->fd_pipe[0], &st) == 0)
-		close(pipex->fd_pipe[0]);
-	if (fstat(pipex->fd_pipe[1], &st) == 0)
-		close(pipex->fd_pipe[1]);
+	if (free_all)
+	{
+		if (fstat(pipex->fd_pipe[0], &st) == 0)
+			close(pipex->fd_pipe[0]);
+		if (fstat(pipex->fd_pipe[1], &st) == 0)
+			close(pipex->fd_pipe[1]);
+	}
 }
 
 void	free_cmd_paths(t_pipex *pipex)
@@ -62,7 +65,10 @@ void	free_pipex(t_pipex *pipex)
 {
 	if (!pipex)
 		return ;
-	close_curr_fd(pipex);
+	if (pipex->fd_pipe[0])
+		close_curr_fd(pipex, 1);
+	else
+		close_curr_fd(pipex, 0);
 	free_cmd_paths(pipex);
 	free_cmd_args(pipex);
 	free(pipex->cmd);

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 14:59:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 17:29:04 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		init_pid(t_pipex *pipex, int n_pipes);
 void	init_pipex(t_mshell *msh);
 
 //	exec_free.c
-void	close_curr_fd(t_pipex *pipex);
+void	close_curr_fd(t_pipex *pipex, bool free_all);
 void	free_cmd_paths(t_pipex *pipex);
 void	free_cmd_args(t_pipex *pipex);
 void	free_pipex(t_pipex *pipex);
