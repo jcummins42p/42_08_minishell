@@ -6,25 +6,31 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 13:26:23 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:13:00 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_all_fd(t_pipex *pipex)
+void	close_final_fd(void)
 {
-	if (pipex->fd_in)
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+}
+
+void	close_curr_fd(t_pipex *pipex)
+{
+	struct stat st;
+
+	if (fstat(pipex->fd_in, &st) == 0)
 		close(pipex->fd_in);
-	if (pipex->fd_out)
+	if (fstat(pipex->fd_out, &st) == 0)
 		close(pipex->fd_out);
-	if (pipex->fd_pipe[0])
+	if (fstat(pipex->fd_pipe[0], &st) == 0)
 		close(pipex->fd_pipe[0]);
-	if (pipex->fd_pipe[1])
+	if (fstat(pipex->fd_pipe[1], &st) == 0)
 		close(pipex->fd_pipe[1]);
-	/*close(STDIN_FILENO);*/
-	/*close(STDOUT_FILENO);*/
-	/*close(STDERR_FILENO);*/
 }
 
 void	free_cmd_paths(t_pipex *pipex)
@@ -71,8 +77,7 @@ void	free_pipex(t_pipex *pipex)
 {
 	if (!pipex)
 		return ;
-	close_all_fd(pipex);
-	/*free_file_d(pipex);*/
+	close_curr_fd(pipex);
 	free_cmd_paths(pipex);
 	free_cmd_args(pipex);
 	free(pipex->cmd);

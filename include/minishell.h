@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 12:25:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:58:19 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <string.h>	// NULL definition and string functions
 # include <signal.h>	// signal-handling
 # include <threads.h>	// threads, mutexes
+
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 

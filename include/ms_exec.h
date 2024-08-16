@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 13:17:43 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:13:10 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ int		init_pid(t_pipex *pipex, int n_pipes);
 void	init_pipex(t_mshell *msh);
 
 //	exec_free.c			Currently issue with free
-void	close_all_fd(t_pipex *pipex);
+void	close_final_fd(void);
+void	close_curr_fd(t_pipex *pipex);
 void	free_cmd_paths(t_pipex *pipex);
 void	free_cmd_args(t_pipex *pipex);
 void	free_file_d(t_pipex *pipex);

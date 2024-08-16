@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 13:37:57 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:08:36 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,12 @@ void child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	if (!pipex->cmd)
 	{
 		handle_exec_error(pipex, "command not found", curr->expand);
-		close_all_fd(msh->pipex);
+		close_curr_fd(msh->pipex);
 		free_pipex(pipex);
 		input_cleanup(msh);
 		shell_free(msh);
 		exit(EX_COMMAND_NOT_FOUND);
 	}
-
 	// Execute the command using execve. If execve fails, handle the error and exit
 	else if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 	{
@@ -94,7 +93,7 @@ void last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 	if (!pipex->cmd)
 	{
 		handle_exec_error(pipex, "command not found", curr->expand);
-		close_all_fd(msh->pipex);
+		close_curr_fd(msh->pipex);
 		free_pipex(pipex);
 		input_cleanup(msh);
 		shell_free(msh);

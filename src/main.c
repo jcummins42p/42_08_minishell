@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/13 15:26:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:13:37 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int argc, char *argv[], char *env[])
 	shell_set_envptrs(&msh);
 	input_cycle(&msh);
 	shell_free(&msh);
+	close_final_fd();
 	if (msh.exitcode > EX_MAX_ERR)
 		msh.exitcode = EX_MAX_ERR;
 	return (msh.exitcode);

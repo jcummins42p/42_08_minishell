@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:05:56 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/15 13:55:27 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:52:37 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	com_exit(t_mshell *msh, t_tokenlist *token)
 				printf("msh: %s: %s: numeric argument required\n", \
 						token->expand, token->next->expand);
 				msh->exitcode = 2;
-				close(msh->pipex->fd_pipe[0]);
-				close(msh->pipex->fd_pipe[1]);
+				/*close(msh->pipex->fd_pipe[0]);*/
+				/*close(msh->pipex->fd_pipe[1]);*/
 				return ;
 			}
 		}

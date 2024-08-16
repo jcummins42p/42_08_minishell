@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 13:13:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 14:05:52 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 		return (-1);
 	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
 		return (-1);
-	if (init_command_args(pipex, curr))
-		return (-1);
+	init_command_args(pipex, curr);
 	if (msh->info->n_pipe != 0 || j == msh->info->n_pipe)
 		if (pipe(pipex->fd_pipe) < 0)
 			handle_exec_error(pipex, "Pipe creation error", "");
