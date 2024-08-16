@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 12:43:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:58:23 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,13 @@ void	ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
-			break ;
+		if (line == NULL)
+		{
+		free(line);
+		//ADD ERROR HANDLING
+		printf("Exiting Heredoc\n");
+		break;
+		}
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 		{
 			free(line);
