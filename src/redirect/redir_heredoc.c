@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_file_d.c                                      :+:      :+:    :+:   */
+/*   redir_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/15 18:56:54 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:43:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,4 @@ void	ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
 	close(pipex->fd_in);
 	pipex->fd_in = dup(pipex->fd_pipe[0]);
 	close(pipex->fd_pipe[0]);
-}
-int ft_handle_redirection(t_pipex *pipex, t_tokenlist *tokens)
-{
-	if (tokens == NULL)
-		return (1);
-	if (tokens->mtctype == RDIN)
-	{
-		if (ft_handle_rdin(pipex, tokens) == 1)
-			return (1);
-	}
-	else if (tokens->mtctype == RDOUT)
-	{
-		pipex->rd_flag = true;
-		if (ft_handle_rdout(pipex, tokens) == 1)
-			return (1);
-	}
-	else if (tokens->mtctype == RDAPP)
-	{
-		pipex->rd_flag = true;
-		if (ft_handle_app(pipex, tokens) == 1)
-			return (1);
-	}
-	else if (tokens->mtctype == DELIMIT)
-	{
-		tokens = tokens->next;
-		if (tokens)
-		{
-			ft_handle_heredoc(pipex, tokens->token);
-		}
-	}
-	if (tokens)
-		tokens = tokens->next;
-	return (0);
 }

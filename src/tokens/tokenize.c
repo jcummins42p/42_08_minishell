@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/15 11:01:46 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:56:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,13 @@ int	tokenize(t_mshell *msh)
 
 	i = 0;
 	msh->valid_input = VALID_IN;
-	if (msh->lineread)
-		while (msh->lineread[i] && msh->valid_input == VALID_IN)
-		{
-			while (msh->lineread[i] && is_whitespace(msh->lineread[i]))
-				i++;
-			if (msh->lineread[i])
-				i += token_parse_selector(msh, &msh->lineread[i], i);
-		}
+	while (msh->lineread && msh->lineread[i] && msh->valid_input == VALID_IN)
+	{
+		while (msh->lineread[i] && is_whitespace(msh->lineread[i]))
+			i++;
+		if (msh->lineread[i])
+			i += token_parse_selector(msh, &msh->lineread[i], i);
+	}
 	if (!msh->lineread || msh->valid_input)
 	{
 		msh->exitcode = EX_SYNTAX_ERROR;

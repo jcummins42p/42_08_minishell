@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:47:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/09 14:26:35 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:26:13 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int			is_builtin(char *str);	//	return t_comtype of string
 
 //	token_expand.c
 char		*expand_string_sq(char *input);
-char 		*expand_string_dq(t_mshell *msh, char *input);
+char		*expand_string_dq(t_mshell *msh, char *input);
 char		*expand_string_assign(char *input);
 
 //	tokenize.c

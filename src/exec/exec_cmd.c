@@ -6,11 +6,22 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 11:43:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:07:35 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	execute_finish(t_mshell *msh, t_pipex *pipex)
+{
+	int	i;
+
+	i = -1;
+	while (++i < (msh->info->n_pipe + 1))
+		waitpid(pipex->pid[i], &msh->exitcode, 0);
+	if (WIFEXITED(msh->exitcode))
+		msh->exitcode = WEXITSTATUS(msh->exitcode);
+}
 
 void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 {
@@ -26,17 +37,6 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 		else
 			child(pipex, msh, j);
 	}
-}
-
-void	execute_finish(t_mshell *msh, t_pipex *pipex)
-{
-	int	i;
-
-	i = -1;
-	while (++i < (msh->info->n_pipe + 1))
-		waitpid(pipex->pid[i], &msh->exitcode, 0);
-	if (WIFEXITED(msh->exitcode))
-		msh->exitcode = WEXITSTATUS(msh->exitcode);
 }
 
 int	init_command_args(t_pipex *pipex, t_tokenlist *curr)

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/15 10:41:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:31:45 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	echo_tokens_cycle(t_mshell *msh, t_tokenlist *token, bool newline)
 {
 	while (token && token->mtctype != PIPE)
 	{
-		if (is_redirect(token))
+		if (token->mtctype >= RDIN)
 		{
 			if (!token->next->next)
 				return ;

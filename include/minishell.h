@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:32:04 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 09:09:19 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/16 12:25:39 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,23 @@
 # include <string.h>	// NULL definition and string functions
 # include <signal.h>	// signal-handling
 # include <threads.h>	// threads, mutexes
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
 
 # include "libft.h"
 
+# include "ms_globals.h"
 # include "ms_enums.h"
 # include "ms_structs.h"
-# include "ms_funcs.h"
-# include "ms_pipe.h"
-# include "ms_env.h"
-# include "ms_tokens.h"
+
 # include "ms_builtins.h"
-# include "ms_globals.h"
+# include "ms_env.h"
+# include "ms_exec.h"
+# include "ms_funcs.h"
+# include "ms_redirect.h"
+# include "ms_tokens.h"
 
 #endif
