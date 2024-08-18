@@ -6,13 +6,13 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:30:48 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 17:21:58 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 15:30:31 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int g_siginfo = 0;
-
 #include "minishell.h"
+
+int	g_siginfo = 0;
 
 int	main(int argc, char *argv[], char *env[])
 {
@@ -21,7 +21,7 @@ int	main(int argc, char *argv[], char *env[])
 	(void)argv;
 	(void)argc;
 	shell_init(&msh);
-	/*sig_init(&msh);*/
+	sig_init(&msh);
 	env_init(&msh.envlist, env);
 	env_set_string(&msh.envlist, &msh.env);
 	shell_set_envptrs(&msh);

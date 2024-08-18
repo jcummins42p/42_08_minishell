@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:32:23 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 15:51:24 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:19:18 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,15 @@ void	shell_free(t_mshell *msh)
 void	shell_set_envptrs(t_mshell *msh)
 {
 	char	buff[2048];
+
 	msh->prompt = env_get_value(&msh->envlist, "PS1");
 	msh->path = env_get_value(&msh->envlist, "PATH");
 	env_set(&msh->envlist, "OLDPWD", getcwd(buff, 2048), ENVVAR);
 }
 
-void	shell_disable_echo()
+void	shell_disable_echo(void)
 {
-	struct termios mterm;
+	struct termios	mterm;
 
 	tcgetattr(STDIN_FILENO, &mterm);
 	mterm.c_lflag &= ~ECHOCTL;

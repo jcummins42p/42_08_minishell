@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
+/*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 17:19:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/08 13:04:04 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:20:06 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	is_trailspace(char c)
 {
-	if (c == '\t'	|| c == ' ' || c == '\0')
+	if (c == '\t' || c == ' ' || c == '\0')
 		return (true);
 	else
 		return (false);

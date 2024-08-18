@@ -6,17 +6,19 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 13:06:33 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 17:29:04 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:21:02 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_EXEC_H
 # define MS_EXEC_H
 
+# include <errno.h>
+# define ERR_PERM "Permission denied\n"
 # define ERR_INFILE "No such file or directory\n"
 # define ERR_OUTFILE "No such file or directory\n"
 # define ERR_INPUT "Invalid number of arguments.\n"
-# define ERR_PIPE "Pipe wasn't created\n"
+# define ERR_PIPE "Couldn't create pipe\n"
 # define ERR_CMD "Command not found\n"
 # define ERR_MEMORY "Not enough memory for struct\n"
 # define ERR_EXEC "Execution didn't work\n"
@@ -32,8 +34,11 @@ char	**ft_get_arg(t_pipex *pipex, t_tokenlist **tokens);
 char	*get_cmd(char **paths, char *cmd);
 
 //	exec_child_pr.c
+void	execve_fail(t_mshell *msh, t_tokenlist *curr);
+void	close_two_pipes(int fd_1, int fd_2);
+void	dup2_check(int oldfd, int newfd, char *error_msg, t_pipex *pipex);
 void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe);
-void	last_child(t_pipex *pipex, t_mshell *msh, int n_pipes);
+void	last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe);
 
 //	exec_cmd.c
 void	ft_exec_cmd(t_mshell *msh);

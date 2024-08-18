@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:49:01 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 18:58:23 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/18 17:10:39 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,14 @@ void	ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
 
 	if (pipe(pipex->fd_pipe) == -1)
 	{
-		write(STDERR_FILENO, "Couldn't create pipe\n", 22);
+		write(STDERR_FILENO, ERR_PIPE, 21);
 		return ;
 	}
 	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL)
-		{
-		free(line);
-		//ADD ERROR HANDLING
-		printf("Exiting Heredoc\n");
-		break;
-		}
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
+		if (line == NULL
+			|| ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
 		{
 			free(line);
 			break ;
@@ -48,8 +42,7 @@ void	ft_handle_heredoc(t_pipex *pipex, const char *delimiter)
 		write(pipex->fd_pipe[1], "\n", 1);
 		free(line);
 	}
-	close(pipex->fd_pipe[1]);
-	close(pipex->fd_in);
+	close_two_pipes(pipex->fd_pipe[1], pipex->fd_in);
 	pipex->fd_in = dup(pipex->fd_pipe[0]);
 	close(pipex->fd_pipe[0]);
 }

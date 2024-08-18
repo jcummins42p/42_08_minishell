@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 17:23:56 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:04:57 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 		handle_exec_error(pipex, "Fork error", "");
 	if (pipex->pid[j] == 0)
 	{
-		// child process
-		// setup_signal_handlers_child();
 		if (j == msh->info->n_pipe)
 			last_child(pipex, msh, j);
 		else
@@ -46,25 +44,22 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 	curr = NULL;
 	curr = token_after_pipeno(&msh->tokens, j);
 	pipex->rd_flag = false;
-	if (do_redirection(msh, curr) && msh->info->n_pipe == 0)
-		return (-1);
-	if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
+	if ((do_redirection(msh, curr) && msh->info->n_pipe == 0)
+		|| (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens)))
 		return (-1);
 	init_command_args(pipex, curr);
 	if (msh->info->n_pipe != 0 || j == msh->info->n_pipe)
 		if (pipe(pipex->fd_pipe) < 0)
 			handle_exec_error(pipex, "Pipe creation error", "");
 	fork_and_execute(pipex, msh, j);
-	close(pipex->fd_in);
+	close_two_pipes(pipex->fd_in, pipex->fd_out);
 	if (j < msh->info->n_pipe)
 	{
 		pipex->fd_in = dup(pipex->fd_pipe[0]);
-		close(pipex->fd_pipe[0]);
-		close(pipex->fd_pipe[1]);
+		close_two_pipes(pipex->fd_pipe[0], pipex->fd_pipe[1]);
 	}
 	else
 		pipex->fd_in = dup(STDIN_FILENO);
-	close(pipex->fd_out);
 	pipex->fd_out = dup(STDOUT_FILENO);
 	return (++j);
 }
@@ -86,5 +81,4 @@ void	ft_exec_cmd(t_mshell *msh)
 	}
 	if (j != -1)
 		execute_finish(msh, pipex);
-	/*if (j == -1)*/
 }

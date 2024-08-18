@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:23:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 12:56:14 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:49:51 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ int	ft_handle_rdin(t_pipex *pipex, t_tokenlist *token)
 		temp = ft_open_file(token->expand, O_RDONLY, 0);
 		if (temp == -1)
 		{
-			handle_exec_error(pipex, "No such file or dir", token->expand);
+			if (errno == EACCES)
+				handle_exec_error(pipex, ERR_PERM, token->expand);
+			else
+				handle_exec_error(pipex, ERR_INFILE, token->expand);
 			return (1);
 		}
 		close(pipex->fd_in);
@@ -43,7 +46,10 @@ int	ft_handle_rdout(t_pipex *pipex, t_tokenlist *token)
 		temp = ft_open_file(token->expand, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (temp == -1)
 		{
-			handle_exec_error(pipex, "No such file or dir", token->expand);
+			if (errno == EACCES)
+				handle_exec_error(pipex, ERR_PERM, token->expand);
+			else
+				handle_exec_error(pipex, ERR_OUTFILE, token->expand);
 			return (1);
 		}
 		close(pipex->fd_out);
@@ -64,7 +70,10 @@ int	ft_handle_app(t_pipex *pipex, t_tokenlist *token)
 		temp = ft_open_file(token->expand, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (temp == -1)
 		{
-			handle_exec_error(pipex, "No such file or dir", token->expand);
+			if (errno == EACCES)
+				handle_exec_error(pipex, ERR_PERM, token->expand);
+			else
+				handle_exec_error(pipex, ERR_OUTFILE, token->expand);
 			return (1);
 		}
 		close(pipex->fd_out);

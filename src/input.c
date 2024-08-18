@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 18:52:11 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/18 17:20:43 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,12 @@ void	input_cycle(t_mshell *msh)
 		msh->lineread = readline(*msh->prompt);
 		if (msh->lineread == NULL)
 		{
-		free(msh->lineread);
-		//free everything in tokens?
-		printf("Exiting shell...\n");
-		break;
+			free(msh->lineread);
+			//free everything in tokens?
+			printf("Exiting shell...\n");
+			break ;
 		}
 		add_history(msh->lineread);
-
 		if (tokenize(msh))
 		{
 			tokens_get_info(msh);

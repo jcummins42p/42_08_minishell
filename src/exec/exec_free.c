@@ -6,15 +6,21 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 17:30:15 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:05:47 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	close_two_pipes(int fd_1, int fd_2)
+{
+	close(fd_1);
+	close(fd_2);
+}
+
 void	close_curr_fd(t_pipex *pipex, bool free_all)
 {
-	struct stat st;
+	struct stat	st;
 
 	if (fstat(pipex->fd_in, &st) == 0)
 		close(pipex->fd_in);

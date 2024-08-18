@@ -6,102 +6,65 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 15:57:22 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/16 17:31:39 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/18 17:02:37 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
+void	execve_fail(t_mshell *msh, t_tokenlist *curr)
 {
-	t_tokenlist *curr;
+	handle_exec_error(msh->pipex, "command not found", curr->expand);
+	close_curr_fd(msh->pipex, 1);
+	free_pipex(msh->pipex);
+	input_cleanup(msh);
+	shell_free(msh);
+}
 
-	curr = token_after_pipeno(&msh->tokens, curr_pipe);
-
-	// Close unused pipe ends
-	close(pipex->fd_pipe[0]);
-
-	// Redirect input
-	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
+void	dup2_check(int oldfd, int newfd, char *error_msg, t_pipex *pipex)
+{
+	if (dup2(oldfd, newfd) == -1)
 	{
-		handle_exec_error(pipex, ERR_STDIN, "");
+		handle_exec_error(pipex, error_msg, "");
 		exit(EXIT_FAILURE);
-	}
-	close(pipex->fd_in);
-
-	// Redirect output
-	if (pipex->rd_flag)
-	{
-		if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
-		{
-			handle_exec_error(pipex, ERR_STDOUT, "");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-	{
-		if (dup2(pipex->fd_pipe[1], STDOUT_FILENO) == -1)
-		{
-			handle_exec_error(pipex, ERR_STDOUT, "");
-			exit(EXIT_FAILURE);
-		}
-	}
-	close(pipex->fd_out);
-	close(pipex->fd_pipe[1]);
-	if (!exec_builtin(msh, curr))
-		exit(EX_SUCCESS);
-	if (!pipex->cmd)
-	{
-		handle_exec_error(pipex, "command not found", curr->expand);
-		close_curr_fd(msh->pipex, 1);
-		free_pipex(pipex);
-		input_cleanup(msh);
-		shell_free(msh);
-		exit(EX_COMMAND_NOT_FOUND);
-	}
-	// Execute the command using execve. If execve fails, handle the error and exit
-	else if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
-	{
-		handle_exec_error(pipex, "command not found", curr->expand);
-		exit(EX_COMMAND_NOT_FOUND);
 	}
 }
 
-void last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
+void	child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
 {
-	t_tokenlist *curr;
+	t_tokenlist	*curr;
 
 	curr = token_after_pipeno(&msh->tokens, curr_pipe);
-
-	close(pipex->fd_pipe[1]);
-	close(pipex->fd_pipe[0]);
-	if (dup2(pipex->fd_in, STDIN_FILENO) == -1)
-	{
-		handle_exec_error(pipex, ERR_STDIN, "");
-		exit(EXIT_FAILURE);
-	}
-	close(pipex->fd_in);
-	if (dup2(pipex->fd_out, STDOUT_FILENO) == -1)
-	{
-		handle_exec_error(pipex, ERR_STDOUT, "");
-		exit(EXIT_FAILURE);
-	}
-	close(pipex->fd_out);
-
+	dup2_check(pipex->fd_in, STDIN_FILENO, ERR_STDIN, pipex);
+	close_two_pipes(pipex->fd_pipe[0], pipex->fd_in);
+	if (pipex->rd_flag)
+		dup2_check(pipex->fd_out, STDOUT_FILENO, ERR_STDOUT, pipex);
+	else
+		dup2_check(pipex->fd_pipe[1], STDOUT_FILENO, ERR_STDOUT, pipex);
+	close_two_pipes(pipex->fd_out, pipex->fd_pipe[1]);
 	if (!exec_builtin(msh, curr))
 		exit(EX_SUCCESS);
 	if (!pipex->cmd)
-	{
+		execve_fail(msh, curr);
+	else if (execve(pipex->cmd, pipex->cmd_args, msh->env) < 0)
 		handle_exec_error(pipex, "command not found", curr->expand);
-		close_curr_fd(msh->pipex, 1);
-		free_pipex(pipex);
-		input_cleanup(msh);
-		shell_free(msh);
-		exit(EX_COMMAND_NOT_FOUND);
-	}
+	exit(EX_COMMAND_NOT_FOUND);
+}
+
+void	last_child(t_pipex *pipex, t_mshell *msh, int curr_pipe)
+{
+	t_tokenlist	*curr;
+
+	curr = token_after_pipeno(&msh->tokens, curr_pipe);
+	close_two_pipes(pipex->fd_pipe[1], pipex->fd_pipe[0]);
+	dup2_check(pipex->fd_in, STDIN_FILENO, ERR_STDIN, pipex);
+	dup2_check(pipex->fd_out, STDOUT_FILENO, ERR_STDOUT, pipex);
+	close_two_pipes(pipex->fd_in, pipex->fd_out);
+	if (!exec_builtin(msh, curr))
+		exit(EX_SUCCESS);
+	if (!pipex->cmd)
+		execve_fail(msh, curr);
 	else if (execve(pipex->cmd, pipex->cmd_args, msh->env))
-	{
 		handle_exec_error(pipex, "command not found", curr->expand);
-		exit(EX_COMMAND_NOT_FOUND);
-	}
+	exit(EX_COMMAND_NOT_FOUND);
 }
