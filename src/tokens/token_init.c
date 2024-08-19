@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 15:59:57 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:16:48 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,6 @@ int	token_new(t_mshell *msh, char *newtoken, int pos, bool trail_space)
 	new->trail_space = trail_space;
 	token_init(msh, new, newtoken, pos);
 	token_append(&msh->tokens, &new);
+	msh->valid_input = VALID_IN;
 	return (ft_strlen(newtoken));
 }

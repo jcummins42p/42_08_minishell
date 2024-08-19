@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:32:23 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/18 17:19:18 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 17:09:40 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,5 @@ void	shell_init(t_mshell *msh)
 	msh->lineread = NULL;
 	msh->running = true;
 	msh->exitcode = 0;
+	msh->valid_input = INVALID_IN;
 }

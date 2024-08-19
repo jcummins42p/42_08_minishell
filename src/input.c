@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 16:24:21 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:28:47 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,10 @@ int	input_extend(t_mshell *msh)
 	char	*swap;
 
 	swap = NULL;
-	while (tokenize(msh, msh->lineread) > 0
-		|| parse_error_check(msh, &msh->tokens) == NO_PIPE)
+	tokenize(msh, msh->lineread);
+	if (!msh->tokens)
+		return (1);
+	while (msh->valid_input || parse_error_check(msh, &msh->tokens) == NO_PIPE)
 	{
 		token_clear(&msh->tokens);
 		swap = ft_strdup(msh->lineread);
@@ -74,6 +76,7 @@ int	input_extend(t_mshell *msh)
 		else
 		{
 			msh->lineread = ft_strjoin(swap, msh->buff);
+			tokenize(msh, msh->lineread);
 			free(msh->buff);
 			free(swap);
 		}
@@ -92,7 +95,7 @@ void	input_cycle(t_mshell *msh)
 			free(msh->lineread);
 			break ;
 		}
-		if (!input_extend(msh))
+		if (msh->lineread && msh->lineread[0] && !input_extend(msh))
 			add_history(msh->lineread);
 		if (msh->valid_input == VALID_IN)
 		{

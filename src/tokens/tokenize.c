@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 14:50:01 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:21:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,5 +123,7 @@ int	tokenize(t_mshell *msh, char *lineread)
 	}
 	if (!lineread || (msh->valid_input == INVALID_IN))
 		msh->exitcode = EX_SYNTAX_ERROR;
+	if (!msh->tokens)
+		msh->valid_input = INVALID_IN;
 	return (msh->valid_input);
 }

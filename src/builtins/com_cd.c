@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:32:29 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 16:59:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:04:24 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	com_cd_home(t_mshell *msh, t_tokenlist *token)
 	else
 		final = ft_strdup(prefix);
 	if (chdir(final))
-		printf("Invalid directory\n");
+		write(2, "Invalid directory\n", 18);
 	free(prefix);
 	free(suffix);
 	free(final);
@@ -54,7 +54,7 @@ void	com_cd(t_mshell *msh, t_tokenlist *token)
 	if (token->next && ft_strncmp(token->next->expand, "~", 1))
 	{
 		if (chdir(token->next->expand))
-			printf("Invalid directory\n");
+			write(2, "Invalid directory\n", 18);
 	}
 	else
 	{
