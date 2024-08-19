@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:32:23 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 17:09:40 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:08:11 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	shell_disable_echo(void)
 
 void	shell_init(t_mshell *msh)
 {
-	/*int g_siginfo = 0;*/
 	shell_disable_echo();
 	msh->pipex = NULL;
 	msh->tokens = NULL;

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 17:28:47 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:27:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ int	input_extend(t_mshell *msh)
 {
 	char	*swap;
 
-	swap = NULL;
-	tokenize(msh, msh->lineread);
 	if (!msh->tokens)
 		return (1);
 	while (msh->valid_input || parse_error_check(msh, &msh->tokens) == NO_PIPE)
@@ -71,7 +69,7 @@ int	input_extend(t_mshell *msh)
 		{
 			free(swap);
 			free(msh->buff);
-			return (1) ;
+			return (1);
 		}
 		else
 		{
@@ -95,6 +93,7 @@ void	input_cycle(t_mshell *msh)
 			free(msh->lineread);
 			break ;
 		}
+		tokenize(msh, msh->lineread);
 		if (msh->lineread && msh->lineread[0] && !input_extend(msh))
 			add_history(msh->lineread);
 		if (msh->valid_input == VALID_IN)
@@ -106,7 +105,7 @@ void	input_cycle(t_mshell *msh)
 				ft_exec_cmd(msh);
 				free_pipex(msh->pipex);
 			}
-			input_cleanup(msh);
 		}
+		input_cleanup(msh);
 	}
 }

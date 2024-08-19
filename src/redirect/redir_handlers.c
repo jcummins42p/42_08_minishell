@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 13:23:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 17:51:59 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:09:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,12 +128,12 @@ int	do_redirection(t_mshell *msh, t_tokenlist *token)
 	curr = token;
 	while (curr && curr->mtctype != PIPE)
 	{
-		if (curr->mtctype >= RDIN)
-			if (ft_handle_redirection(msh->pipex, curr) == 1)
-			{
-				msh->exitcode = 1;
-				return (1);
-			}
+		if (curr->mtctype >= RDIN
+			&& ft_handle_redirection(msh->pipex, curr) == 1)
+		{
+			msh->exitcode = 1;
+			return (1);
+		}
 		curr = curr->next;
 	}
 	return (0);

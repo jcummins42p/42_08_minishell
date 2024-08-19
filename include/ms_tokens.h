@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:47:05 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 14:09:42 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:07:12 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char		*expand_string_assign(char *input);
 int			tokenize(t_mshell *msh, char *lineread);
 
 //	token_init.c
+void		token_set_validity(t_mshell *msh, char quote);
 int			token_new(t_mshell *msh, char *newtoken, int pos, bool trail_space);
 
 //	token_list.c

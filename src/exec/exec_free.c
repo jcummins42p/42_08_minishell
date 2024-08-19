@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/19 15:40:06 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 18:08:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,8 @@ void	free_cmd_args(t_pipex *pipex)
 		return ;
 	while (pipex->cmd_args[i])
 	{
-
-			free(pipex->cmd_args[i]);
-			pipex->cmd_args[i] = NULL;
+		free(pipex->cmd_args[i]);
+		pipex->cmd_args[i] = NULL;
 		i++;
 	}
 	free(pipex->cmd_args);

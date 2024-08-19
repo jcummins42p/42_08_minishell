@@ -6,11 +6,19 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:40:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 17:16:48 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:06:57 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	token_set_validity(t_mshell *msh, char quote)
+{
+	if (quote == '\"')
+		msh->valid_input = NO_DQUOTE;
+	else if (quote == '\'')
+		msh->valid_input = NO_SQUOTE;
+}
 
 void	token_init(t_mshell *msh, t_tokenlist *new, char *newtoken, int pos)
 {

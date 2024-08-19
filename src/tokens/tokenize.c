@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 17:21:32 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:07:32 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,6 @@ int	token_parse_meta(t_mshell *msh, char *input, int index)
 	if (token == DELIMIT)
 		width = token_new(msh, "<<", index, is_trailspace(input[2]));
 	return (width);
-}
-
-void	token_set_validity(t_mshell *msh, char quote)
-{
-	if (quote == '\"')
-		msh->valid_input = NO_DQUOTE;
-	else if (quote == '\'')
-		msh->valid_input = NO_SQUOTE;
 }
 
 int	token_parse_quote(t_mshell *msh, char *input, char quote, int index)
