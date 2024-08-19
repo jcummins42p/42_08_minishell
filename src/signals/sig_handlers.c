@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:07:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 14:02:19 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:41:42 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ms_sighandle(int sig, siginfo_t *info, void *ucontext)
 {
 	(void)info;
 	(void)ucontext;
+
 	if (sig == SIGINT)
 	{
 		// Write the ^C indication to the terminal
@@ -29,8 +30,11 @@ void	ms_sighandle(int sig, siginfo_t *info, void *ucontext)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (sig == SIGQUIT)
-	{
-		(void)SIGQUIT;
-	}
+}
+
+void	ms_sigignore(int sig, siginfo_t *info, void *ucontext)
+{
+	(void)info;
+	(void)ucontext;
+	(void)sig;
 }

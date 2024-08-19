@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 12:56:07 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:48:38 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_token_inf
 
 typedef struct s_mshell
 {
+	struct sigaction	ms_sigs;
+	struct sigaction	ms_ignr;
 	t_pipex		*pipex;
 	t_tokenlist	*tokens;
 	t_token_inf	*info;

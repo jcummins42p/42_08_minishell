@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:41:10 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 12:23:00 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:06:51 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ void		com_echo(t_mshell *msh, t_tokenlist *token);
 
 //	com_env.c
 void		com_env(t_envlist **envlist, t_vscope scope);
+
+//	com_exec.c
+int			exec_builtin(t_mshell *msh, t_tokenlist *token);
 
 //	com_exit.c
 void		com_exit(t_mshell *msh, t_tokenlist *token);

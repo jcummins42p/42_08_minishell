@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 14:57:05 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:08:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,6 @@ void	input_cleanup(t_mshell *msh)
 	token_clear(&msh->tokens);
 	free(msh->lineread);
 	msh->lineread = NULL;
-}
-
-int	exec_builtin(t_mshell *msh, t_tokenlist *token)
-{
-	if (!token)
-		return (1);
-	else
-	{
-		if (token->comtype == C_EXIT)
-			com_exit(msh, token);
-		else if (token->comtype == C_ECHO)
-			com_echo(msh, token);
-		else if (token->comtype == C_ENV)
-			com_env(&msh->envlist, ENVVAR);
-		else if (token->comtype == C_UNSET)
-			com_unset(msh);
-		else if (token->comtype == C_EXPORT)
-			com_export(msh, token, ENVVAR);
-		else if (token->comtype == C_ASSIGN)
-			com_export(msh, token, SHLVAR);
-		else if (token->comtype == C_CD)
-			com_cd(msh, token);
-		else
-			return (1);
-	}
-	return (0);
 }
 
 int	parse_error_print(t_mshell *msh, t_tokenlist *token)
@@ -65,7 +39,8 @@ int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
 	}
 	while (token && token->next)
 	{
-		if (token->mtctype >= PIPE && (token->next->mtctype >= PIPE && token->next->mtctype != DELIMIT))
+		if (token->mtctype >= PIPE && (token->next->mtctype >= PIPE
+				&& token->next->mtctype != DELIMIT))
 		{
 			msh->exitcode = EX_SYNTAX_ERROR;
 			return (parse_error_print(msh, token));
@@ -81,11 +56,11 @@ int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
 
 void	input_extend(t_mshell *msh)
 {
-	char *swap;
+	char	*swap;
 
 	swap = NULL;
 	while (tokenize(msh, msh->lineread) > 0
-			|| parse_error_check(msh, &msh->tokens) == NO_PIPE)
+		|| parse_error_check(msh, &msh->tokens) == NO_PIPE)
 	{
 		token_clear(&msh->tokens);
 		swap = ft_strdup(msh->lineread);
