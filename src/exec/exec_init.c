@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:46:05 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/19 15:28:50 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 16:08:56 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int	init_command_args(t_pipex *pipex, t_tokenlist *curr)
 	if (pipex->cmd_args)
 		free_cmd_args(pipex);
 	if (pipex->cmd)
+	{
 		free(pipex->cmd);
+		pipex->cmd = NULL;
+	}
 	pipex->cmd_args = ft_get_arg(pipex, &curr);
 	if (!pipex->cmd_args)
 	{

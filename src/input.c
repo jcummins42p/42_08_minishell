@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 15:58:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:24:21 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
 	}
 	while (token && token->next)
 	{
-		if (token->mtctype >= PIPE && (token->next->mtctype >= PIPE
-				&& token->next->mtctype != DELIMIT))
+		if (token->mtctype >= PIPE && (token->next->mtctype == PIPE))
 		{
 			msh->exitcode = EX_SYNTAX_ERROR;
 			return (parse_error_print(msh, token));
@@ -54,7 +53,7 @@ int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
 		return (0);
 }
 
-void	input_extend(t_mshell *msh)
+int	input_extend(t_mshell *msh)
 {
 	char	*swap;
 
@@ -69,13 +68,17 @@ void	input_extend(t_mshell *msh)
 		if (msh->buff == NULL)
 		{
 			free(swap);
-			free(msh->lineread);
-			break ;
+			free(msh->buff);
+			return (1) ;
 		}
-		msh->lineread = ft_strjoin(swap, msh->buff);
-		free(msh->buff);
-		free(swap);
+		else
+		{
+			msh->lineread = ft_strjoin(swap, msh->buff);
+			free(msh->buff);
+			free(swap);
+		}
 	}
+	return (0);
 }
 
 void	input_cycle(t_mshell *msh)
@@ -89,8 +92,8 @@ void	input_cycle(t_mshell *msh)
 			free(msh->lineread);
 			break ;
 		}
-		input_extend(msh);
-		add_history(msh->lineread);
+		if (!input_extend(msh))
+			add_history(msh->lineread);
 		if (msh->valid_input == VALID_IN)
 		{
 			tokens_get_info(msh);
@@ -100,7 +103,7 @@ void	input_cycle(t_mshell *msh)
 				ft_exec_cmd(msh);
 				free_pipex(msh->pipex);
 			}
+			input_cleanup(msh);
 		}
-		input_cleanup(msh);
 	}
 }
