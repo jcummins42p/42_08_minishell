@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 15:46:05 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/18 16:57:37 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 15:28:50 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	init_command_args(t_pipex *pipex, t_tokenlist *curr)
 {
-	free_cmd_args(pipex);
-	free(pipex->cmd);
+	if (pipex->cmd_args)
+		free_cmd_args(pipex);
+	if (pipex->cmd)
+		free(pipex->cmd);
 	pipex->cmd_args = ft_get_arg(pipex, &curr);
 	if (!pipex->cmd_args)
 	{
@@ -28,6 +30,8 @@ int	init_command_args(t_pipex *pipex, t_tokenlist *curr)
 			pipex->cmd = ft_strdup(pipex->cmd_args[0]);
 		else
 			pipex->cmd = get_cmd(pipex->cmd_paths, pipex->cmd_args[0]);
+		if (pipex->cmd_args[0] == NULL || pipex->cmd == NULL)
+			return (1);
 	}
 	return (0);
 }
@@ -58,7 +62,7 @@ void	init_pipex(t_mshell *msh)
 	msh->pipex->cmd_paths = ft_split(*msh->path, ':');
 	if (!msh->pipex->cmd_paths)
 	{
-		// add error handler
+		msh->pipex->cmd_paths = NULL;
 		return ;
 	}
 	msh->pipex->status = 0;

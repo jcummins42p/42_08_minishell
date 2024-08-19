@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 18:50:45 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/18 17:05:47 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 15:40:06 by akretov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	free_cmd_paths(t_pipex *pipex)
 	while (pipex->cmd_paths[i])
 	{
 		free(pipex->cmd_paths[i]);
+		pipex->cmd_paths[i] = NULL;
 		i++;
 	}
 	free(pipex->cmd_paths);
@@ -60,7 +61,9 @@ void	free_cmd_args(t_pipex *pipex)
 		return ;
 	while (pipex->cmd_args[i])
 	{
-		free(pipex->cmd_args[i]);
+
+			free(pipex->cmd_args[i]);
+			pipex->cmd_args[i] = NULL;
 		i++;
 	}
 	free(pipex->cmd_args);
@@ -77,7 +80,9 @@ void	free_pipex(t_pipex *pipex)
 		close_curr_fd(pipex, 0);
 	free_cmd_paths(pipex);
 	free_cmd_args(pipex);
-	free(pipex->cmd);
-	free(pipex->pid);
+	if (pipex->cmd != NULL)
+		free(pipex->cmd);
+	if (pipex->pid)
+		free(pipex->pid);
 	free(pipex);
 }
