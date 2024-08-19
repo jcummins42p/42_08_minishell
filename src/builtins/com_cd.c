@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:32:29 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/14 16:34:28 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 16:59:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,15 @@ void	com_cd_home(t_mshell *msh, t_tokenlist *token)
 	prefix = NULL;
 	prefix = env_get_string(&msh->envlist, "HOME");
 	suffix = NULL;
+	final = NULL;
 	if (token->next)
+	{
 		token = token->next;
-	suffix = ft_substr(token->expand, 1, ft_strlen(token->expand) - 1);
-	final = ft_strjoin(prefix, suffix);
+		suffix = ft_substr(token->expand, 1, ft_strlen(token->expand) - 1);
+		final = ft_strjoin(prefix, suffix);
+	}
+	else
+		final = ft_strdup(prefix);
 	if (chdir(final))
 		printf("Invalid directory\n");
 	free(prefix);
@@ -46,7 +51,7 @@ void	com_cd(t_mshell *msh, t_tokenlist *token)
 	tmp_dir = env_get_string(&msh->envlist, "PWD");
 	env_set(&msh->envlist, "OLDPWD", tmp_dir, ENVVAR);
 	free (tmp_dir);
-	if (token->next && ft_strncmp(token->next->expand, "~/", 2))
+	if (token->next && ft_strncmp(token->next->expand, "~", 1))
 	{
 		if (chdir(token->next->expand))
 			printf("Invalid directory\n");
