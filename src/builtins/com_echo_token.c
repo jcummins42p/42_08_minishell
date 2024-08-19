@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 13:46:49 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/18 16:56:04 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 15:02:53 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,16 @@ void	com_echo(t_mshell *msh, t_tokenlist *token)
 
 	newline = true;
 	if (token->next)
-		token = token->next;
-	if (!ft_strncmp(token->expand, "-n", 2))
 	{
 		token = token->next;
-		newline = false;
+		if (!ft_strncmp(token->expand, "-n", 2))
+		{
+			token = token->next;
+			newline = false;
+		}
+		echo_tokens_cycle(msh, token, newline);
 	}
-	echo_tokens_cycle(msh, token, newline);
+	else
+		write(msh->pipex->fd_out, "\n", 1);
 	msh->exitcode = 0;
 }

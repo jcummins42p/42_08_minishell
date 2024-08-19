@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 14:55:00 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:57:05 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,7 @@ int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
 			token = token->next;
 	}
 	if (token->mtctype >= PIPE)
-	{
-		msh->valid_input = NO_PIPE;
 		return (NO_PIPE);
-	}
 	else
 		return (0);
 }
