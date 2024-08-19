@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 15:42:47 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 11:56:11 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:50:01 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ int	token_parse_meta(t_mshell *msh, char *input, int index)
 	return (width);
 }
 
+void	token_set_validity(t_mshell *msh, char quote)
+{
+	if (quote == '\"')
+		msh->valid_input = NO_DQUOTE;
+	else if (quote == '\'')
+		msh->valid_input = NO_SQUOTE;
+}
+
 int	token_parse_quote(t_mshell *msh, char *input, char quote, int index)
 {
 	char	*output;
@@ -51,7 +59,7 @@ int	token_parse_quote(t_mshell *msh, char *input, char quote, int index)
 		while (input[i] && (input[i] != quote))
 			i++;
 		if (input[i++] != quote)
-			msh->valid_input = NO_QUOTE;
+			token_set_validity(msh, quote);
 		else if (i > 0)
 		{
 			output = ft_strldup(input, i);
@@ -100,23 +108,20 @@ int	token_parse_selector(t_mshell *msh, char *input, int index)
 	return (i);
 }
 
-int	tokenize(t_mshell *msh)
+int	tokenize(t_mshell *msh, char *lineread)
 {
 	int	i;
 
 	i = 0;
 	msh->valid_input = VALID_IN;
-	while (msh->lineread && msh->lineread[i] && msh->valid_input == VALID_IN)
+	while (msh->valid_input == VALID_IN && lineread && lineread[i])
 	{
-		while (msh->lineread[i] && is_whitespace(msh->lineread[i]))
+		while (lineread[i] && is_whitespace(lineread[i]))
 			i++;
-		if (msh->lineread[i])
-			i += token_parse_selector(msh, &msh->lineread[i], i);
+		if (lineread[i])
+			i += token_parse_selector(msh, &lineread[i], i);
 	}
-	if (!msh->lineread || msh->valid_input)
-	{
+	if (!lineread || (msh->valid_input == INVALID_IN))
 		msh->exitcode = EX_SYNTAX_ERROR;
-		return (0);
-	}
-	return (1);
+	return (msh->valid_input);
 }

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/18 17:20:43 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 14:55:00 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ int	exec_builtin(t_mshell *msh, t_tokenlist *token)
 	return (0);
 }
 
-int	parse_error_print(t_tokenlist *token)
+int	parse_error_print(t_mshell *msh, t_tokenlist *token)
 {
+	msh->valid_input = INVALID_IN;
 	printf("msh: syntax error near token ");
 	printf("%d `%s\'\n", token->index + 1, token->expand);
-	return (1);
+	return (INVALID_IN);
 }
 
 int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
@@ -60,25 +61,49 @@ int	parse_error_check(t_mshell *msh, t_tokenlist **tokens)
 	if (token->mtctype == PIPE)
 	{
 		msh->exitcode = EX_SYNTAX_ERROR;
-		return (parse_error_print(token));
+		return (parse_error_print(msh, token));
 	}
 	while (token && token->next)
 	{
-		if (token->mtctype >= PIPE && token->next->mtctype >= PIPE)
+		if (token->mtctype >= PIPE && (token->next->mtctype >= PIPE && token->next->mtctype != DELIMIT))
 		{
 			msh->exitcode = EX_SYNTAX_ERROR;
-			return (parse_error_print(token));
+			return (parse_error_print(msh, token));
 		}
 		else
 			token = token->next;
 	}
 	if (token->mtctype >= PIPE)
 	{
-		msh->exitcode = EX_SYNTAX_ERROR;
-		return (parse_error_print(token));
+		msh->valid_input = NO_PIPE;
+		return (NO_PIPE);
 	}
 	else
 		return (0);
+}
+
+void	input_extend(t_mshell *msh)
+{
+	char *swap;
+
+	swap = NULL;
+	while (tokenize(msh, msh->lineread) > 0
+			|| parse_error_check(msh, &msh->tokens) == NO_PIPE)
+	{
+		token_clear(&msh->tokens);
+		swap = ft_strdup(msh->lineread);
+		free (msh->lineread);
+		msh->buff = readline("> ");
+		if (msh->buff == NULL)
+		{
+			free(swap);
+			free(msh->lineread);
+			break ;
+		}
+		msh->lineread = ft_strjoin(swap, msh->buff);
+		free(msh->buff);
+		free(swap);
+	}
 }
 
 void	input_cycle(t_mshell *msh)
@@ -90,12 +115,11 @@ void	input_cycle(t_mshell *msh)
 		if (msh->lineread == NULL)
 		{
 			free(msh->lineread);
-			//free everything in tokens?
-			printf("Exiting shell...\n");
 			break ;
 		}
+		input_extend(msh);
 		add_history(msh->lineread);
-		if (tokenize(msh))
+		if (msh->valid_input == VALID_IN)
 		{
 			tokens_get_info(msh);
 			if (msh->tokens && !parse_error_check(msh, &msh->tokens))

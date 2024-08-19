@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/18 17:31:29 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 13:43:08 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 	curr = NULL;
 	curr = token_after_pipeno(&msh->tokens, j);
 	pipex->rd_flag = false;
-	if ((do_redirection(msh, curr) && msh->info->n_pipe == 0)
-		|| (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens)))
+	if (do_redirection(msh, curr))
+		return (++j);
+	else if (msh->info->n_pipe == 0 && !exec_builtin(msh, msh->tokens))
 		return (-1);
 	init_command_args(pipex, curr);
 	if (msh->info->n_pipe != 0 || j == msh->info->n_pipe)

@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 16:07:20 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/18 17:45:15 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 14:02:19 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,13 @@ void	ms_sighandle(int sig, siginfo_t *info, void *ucontext)
 		rl_on_new_line();
 		rl_redisplay();
 		// Optionally display ^C and a new prompt
-		write(STDOUT_FILENO, "^C\n", 3);
+		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
 	{
-
+		(void)SIGQUIT;
 	}
 }

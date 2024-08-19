@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 18:49:14 by akretov          ###   ########.fr       */
+/*   Updated: 2024/08/19 12:56:07 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_mshell
 	char		**prompt;
 	char		**path;
 	char		*lineread;
+	char		*buff;
 	t_valid_in	valid_input;
 	bool		running;
 	int			exitcode;

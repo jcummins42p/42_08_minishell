@@ -6,7 +6,7 @@
 /*   By: jcummins <jcummins@student.42prague.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 13:32:26 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 15:53:50 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:08:58 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ typedef enum e_vscope
 typedef enum e_valid_in
 {
 	VALID_IN,
-	NO_INPUT,
-	NO_QUOTE,
+	NO_SQUOTE,
+	NO_DQUOTE,
+	NO_PIPE,
+	INVALID_IN
 }	t_valid_in;
 
 typedef enum e_exitcode
