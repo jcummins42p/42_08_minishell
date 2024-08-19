@@ -6,13 +6,13 @@
 /*   By: jcummins <jcummins@student.42prague.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 09:09:54 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/16 15:46:33 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:00:54 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_GLOBALS_H
 # define MS_GLOBALS_H
 
-extern int	g_siginfo;
+//extern int	g_siginfo;
 
 #endif

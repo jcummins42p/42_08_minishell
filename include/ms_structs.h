@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 14:23:39 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 15:48:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:00:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,31 +57,31 @@ typedef struct s_tokenlist
 
 typedef struct s_token_inf
 {
-	int			n_pipe;
-	int			n_ass;
-	int			n_rdin;
-	int			n_rdout;
-	int			n_rdapp;
-	int			n_delimit;
+	int					n_pipe;
+	int					n_ass;
+	int					n_rdin;
+	int					n_rdout;
+	int					n_rdapp;
+	int					n_delimit;
 }	t_token_inf;
 
 typedef struct s_mshell
 {
 	struct sigaction	ms_sigs;
 	struct sigaction	ms_ignr;
-	t_pipex		*pipex;
-	t_tokenlist	*tokens;
-	t_token_inf	*info;
-	t_envlist	*envlist;
-	char		**env;
-	char		**prompt;
-	char		**path;
-	char		*lineread;
-	char		*buff;
-	t_valid_in	valid_input;
-	bool		running;
-	int			exitcode;
-	int			sigint;
+	t_pipex				*pipex;
+	t_tokenlist			*tokens;
+	t_token_inf			*info;
+	t_envlist			*envlist;
+	char				**env;
+	char				**prompt;
+	char				**path;
+	char				*lineread;
+	char				*buff;
+	t_valid_in			valid_input;
+	bool				running;
+	int					exitcode;
+	int					sigint;
 }	t_mshell;
 
 #endif
