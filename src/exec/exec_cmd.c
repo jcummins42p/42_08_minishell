@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/19 16:04:37 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:36:03 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ void	execute_finish(t_mshell *msh, t_pipex *pipex)
 		waitpid(pipex->pid[i], &msh->exitcode, WUNTRACED);
 	if (WIFEXITED(msh->exitcode))
 		msh->exitcode = WEXITSTATUS(msh->exitcode);
+	if (g_siginfo)
+		msh->exitcode = (128 + g_siginfo);
+	g_siginfo = 0;
 }
 
 void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
@@ -33,7 +36,9 @@ void	fork_and_execute(t_pipex *pipex, t_mshell *msh, int j)
 		if (pipex->cmd_args[0] == NULL)
 			exit (1);
 		if (j == msh->info->n_pipe)
+		{
 			last_child(pipex, msh, j);
+		}
 		else
 			child(pipex, msh, j);
 	}
@@ -54,6 +59,7 @@ int	execute_commands(t_mshell *msh, t_pipex *pipex, int j)
 	if (msh->info->n_pipe != 0 || j == msh->info->n_pipe)
 		if (pipe(pipex->fd_pipe) < 0)
 			handle_exec_error(pipex, "Pipe creation error", "");
+	sig_init_child(msh);
 	fork_and_execute(pipex, msh, j);
 	close_two_pipes(pipex->fd_in, pipex->fd_out);
 	if (j < msh->info->n_pipe)

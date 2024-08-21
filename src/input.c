@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 15:34:11 by jcummins          #+#    #+#             */
-/*   Updated: 2024/08/19 18:27:38 by jcummins         ###   ########.fr       */
+/*   Updated: 2024/08/21 16:16:28 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	input_cycle(t_mshell *msh)
 {
 	while (msh->running)
 	{
+		sig_init(msh);
 		env_update_exitcode(msh, &msh->envlist);
 		msh->lineread = readline(*msh->prompt);
 		if (msh->lineread == NULL)
