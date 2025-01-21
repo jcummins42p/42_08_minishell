@@ -6,7 +6,7 @@
 /*   By: akretov <akretov@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 14:58:16 by akretov           #+#    #+#             */
-/*   Updated: 2024/08/21 16:36:03 by jcummins         ###   ########.fr       */
+/*   Updated: 2025/01/21 14:36:43 by jcummins         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,7 @@ void	ft_exec_cmd(t_mshell *msh)
 {
 	t_pipex		*pipex;
 	int			j;
-	int			temp;
 
-	temp = 0;
 	j = 0;
 	pipex = msh->pipex;
 	if (init_pid(pipex, msh->info->n_pipe))
